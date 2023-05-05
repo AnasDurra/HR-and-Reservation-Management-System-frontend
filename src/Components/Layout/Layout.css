@@ -1,0 +1,143 @@
+.container {
+    display: flex;
+}
+
+.AppBar {
+    width: 100%;
+    height: 50px;
+    position: fixed;
+    top: 0;
+    z-index: 1100;
+    background-color: grey;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+.AppBarItem {
+    margin: 0 12px;
+}
+
+/* make this scrollable when the overflow happens */
+.SideBar {
+    height: 100%;
+    width: 250px;
+    background-color: #2F4050;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1200;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+}
+
+.SideBarList {
+    height: auto;
+    width: 90%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Customize the appearance of the scrollbar*/
+.SideBar::-webkit-scrollbar {
+    width: 0px;
+  }
+  
+  .SideBar::-webkit-scrollbar-track {
+    background-color: #2F4050;
+  }
+  
+  .SideBar::-webkit-scrollbar-thumb {
+    background-color: #2F4050;
+  }
+
+.SideBarItem {
+    width: 100%;
+    height: 40px;
+    list-style-type: none;
+    margin: 4px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    position: relative;
+    left: 13px;
+}
+
+
+.SideBarItem:hover {
+    cursor: pointer;
+    border-radius: 10px 0px 0px 10px;
+    background-color: #E4D39E;
+    color: black;
+    position: relative;
+    left: 13px;
+}
+
+.activeItem {
+    cursor: pointer;
+    border-radius: 10px 0px 0px 10px;
+    background-color: #E4D39E;
+    color: black;
+}
+
+.activeSubItem {
+    color: #E4D39E;
+}
+
+.SubItems {
+    list-style-type: none;
+    position: static;
+    padding: 0;
+    display: none;
+}
+
+.SubItemsOpened {
+    list-style-type: none;
+    position: static;
+    padding: 0;
+}
+
+.SubItem {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    user-select: none;
+    font-size: 14px;
+}
+
+.SubItem:hover {
+    list-style-type: none;
+    color: #E4D39E;
+    cursor: pointer;
+}
+
+#icon {
+    flex: 30%;
+    display: grid;
+    place-items: center;
+    width: fit-content;
+}
+
+#text {
+    flex: 70%;
+}
+
+#expand {
+    position: absolute;
+    left: 16px;
+}
+
+.content {
+    margin-bottom: 1000px;
+    right: 250px;
+    top: 50px;
+    position: relative;
+    padding: 60px;
+}
