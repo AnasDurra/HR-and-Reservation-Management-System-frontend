@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './Layout.css';
 import SubItems from './SubItems';
 
-import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
+import { CaretDownOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function SideBarItem({ item }) {
@@ -42,8 +42,8 @@ export default function SideBarItem({ item }) {
                 </div>
 
                 {item?.items ?
-                    <div id='expand'>
-                        {open ? <CaretUpOutlined /> : <CaretDownOutlined />}
+                    <div className= { open ? 'expandOpen' : 'expand'} >
+                        <CaretDownOutlined />
                     </div> : null}
             </li>
             <SubItems open={open} subItems={item.items} />
