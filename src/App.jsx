@@ -3,9 +3,14 @@ import './App.css'
 import arEG from 'antd/lib/locale/ar_EG';
 import { connect } from 'react-redux';
 import Layout from './Components/Layout/Layout';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
+
+const GuardedRoute = ({ isRouteAccessible, redirectRoute }) =>
+  isRouteAccessible ? <Outlet /> : <Navigate to={redirectRoute} replace />;
 
 function App(props) {
+
+  const isAuthenticated = false;
 
   return (
     <div>
@@ -27,10 +32,32 @@ function App(props) {
         <Layout>
           <Routes>
 
-            <Route path='/' element={<div>Home</div>} />
-            <Route path='/users' element={<div><Button >Users</Button></div>} />
-            <Route path='/products' element={<div>Products</div>} />
-            <Route path='/add/products' element={<div>Add Products</div>} />
+            {/* Non-Authenticated Routes: accessible only if user is not authenticated */}
+            <Route
+              element={
+                <GuardedRoute
+                  isRouteAccessible={!isAuthenticated}
+                  redirectRoute={'/'}
+                />
+              }
+            >
+              <Route path={'/login'} element={<p>Login Page</p>} />
+            </Route>
+
+            {/* Authenticated Routes: accessible only if user is authenticated */}
+            <Route
+              element={
+                <GuardedRoute
+                  isRouteAccessible={isAuthenticated}
+                  redirectRoute={'/login'}
+                />
+              }
+            >
+              <Route path='/' element={<div>Home</div>} />
+              <Route path='/users' element={<div><Button >Users</Button></div>} />
+              <Route path='/products' element={<div>Products</div>} />
+              <Route path='/add/products' element={<div>Add Products</div>} />
+            </Route>
 
             <Route path='*' element={<Navigate to='/' />} />
 
