@@ -8,18 +8,18 @@ export const items = [
             {
                 text: 'جميع الشواغر',
                 icon: <ProfileOutlined />,
-                path: '/products',
+                path: '/jobVacancies',
             },
             {
                 text: 'إضافة شاغر وظيفي',
                 icon: <ProfileOutlined />,
-                path: '/add/products',
+                path: '/jobVacancies/add',
             },
         ],
     },
     {
         text: 'الموظفين',
         icon: <ProfileOutlined />,
-        path: '/users',
+        path: '/employees',
     },
 ];

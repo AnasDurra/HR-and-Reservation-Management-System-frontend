@@ -10,7 +10,7 @@ const GuardedRoute = ({ isRouteAccessible, redirectRoute }) =>
 
 function App(props) {
 
-  const isAuthenticated = false;
+  const isAuthenticated = true;
 
   return (
     <div>
@@ -54,9 +54,9 @@ function App(props) {
               }
             >
               <Route path='/' element={<div>Home</div>} />
-              <Route path='/users' element={<div><Button >Users</Button></div>} />
-              <Route path='/products' element={<div>Products</div>} />
-              <Route path='/add/products' element={<div>Add Products</div>} />
+              <Route path='/jobVacancies' element={<div><Button >Users</Button></div>} />
+              <Route path='/jobVacancies/add' element={<div>Add job Vacancy</div>} />
+              <Route path='/employees' element={<div>All Emplyees</div>} />
             </Route>
 
             <Route path='*' element={<Navigate to='/' />} />
