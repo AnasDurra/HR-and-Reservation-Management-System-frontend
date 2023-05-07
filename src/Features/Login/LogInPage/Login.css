@@ -1,0 +1,47 @@
+.loginContainer {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content:space-evenly;
+    width: 100vw;
+    height: 100vh;
+}
+
+.image {
+    width: 30%;
+    height: 50%;
+    flex: 0%;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    flex: 30%;
+    align-items: center;
+}
+
+.formItems {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+}
+
+.formItem {
+    display: block;
+    width: 100%;
+}
+
+.submitButton {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+}
+
+@media screen and (max-width: 1000px) {
+    .image {
+        display: none;
+    }
+    .formItems{
+        width: 60%;
+    }
+}

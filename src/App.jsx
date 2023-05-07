@@ -3,14 +3,13 @@ import './App.css'
 import arEG from 'antd/lib/locale/ar_EG';
 import { connect } from 'react-redux';
 import Layout from './Components/Layout/Layout';
-import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
-
-const GuardedRoute = ({ isRouteAccessible, redirectRoute }) =>
-  isRouteAccessible ? <Outlet /> : <Navigate to={redirectRoute} replace />;
+import { Navigate, Route, Routes } from 'react-router-dom';
+import LogInPage from './Features/Login/LogInPage/Login';
+import Unauthorized from './Components/Unauthorized/Unauthorized';
+import AccessRoute from './Components/AccessRoute/AccessRoute';
+import Roles from './Components/AccessRoute/Roles';
 
 function App(props) {
-
-  const isAuthenticated = true;
 
   return (
     <div>
@@ -20,44 +19,34 @@ function App(props) {
         theme={{
           token: {
             fontFamily: 'cairo',
-            colorPrimary: 'orange'
+            colorPrimary: '#E4D39E',
           },
           components: {
             Button: {
               borderRadius: '12px',
             },
-          }
+            Typography: {
+              colorBgBase: 'red'
+            }
+          },
         }}
       >
         <Layout>
           <Routes>
+            {/*public Routes*/}
+            <Route path='/login' element={<LogInPage />} />
+            <Route path='/unauthorized' element={<Unauthorized />} />
 
-            {/* Non-Authenticated Routes: accessible only if user is not authenticated */}
-            <Route
-              element={
-                <GuardedRoute
-                  isRouteAccessible={!isAuthenticated}
-                  redirectRoute={'/'}
-                />
-              }
-            >
-              <Route path={'/login'} element={<p>Login Page</p>} />
-            </Route>
 
-            {/* Authenticated Routes: accessible only if user is authenticated */}
-            <Route
-              element={
-                <GuardedRoute
-                  isRouteAccessible={isAuthenticated}
-                  redirectRoute={'/login'}
-                />
-              }
-            >
-              <Route path='/' element={<div>Home</div>} />
-              <Route path='/jobVacancies' element={<div><Button >Users</Button></div>} />
-              <Route path='/jobVacancies/add' element={<div>Add job Vacancy</div>} />
-              <Route path='/employees' element={<div>All Emplyees</div>} />
-            </Route>
+            {/*Example For Privilaged Routes*/}
+            {/* <Route element={<AccessRoute allowedRoutes={Roles.HR} />}> */}
+            {/*Some Route*/}
+            {/* </Route> */}
+
+            {/*Dummy Routes*/}
+            <Route path='/jobVacancies' element={<div><Button >Users</Button></div>} />
+            <Route path='/jobVacancies/add' element={<div>Add job Vacancy</div>} />
+            <Route path='/employees' element={<div>All Emplyees</div>} />
 
             <Route path='*' element={<Navigate to='/' />} />
 

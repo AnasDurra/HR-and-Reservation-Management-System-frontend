@@ -10,11 +10,13 @@ const userLogIn = (payload) => {
 }
 
 
-function* userLogInSaga({payload}) {
+function* userLogInSaga({payload, location, navigate}) {
     try {
         const response = yield call(userLogIn, payload);
         const userJsonToString = JSON.stringify(response.data);
         Cookies.set('user', utils.encrypt(userJsonToString), { expires: 12 });
+        const from = location.state?.from?.pathname || "/";
+        navigate(from, { replace: true });
         yield put(actions.userLogInSuccess({
             user: response.data,
         }));

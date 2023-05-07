@@ -1,7 +1,8 @@
 import Cookies from "js-cookie";
+import * as crypt from './crypto';
 
-export default function checkUser() {
-    const user = Cookies.get('user');
+export default function getUser() {
+    const user = crypt.decrypt(Cookies.get('user'));
 
-    return user;
+    return JSON.parse(user);
 }
