@@ -1,5 +1,6 @@
 .container {
     display: flex;
+    position: relative;
 }
 
 .AppBar {
@@ -47,15 +48,15 @@
 /* Customize the appearance of the scrollbar*/
 .SideBar::-webkit-scrollbar {
     width: 0px;
-  }
-  
-  .SideBar::-webkit-scrollbar-track {
+}
+
+.SideBar::-webkit-scrollbar-track {
     background-color: #2F4050;
-  }
-  
-  .SideBar::-webkit-scrollbar-thumb {
+}
+
+.SideBar::-webkit-scrollbar-thumb {
     background-color: #2F4050;
-  }
+}
 
 .SideBarItem {
     width: 100%;
@@ -148,9 +149,17 @@
 }
 
 
-.content {
+/* .content {
     right: 250px;
     top: 50px;
     position: relative;
+    padding: 60px;
+} */
+
+.content {
+    left: 0;
+    right: 250px;
+    top: 50px;
+    position: absolute;
     padding: 60px;
 }

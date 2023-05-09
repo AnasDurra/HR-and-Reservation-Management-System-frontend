@@ -8,6 +8,7 @@ import LogInPage from './Features/Login/LogInPage/Login';
 import Unauthorized from './Components/Unauthorized/Unauthorized';
 import AccessRoute from './Components/AccessRoute/AccessRoute';
 import Roles from './Components/AccessRoute/Roles';
+import ViewDepartments from './Features/EmployeesProfiles/Departments/ViewDepartments';
 
 function App(props) {
 
@@ -42,6 +43,8 @@ function App(props) {
             {/* <Route element={<AccessRoute allowedRoutes={Roles.HR} />}> */}
             {/*Some Route*/}
             {/* </Route> */}
+
+            <Route path='/departments' element={<ViewDepartments />} />
 
             {/*Dummy Routes*/}
             <Route path='/jobVacancies' element={<div><Button >Users</Button></div>} />

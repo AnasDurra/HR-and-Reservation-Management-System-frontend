@@ -20,7 +20,6 @@ const store = compose(
 
 sagaMiddleware.run(rootSaga);
 
-
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
