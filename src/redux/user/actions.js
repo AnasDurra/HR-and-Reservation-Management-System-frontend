@@ -1,8 +1,10 @@
 import * as actionTypes from './constants';
 
-export const userLogIn = (payload) => ({
+export const userLogIn = (payload, location, navigate) => ({
     type: actionTypes.USER_LOG_IN,
-    payload: payload
+    payload: payload,
+    location: location,
+    navigate: navigate,
 })
 
 export const userLogInSuccess = (payload) => ({
