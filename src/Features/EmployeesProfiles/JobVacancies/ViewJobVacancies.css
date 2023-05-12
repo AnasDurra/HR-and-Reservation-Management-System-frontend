@@ -1,0 +1,21 @@
+.jobVacanciesButton {
+    margin-top: 30px;
+}
+
+#actions {
+    display: flex;
+    justify-content: center;
+}
+
+#actions > * {
+    margin: 0px 5px;
+}
+
+.jobVacancyModal {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.jobVacancyModal > button {
+    margin: 0px 8px 0px 0px;
+}

@@ -1,6 +1,6 @@
 import './Login.css';
 import LoginForm from './LoginForm';
-import * as userActions from '../../../redux/user/actions';
+import * as userActions from '../../redux/user/actions';
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 

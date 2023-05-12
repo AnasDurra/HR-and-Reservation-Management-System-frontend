@@ -1,0 +1,6 @@
+.loadingSpinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(50vh + 50px);
+}

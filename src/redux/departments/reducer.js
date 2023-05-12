@@ -18,8 +18,22 @@ const departmentsReducer = (state = initialState, action) => {
         case actionTypes.DELETE_DEPARTMENT:
             return { ...state, loading: true, error: null };
         case actionTypes.DELETE_DEPARTMENT_SUCCESS:
-            // return { ...state, loading: false, departments: action.payload.departments };
+        // return { ...state, loading: false, departments: action.payload.departments };
         case actionTypes.DELETE_DEPARTMENT_FAILED:
+            return { ...state, loading: false, error: action.payload.error };
+
+        case actionTypes.UPDATE_DEPARTMENT:
+            return { ...state, loading: true, error: null };
+        case actionTypes.UPDATE_DEPARTMENT_SUCCESS:
+        // return { ...state, loading: false, departments: action.payload.departments };
+        case actionTypes.UPDATE_DEPARTMENT_FAILED:
+            return { ...state, loading: false, error: action.payload.error };
+
+        case actionTypes.CREATE_DEPARTMENT:
+            return { ...state, loading: true, error: null };
+        case actionTypes.CREATE_DEPARTMENT_SUCCESS:
+        // return { ...state, loading: false, departments: action.payload.departments };
+        case actionTypes.CREATE_DEPARTMENT_FAILED:
             return { ...state, loading: false, error: action.payload.error };
 
         default:

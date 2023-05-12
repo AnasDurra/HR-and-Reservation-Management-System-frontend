@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import DeleteModal from "../../../Components/DeleteModal/DeleteModal";
 import DepartmentModal from "./DepartmentModal";
+import Spinner from "../../../Components/Spinner/Spinner";
 
 function ViewDepartments(props) {
 
@@ -15,12 +16,10 @@ function ViewDepartments(props) {
 
     const [openDepartmentModal, setOpenDepartmentModal] = useState(false);
 
-    useEffect(() => {
-        // props.getDepartments();
-    }, []);
 
     const deleteDepartment = () => {
         console.log('deleted: ', selectedDepartment);
+        closeDeleteModal();
     }
 
     const createDepartment = (data) => {
@@ -48,11 +47,12 @@ function ViewDepartments(props) {
         } else {
             createDepartment(data);
         }
+        closeDepartmentModal();
     }
 
     const columns = [
         {
-            title: 'القسم',
+            title: 'الاسم',
             dataIndex: 'name',
             key: 'name',
         },
@@ -108,31 +108,33 @@ function ViewDepartments(props) {
     ];
 
     return (
-        <div>
-            <Table
-                columns={columns}
-                dataSource={data}
-                rowKey='id'
-            />
-            <Button
-                className="departmentButton"
-                onClick={() => setOpenDepartmentModal(true)}
-            >
-                إضافة قسم
-            </Button>
-            <DeleteModal
-                open={openDeleteModal}
-                handleOk={deleteDepartment}
-                handleCancel={closeDeleteModal}
-            />
-            <DepartmentModal
-                open={openDepartmentModal}
-                handleCancel={closeDepartmentModal}
-                department={selectedDepartment}
-                form={form}
-                onFinish={onFinish}
-            />
-        </div>
+        <Spinner loading={props.laoding}>
+            <div>
+                <Table
+                    columns={columns}
+                    dataSource={data}
+                    rowKey='id'
+                />
+                <Button
+                    className="departmentButton"
+                    onClick={() => setOpenDepartmentModal(true)}
+                >
+                    إضافة قسم
+                </Button>
+                <DeleteModal
+                    open={openDeleteModal}
+                    handleOk={deleteDepartment}
+                    handleCancel={closeDeleteModal}
+                />
+                <DepartmentModal
+                    open={openDepartmentModal}
+                    handleCancel={closeDepartmentModal}
+                    department={selectedDepartment}
+                    form={form}
+                    onFinish={onFinish}
+                />
+            </div>
+        </Spinner>
     );
 }
 
