@@ -18,21 +18,24 @@ const departmentsReducer = (state = initialState, action) => {
         case actionTypes.DELETE_DEPARTMENT:
             return { ...state, loading: true, error: null };
         case actionTypes.DELETE_DEPARTMENT_SUCCESS:
-        // return { ...state, loading: false, departments: action.payload.departments };
+            const departmentsAfterDelete = state.departments.filter((dep) => dep.dep_id !== action.payload.department.dep_id);
+            return { ...state, loading: false, departments: departmentsAfterDelete };
         case actionTypes.DELETE_DEPARTMENT_FAILED:
             return { ...state, loading: false, error: action.payload.error };
 
         case actionTypes.UPDATE_DEPARTMENT:
             return { ...state, loading: true, error: null };
         case actionTypes.UPDATE_DEPARTMENT_SUCCESS:
-        // return { ...state, loading: false, departments: action.payload.departments };
+            const departmentsAfterUpdate = state.departments.map((dep) => dep.dep_id !== action.payload.department.dep_id ? dep : action.payload.department);
+            return { ...state, loading: false, departments: departmentsAfterUpdate };
         case actionTypes.UPDATE_DEPARTMENT_FAILED:
             return { ...state, loading: false, error: action.payload.error };
 
         case actionTypes.CREATE_DEPARTMENT:
             return { ...state, loading: true, error: null };
         case actionTypes.CREATE_DEPARTMENT_SUCCESS:
-        // return { ...state, loading: false, departments: action.payload.departments };
+            const departmentsAfterCreate = state.departments.concat(action.payload.department);
+            return { ...state, loading: false, departments: departmentsAfterCreate };
         case actionTypes.CREATE_DEPARTMENT_FAILED:
             return { ...state, loading: false, error: action.payload.error };
 

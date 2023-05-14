@@ -4,19 +4,19 @@ import * as actions from './actions';
 import AxiosInstance from "../utils/axiosInstance";
 
 const getDepartments = (payload) => {
-    return AxiosInstance().get('endPoint', payload);
+    return AxiosInstance().get('departments', payload);
 }
 
 const deleteDepartment = (payload) => {
-    return AxiosInstance().delete('endPoint', payload);
+    return AxiosInstance().delete(`departments/${payload.id}`, payload);
 }
 
 const updateDepartment = (payload) => {
-    return AxiosInstance().put('endPoint', payload);
+    return AxiosInstance().put(`departments/${payload.id}`, payload);
 }
 
 const createDepartment = (payload) => {
-    return AxiosInstance().post('endPoint', payload);
+    return AxiosInstance().post('departments', payload);
 }
 
 
@@ -24,7 +24,7 @@ function* getDepartmentsSaga({payload}) {
     try {
         const response = yield call(getDepartments, payload);
         yield put(actions.getDepartmentsSuccess({
-            departments: response.data,
+            departments: response.data.data,
         }));
     }
     catch(error) {
@@ -38,7 +38,7 @@ function* deleteDepartmentSaga({payload}) {
     try {
         const response = yield call(deleteDepartment, payload);
         yield put(actions.deleteDepartmentSuccess({
-            department: response.data,
+            department: response.data.data,
         }));
     }
     catch(error) {
@@ -52,7 +52,7 @@ function* updateDepartmentSaga({payload}) {
     try {
         const response = yield call(updateDepartment, payload);
         yield put(actions.updateDepartmentSuccess({
-            department: response.data,
+            department: response.data.data,
         }));
     }
     catch(error) {
@@ -66,7 +66,7 @@ function* createDepartmentSaga({payload}) {
     try {
         const response = yield call(createDepartment, payload);
         yield put(actions.createDepartmentSuccess({
-            department: response.data,
+            department: response.data.data,
         }));
     }
     catch(error) {

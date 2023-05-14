@@ -10,6 +10,10 @@ import Spinner from "../../../Components/Spinner/Spinner";
 
 function ViewDepartments(props) {
 
+    useEffect(() => {
+        props.getDepartments();
+    }, []);
+
     const [form] = Form.useForm();
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [selectedDepartment, setSelectedDepartment] = useState(null);
@@ -19,15 +23,29 @@ function ViewDepartments(props) {
 
     const deleteDepartment = () => {
         console.log('deleted: ', selectedDepartment);
+        props.deleteDepartment({
+            id: selectedDepartment.dep_id,
+        });
         closeDeleteModal();
     }
 
     const createDepartment = (data) => {
         console.log('created: ', data);
+        props.createDepartment(data);
     }
 
     const updateDepartment = (data) => {
         console.log('updated: ', data);
+        if (data.name === selectedDepartment.name) {
+            delete data.name;
+        }
+        if (data.description === selectedDepartment.description) {
+            delete data.description;
+        }
+        if (Object.keys(data).length !== 0) {
+            data.id = selectedDepartment.dep_id;
+            props.updateDepartment(data);
+        }
     }
 
     const closeDeleteModal = () => {
@@ -92,28 +110,13 @@ function ViewDepartments(props) {
         },
     ];
 
-    const data = [
-        {
-            id: 1,
-            name: 'التدريب',
-            description: 'قسم التدريب الخاص بالمركز',
-            employees_count: 10
-        },
-        {
-            id: 2,
-            name: 'الإعلامي',
-            description: 'قسم التدريب الخاص بالمركز',
-            employees_count: 10
-        }
-    ];
-
     return (
-        <Spinner loading={props.laoding}>
+        <Spinner loading={props.loading}>
             <div>
                 <Table
                     columns={columns}
-                    dataSource={data}
-                    rowKey='id'
+                    dataSource={props.departments}
+                    rowKey='dep_id'
                 />
                 <Button
                     className="departmentButton"
@@ -151,6 +154,21 @@ const mapDispatchToProps = dispatch => {
         getDepartments: (payload) => {
             dispatch(
                 departmentsActions.getDepartments(payload)
+            )
+        },
+        deleteDepartment: (payload) => {
+            dispatch(
+                departmentsActions.deleteDepartment(payload)
+            )
+        },
+        updateDepartment: (payload) => {
+            dispatch(
+                departmentsActions.updateDepartment(payload)
+            )
+        },
+        createDepartment: (payload) => {
+            dispatch(
+                departmentsActions.createDepartment(payload)
             )
         }
     }
