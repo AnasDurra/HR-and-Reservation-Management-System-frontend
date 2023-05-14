@@ -1,14 +1,17 @@
-import { Button, ConfigProvider } from 'antd'
+import { ConfigProvider } from 'antd'
 import './App.css'
 import arEG from 'antd/lib/locale/ar_EG';
 import { connect } from 'react-redux';
 import Layout from './Components/Layout/Layout';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import LogInPage from './Features/Login/LogInPage/Login';
+import LogInPage from './Features/Login/Login';
 import Unauthorized from './Components/Unauthorized/Unauthorized';
 import AccessRoute from './Components/AccessRoute/AccessRoute';
 import Roles from './Components/AccessRoute/Roles';
 import ViewDepartments from './Features/EmployeesProfiles/Departments/ViewDepartments';
+import ViewJobVacancies from './Features/EmployeesProfiles/JobVacancies/ViewJobVacancies';
+import ViewEmployeesPrfiles from './Features/EmployeesProfiles/Apps-Profiles/ViewEmployeesProfiles';
+import ViewJobApplications from './Features/EmployeesProfiles/Apps-Profiles/ViewJobApplications';
 
 function App(props) {
 
@@ -35,6 +38,7 @@ function App(props) {
         <Layout>
           <Routes>
             {/*public Routes*/}
+            <Route path='/' element={<div>Root</div>} />
             <Route path='/login' element={<LogInPage />} />
             <Route path='/unauthorized' element={<Unauthorized />} />
 
@@ -45,11 +49,9 @@ function App(props) {
             {/* </Route> */}
 
             <Route path='/departments' element={<ViewDepartments />} />
-
-            {/*Dummy Routes*/}
-            <Route path='/jobVacancies' element={<div><Button >Users</Button></div>} />
-            <Route path='/jobVacancies/add' element={<div>Add job Vacancy</div>} />
-            <Route path='/employees' element={<div>All Emplyees</div>} />
+            <Route path='/jobVacancies' element={<ViewJobVacancies />} />
+            <Route path='/employeesProfiles' element={<ViewEmployeesPrfiles />} />
+            <Route path='/jobApplications' element={<ViewJobApplications />} />
 
             <Route path='*' element={<Navigate to='/' />} />
 

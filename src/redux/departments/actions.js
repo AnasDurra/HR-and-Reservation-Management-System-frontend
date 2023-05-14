@@ -29,3 +29,33 @@ export const deleteDepartmentFailed = (payload) => ({
     type: actionTypes.DELETE_DEPARTMENT_FAILED,
     payload: payload
 })
+
+export const updateDepartment = (payload) => ({
+    type: actionTypes.UPDATE_DEPARTMENT,
+    payload: payload,
+})
+
+export const updateDepartmentSuccess = (payload) => ({
+    type: actionTypes.UPDATE_DEPARTMENT_SUCCESS,
+    payload: payload
+})
+
+export const updateDepartmentFailed = (payload) => ({
+    type: actionTypes.UPDATE_DEPARTMENT_FAILED,
+    payload: payload
+})
+
+export const createDepartment = (payload) => ({
+    type: actionTypes.CREATE_DEPARTMENT,
+    payload: payload,
+})
+
+export const createDepartmentSuccess = (payload) => ({
+    type: actionTypes.CREATE_DEPARTMENT_SUCCESS,
+    payload: payload
+})
+
+export const createDepartmentFailed = (payload) => ({
+    type: actionTypes.CREATE_DEPARTMENT_FAILED,
+    payload: payload
+})
