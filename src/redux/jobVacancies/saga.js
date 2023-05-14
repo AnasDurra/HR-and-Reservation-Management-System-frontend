@@ -24,7 +24,7 @@ function* getJobVacanciesSaga({payload}) {
     try {
         const response = yield call(getJobVacancies, payload);
         yield put(actions.getJobVacanciesSuccess({
-            jobVacancies: response.data,
+            jobVacancies: response.data.data,
         }));
     }
     catch(error) {
@@ -38,7 +38,7 @@ function* deletejobVacancySaga({payload}) {
     try {
         const response = yield call(deleteJobVacancy, payload);
         yield put(actions.deleteJobVacancySuccess({
-            JobVacancy: response.data,
+            JobVacancy: response.data.data,
         }));
     }
     catch(error) {
@@ -52,7 +52,7 @@ function* updateJobVacancySaga({payload}) {
     try {
         const response = yield call(updateJobVacancy, payload);
         yield put(actions.updateJobVacancySuccess({
-            JobVacancy: response.data,
+            JobVacancy: response.data.data,
         }));
     }
     catch(error) {
@@ -66,7 +66,7 @@ function* createJobVacancySaga({payload}) {
     try {
         const response = yield call(createJobVacancy, payload);
         yield put(actions.createJobVacancySuccess({
-            JobVacancy: response.data,
+            JobVacancy: response.data.data,
         }));
     }
     catch(error) {

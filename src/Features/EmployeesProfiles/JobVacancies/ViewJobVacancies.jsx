@@ -19,20 +19,26 @@ function ViewJobVacancies(props) {
 
 
     useEffect(() => {
-        // props.getJobVacancies();
+        props.getJobVacancies();
     }, []);
 
     const deleteJobVacancy = () => {
         console.log('deleted: ', selectedJobVacancy);
+        props.deleteJobVacancy({
+            id: selectedJobVacancy.id,
+        });
         closeDeleteModal();
     }
 
     const createJobVacancy = (data) => {
         console.log('created: ', data);
+        props.createJobVacancy(data);
     }
 
     const updateJobVacancy = (data) => {
         console.log('updated: ', data);
+        data.id = selectedJobVacancy.id;
+        props.updateJobVacancy(data);
     }
 
     const closeDeleteModal = () => {
@@ -105,29 +111,12 @@ function ViewJobVacancies(props) {
         },
     ];
 
-    const data = [
-        {
-            id: 1,
-            name: 'منسق قسم التدريب',
-            description: 'قسم التدريب الخاص بالمركز',
-            employees_count: 10,
-            department: 'التدريب'
-        },
-        {
-            id: 2,
-            name: 'مساعد مدرب',
-            description: 'قسم التدريب الخاص بالمركز',
-            employees_count: 10,
-            department: 'التدريب'
-        }
-    ];
-
     return (
         <Spinner loading={props.loading}>
             <div>
                 <Table
                     columns={columns}
-                    dataSource={data}
+                    dataSource={props.jobVacancies}
                     rowKey='id'
                 />
                 <Button
