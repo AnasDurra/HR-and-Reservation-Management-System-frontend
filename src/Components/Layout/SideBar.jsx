@@ -7,7 +7,7 @@ function SideBar() {
     return (
         <div className='SideBar'>
             <div style={{ height: '60px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <Typography style={{ color: '#E4D39E', fontSize: '20px' }}>Qiam Center</Typography>
+                <Typography style={{ color: 'rgb(12, 62, 237)', fontSize: '20px' }}>Qiam Center</Typography>
             </div>
             <ul className='SideBarList'>
                 {items.map((item, key) => {

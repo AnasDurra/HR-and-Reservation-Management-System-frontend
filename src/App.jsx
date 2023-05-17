@@ -25,15 +25,12 @@ function App(props) {
         theme={{
           token: {
             fontFamily: 'cairo',
-            colorPrimary: '#E4D39E',
+            colorPrimary: 'rgb(12, 62, 237);',
           },
           components: {
             Button: {
               borderRadius: '12px',
             },
-            Typography: {
-              colorBgBase: 'red'
-            }
           },
         }}
       >
