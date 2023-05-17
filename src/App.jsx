@@ -7,11 +7,13 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import LogInPage from './Features/Login/Login';
 import Unauthorized from './Components/Unauthorized/Unauthorized';
 import AccessRoute from './Components/AccessRoute/AccessRoute';
-import Roles from './Components/AccessRoute/Roles';
+import Permissions from './Components/AccessRoute/Permissions';
 import ViewDepartments from './Features/EmployeesProfiles/Departments/ViewDepartments';
 import ViewJobVacancies from './Features/EmployeesProfiles/JobVacancies/ViewJobVacancies';
 import ViewEmployeesPrfiles from './Features/EmployeesProfiles/Apps-Profiles/ViewEmployeesProfiles';
 import ViewJobApplications from './Features/EmployeesProfiles/Apps-Profiles/ViewJobApplications';
+import ViewRoles from './Features/EmployeesProfiles/Roles/ViewRoles';
+import ChangeEmployeePermissions from './Features/EmployeesProfiles/Roles/ChangeEmployeePermissions';
 
 function App(props) {
 
@@ -44,7 +46,7 @@ function App(props) {
 
 
             {/*Example For Privilaged Routes*/}
-            {/* <Route element={<AccessRoute allowedRoutes={Roles.HR} />}> */}
+            {/* <Route element={<AccessRoute allowedRoutes={Permissions.ADD_DEPARTMENT} />}> */}
             {/*Some Route*/}
             {/* </Route> */}
 
@@ -52,6 +54,8 @@ function App(props) {
             <Route path='/jobVacancies' element={<ViewJobVacancies />} />
             <Route path='/employeesProfiles' element={<ViewEmployeesPrfiles />} />
             <Route path='/jobApplications' element={<ViewJobApplications />} />
+            <Route path='/roles' element={<ViewRoles />} />
+            <Route path='/changeEmployeePermissions' element={<ChangeEmployeePermissions />} />
 
             <Route path='*' element={<Navigate to='/' />} />
 
