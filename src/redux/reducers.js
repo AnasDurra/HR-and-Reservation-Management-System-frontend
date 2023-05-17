@@ -4,9 +4,9 @@ import departmentsReducer from "./departments/reducer";
 import jobVacanciesReducer from "./jobVacancies/reducer";
 import rolesReducer from "./roles/reducer";
 
-export default combineReducers({
+export default {
     userReducer: userReducer,
     departmentsReducer: departmentsReducer,
     jobVacanciesReducer: jobVacanciesReducer,
     rolesReducer: rolesReducer,
-});
+};
