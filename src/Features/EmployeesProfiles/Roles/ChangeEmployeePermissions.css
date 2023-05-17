@@ -1,0 +1,9 @@
+.changeEmployeeForm {
+    width: 50%;
+}
+
+@media screen and (max-width: 1200px) {
+    .changeEmployeeForm {
+        width: 60%;
+    }
+}

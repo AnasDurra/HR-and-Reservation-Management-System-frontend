@@ -1,4 +1,4 @@
-import { DashboardOutlined, ApartmentOutlined } from "@ant-design/icons";
+import { DashboardOutlined, ApartmentOutlined, LockOutlined } from "@ant-design/icons";
 
 export const items = [
     {
@@ -11,4 +11,18 @@ export const items = [
         icon: <DashboardOutlined />,
         path: '/jobVacancies',
     },
+    {
+        text: 'المسميات الوظيفية',
+        icon: <LockOutlined />,
+        items: [
+            {
+                text: 'المسميات الوظيفية',
+                path: '/roles',
+            },
+            {
+                text: 'تعديل صلاحيات موظف',
+                path: '/changeEmployeePermissions',
+            },
+        ],
+    }
 ];

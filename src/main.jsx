@@ -5,18 +5,18 @@ import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import createSagaMiddleware from '@redux-saga/core';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware, compose } from 'redux';
 import rootSaga from './redux/sagas';
 import reducers from './redux/reducers';
+import { configureStore } from '@reduxjs/toolkit';
 
 const sagaMiddleware = createSagaMiddleware();
 
 const middleware = [sagaMiddleware];
 
-const store = compose(
-  applyMiddleware(...middleware),
-  // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-)(createStore)(reducers);
+const store = configureStore({
+  reducer: reducers,
+  middleware: middleware
+});
 
 sagaMiddleware.run(rootSaga);
 
