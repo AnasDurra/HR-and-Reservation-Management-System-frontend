@@ -60,13 +60,7 @@ const AdditionalForm = (props) => {
   }, [props.validateState, props.numDependents]);
 
   return (
-    <div
-      style={{
-        width: "40%",
-        display: props.show === false ? "none" : "flex",
-        flexDirection: "column",
-      }}
-    >
+    <div className={`form-container ${props.show ? "" : "hidden"}`}>
       <Form
         form={props.form}
         layout="horizontal"

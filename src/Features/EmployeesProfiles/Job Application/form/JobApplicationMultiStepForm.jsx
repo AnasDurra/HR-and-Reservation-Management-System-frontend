@@ -10,7 +10,7 @@ import AdditionalForm from "./sub-forms/AdditionalForm";
 import { Api } from "./utils/debug";
 import { formatRequestBeforeSend } from "./utils/helpers";
 
-const MultiStepForm = () => {
+const JobApplicationMultiStepForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const [generalInfoForm] = Form.useForm();
@@ -314,4 +314,4 @@ const MultiStepForm = () => {
   );
 };
 
-export default MultiStepForm;
+export default JobApplicationMultiStepForm;

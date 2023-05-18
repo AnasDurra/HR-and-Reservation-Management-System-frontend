@@ -28,10 +28,10 @@ import {
   personalCardRules,
   personalDataRules,
 } from "../validationRules";
-import { getFile } from "./utils/helpers";
+import { getFile } from "../utils/helpers";
 import moment from "moment";
 import dayjs from "dayjs";
-import "./style.css";
+import "../style.css";
 
 function GeneralInfoForm(props) {
   const [errorFields, setErrorFields] = useState([]);
