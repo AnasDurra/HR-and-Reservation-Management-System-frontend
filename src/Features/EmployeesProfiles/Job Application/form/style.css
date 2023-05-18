@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  justify-content: space-evenly;
+  flex-grow: 1;
+}
+.left-float {
+  flex-wrap: wrap;
+}
+.divider {
+  grid-column: 1 / span 2;
+}
+.date-element {
+  display: flex;
+  flex-direction: column;
+}
+.form-container {
+  display: flex;
+  width: 40%;
+  flex-direction: column;
+}
+.hidden {
+  display: none;
+}
