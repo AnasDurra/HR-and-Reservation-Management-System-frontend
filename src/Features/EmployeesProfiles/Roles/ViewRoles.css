@@ -1,0 +1,21 @@
+.roleButton {
+    margin-top: 30px;
+}
+
+#actions {
+    display: flex;
+    justify-content: center;
+}
+
+#actions > * {
+    margin: 0px 5px;
+}
+
+.roleModal {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.roleModal > button {
+    margin: 0px 8px 0px 0px;
+}

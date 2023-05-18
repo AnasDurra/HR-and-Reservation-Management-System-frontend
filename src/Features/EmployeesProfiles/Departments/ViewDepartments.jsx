@@ -6,8 +6,13 @@ import { useEffect, useState } from "react";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import DeleteModal from "../../../Components/DeleteModal/DeleteModal";
 import DepartmentModal from "./DepartmentModal";
+import Spinner from "../../../Components/Spinner/Spinner";
 
 function ViewDepartments(props) {
+
+    useEffect(() => {
+        props.getDepartments();
+    }, []);
 
     const [form] = Form.useForm();
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -15,20 +20,32 @@ function ViewDepartments(props) {
 
     const [openDepartmentModal, setOpenDepartmentModal] = useState(false);
 
-    useEffect(() => {
-        // props.getDepartments();
-    }, []);
 
     const deleteDepartment = () => {
         console.log('deleted: ', selectedDepartment);
+        props.deleteDepartment({
+            id: selectedDepartment.dep_id,
+        });
+        closeDeleteModal();
     }
 
     const createDepartment = (data) => {
         console.log('created: ', data);
+        props.createDepartment(data);
     }
 
     const updateDepartment = (data) => {
         console.log('updated: ', data);
+        if (data.name === selectedDepartment.name) {
+            delete data.name;
+        }
+        if (data.description === selectedDepartment.description) {
+            delete data.description;
+        }
+        if (Object.keys(data).length !== 0) {
+            data.id = selectedDepartment.dep_id;
+            props.updateDepartment(data);
+        }
     }
 
     const closeDeleteModal = () => {
@@ -48,11 +65,12 @@ function ViewDepartments(props) {
         } else {
             createDepartment(data);
         }
+        closeDepartmentModal();
     }
 
     const columns = [
         {
-            title: 'القسم',
+            title: 'الاسم',
             dataIndex: 'name',
             key: 'name',
         },
@@ -92,47 +110,34 @@ function ViewDepartments(props) {
         },
     ];
 
-    const data = [
-        {
-            id: 1,
-            name: 'التدريب',
-            description: 'قسم التدريب الخاص بالمركز',
-            employees_count: 10
-        },
-        {
-            id: 2,
-            name: 'الإعلامي',
-            description: 'قسم التدريب الخاص بالمركز',
-            employees_count: 10
-        }
-    ];
-
     return (
-        <div>
-            <Table
-                columns={columns}
-                dataSource={data}
-                rowKey='id'
-            />
-            <Button
-                className="departmentButton"
-                onClick={() => setOpenDepartmentModal(true)}
-            >
-                إضافة قسم
-            </Button>
-            <DeleteModal
-                open={openDeleteModal}
-                handleOk={deleteDepartment}
-                handleCancel={closeDeleteModal}
-            />
-            <DepartmentModal
-                open={openDepartmentModal}
-                handleCancel={closeDepartmentModal}
-                department={selectedDepartment}
-                form={form}
-                onFinish={onFinish}
-            />
-        </div>
+        <Spinner loading={props.loading}>
+            <div>
+                <Table
+                    columns={columns}
+                    dataSource={props.departments}
+                    rowKey='dep_id'
+                />
+                <Button
+                    className="departmentButton"
+                    onClick={() => setOpenDepartmentModal(true)}
+                >
+                    إضافة قسم
+                </Button>
+                <DeleteModal
+                    open={openDeleteModal}
+                    handleOk={deleteDepartment}
+                    handleCancel={closeDeleteModal}
+                />
+                <DepartmentModal
+                    open={openDepartmentModal}
+                    handleCancel={closeDepartmentModal}
+                    department={selectedDepartment}
+                    form={form}
+                    onFinish={onFinish}
+                />
+            </div>
+        </Spinner>
     );
 }
 
@@ -149,6 +154,21 @@ const mapDispatchToProps = dispatch => {
         getDepartments: (payload) => {
             dispatch(
                 departmentsActions.getDepartments(payload)
+            )
+        },
+        deleteDepartment: (payload) => {
+            dispatch(
+                departmentsActions.deleteDepartment(payload)
+            )
+        },
+        updateDepartment: (payload) => {
+            dispatch(
+                departmentsActions.updateDepartment(payload)
+            )
+        },
+        createDepartment: (payload) => {
+            dispatch(
+                departmentsActions.createDepartment(payload)
             )
         }
     }
