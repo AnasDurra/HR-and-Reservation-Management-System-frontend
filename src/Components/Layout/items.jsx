@@ -31,8 +31,13 @@ export const items = [
         ],
     },
     {
-      text: "طلب توظيف",
+      text: "طلبات التوظيف",
       icon: <FileDoneOutlined />,
-      path: "/jobApplications/add",
+      path: "/jobApplications",
     },
+    {
+        text:"حساب الموظف",
+        icon: <FileDoneOutlined />,
+        path: "/employeeProfile",
+      },
 ];

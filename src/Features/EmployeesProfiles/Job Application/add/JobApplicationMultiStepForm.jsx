@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Steps, Button, message, Form, FloatButton, Progress } from "antd";
 import GeneralInfoForm from "./sub-forms/GeneralInfoForm";
 import "./style.css";
@@ -7,10 +7,17 @@ import DrivingLicenseForm from "./sub-forms/DrivingLicenseForm";
 import EducationForm from "./sub-forms/EducationForm";
 import SkillsForm from "./sub-forms/SkillsForm";
 import AdditionalForm from "./sub-forms/AdditionalForm";
-import { Api } from "./utils/debug";
-import { formatRequestBeforeSend } from "./utils/helpers";
+import { formatRequestBeforeSend } from "../utils/helpers";
+import { useDispatch, useSelector } from "react-redux";
+import { createJobApplication } from "../../../../redux/Features/Employee Profile/Job application/slice";
+import { dummy } from "./dummy";
+import { useNavigate } from "react-router-dom";
 
 const JobApplicationMultiStepForm = () => {
+  const jobApplicationsState = useSelector((state) => state.jobApplications);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isMountedRef = useRef(false);
   const [currentStep, setCurrentStep] = useState(0);
 
   const [generalInfoForm] = Form.useForm();
@@ -60,12 +67,15 @@ const JobApplicationMultiStepForm = () => {
       skillsForm.getFieldsValue(),
       additionalForm.getFieldsValue()
     );
-    formData = formatRequestBeforeSend(formData);
-    const options = {
+     formData = formatRequestBeforeSend(formData);
+
+    dispatch(createJobApplication(formData));
+
+    /*   const options = {
       method: "POST",
       headers,
       mode: "cors",
-      body: JSON.stringify(formData),
+      body: formData,
     };
     fetch(Api, options)
       .then(() => {
@@ -79,7 +89,7 @@ const JobApplicationMultiStepForm = () => {
       })
       .catch(() => {
         message.error();
-      });
+      }); */
   };
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -143,6 +153,44 @@ const JobApplicationMultiStepForm = () => {
         break;
     }
   }, [currentStep]);
+
+  useEffect(() => {
+    console.log(isMountedRef.current);
+    if (isMountedRef.current) {
+      if (jobApplicationsState.loading) {
+        message.open({
+          type: "loading",
+          content: "جار الحفظ  ",
+          style: {
+            marginTop: "5vh",
+          },
+          duration: 0,
+        });
+      } else {
+        message.destroy();
+        if (jobApplicationsState.error) {
+          message.open({
+            type: "error",
+            content: "فشل حفظ الطلب ، أعد المحاولة ",
+            style: {
+              marginTop: "5vh",
+            },
+          });
+        } else {
+          message.open({
+            type: "success",
+            content: "تم حفظ الطلب",
+            style: {
+              marginTop: "5vh",
+            },
+          });
+          navigate(-1);
+        }
+      }
+    } else {
+      isMountedRef.current = true;
+    }
+  }, [jobApplicationsState.loading]);
 
   return (
     <>
@@ -273,7 +321,7 @@ const JobApplicationMultiStepForm = () => {
           />
           <Button
             disabled={
-              true &&
+              false &&
               (!generalInfoFormValidateState ||
                 !employmentFormValidateState ||
                 !drivingLicenseFormValidateState ||
@@ -285,22 +333,19 @@ const JobApplicationMultiStepForm = () => {
                 .validateFields()
                 .then((_) => {
                   setAdditionalFormValidateState(true);
+                  try {
+                    handleSubmit();
+                  } catch (error) {
+                    // handle errors that occur in handleSubmit separately
+                    console.log(
+                      "An error occurred while submitting the form:",
+                      error
+                    );
+                  }
                 })
                 .catch((_) => {
                   setAdditionalFormValidateState(false);
                 });
-              if (additionalFormValidateState) {
-                handleSubmit();
-              } else {
-                message.open({
-                  type: "error",
-                  content:
-                    "يجب تعبئة حقول المعلومات الإضافية المميزة بنحمة قبل الحفظ !",
-                  style: {
-                    marginTop: "5vh",
-                  },
-                });
-              }
             }}
             style={{ width: "100%" }}
             type="primary"

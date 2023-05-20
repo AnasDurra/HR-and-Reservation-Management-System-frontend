@@ -1,0 +1,16 @@
+.jobApplicationsButton {
+  margin-top: 30px;
+}
+
+#actions {
+  display: flex;
+  justify-content: center;
+}
+
+#actions > * {
+  margin: 0px 5px;
+}
+
+.table-container {
+    height: min-content;
+}

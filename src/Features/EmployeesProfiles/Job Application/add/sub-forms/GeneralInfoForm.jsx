@@ -27,8 +27,8 @@ import {
   passportRules,
   personalCardRules,
   personalDataRules,
-} from "../validationRules";
-import { getFile } from "../utils/helpers";
+} from "../../validationRules";
+import { getFile } from "../../utils/helpers";
 import moment from "moment";
 import dayjs from "dayjs";
 import "../style.css";
@@ -341,8 +341,8 @@ function GeneralInfoForm(props) {
               rules={jobDataRules.isEmployed}
             >
               <Radio.Group>
-                <Radio value={true}>نعم</Radio>
-                <Radio value={false}>لا</Radio>
+                <Radio value={1}>نعم</Radio>
+                <Radio value={0}>لا</Radio>
               </Radio.Group>
             </Form.Item>
           </Col>

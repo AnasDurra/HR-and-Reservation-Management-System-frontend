@@ -18,7 +18,7 @@ import {
   PlusOutlined,
   MinusCircleOutlined,
 } from "@ant-design/icons/lib/icons";
-import { convictionsRules, referencesRules } from "../validationRules";
+import { convictionsRules, referencesRules } from "../../validationRules";
 
 const { TextArea } = Input;
 
@@ -219,6 +219,7 @@ const AdditionalForm = (props) => {
                 value={props.isReference}
                 onChange={(e) => {
                   props.setIsReference(e.target.value);
+                  
                 }}
               >
                 <Radio value={true}> نعم</Radio>

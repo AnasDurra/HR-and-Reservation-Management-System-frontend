@@ -18,7 +18,7 @@ import {
   MinusCircleOutlined,
 } from "@ant-design/icons/lib/icons";
 import TextArea from "antd/es/input/TextArea";
-import { previousEmploymentRecordRules } from "../validationRules";
+import { previousEmploymentRecordRules } from "../../validationRules";
 
 const EmploymentForm = (props) => {
   const [errorFields, setErrorFields] = useState([]);

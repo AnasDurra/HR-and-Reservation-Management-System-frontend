@@ -19,14 +19,13 @@ import {
   PlusOutlined,
   MinusCircleOutlined,
 } from "@ant-design/icons/lib/icons";
-import { predefinedSkill } from "../constants";
-import { computerSkillsRules, languagesRules } from "../validationRules";
+import { predefinedSkill } from "../../constants";
+import { computerSkillsRules, languagesRules } from "../../validationRules";
 
 const SkillsForm = (props) => {
   const [errorFields, setErrorFields] = useState([]);
 
   const validateForm = () => {
-    console.log(props.form.getFieldsValue());
     if (props.validateState !== undefined) {
       props.form
         .validateFields()
@@ -82,7 +81,7 @@ const SkillsForm = (props) => {
               name={["computer_skills", 0, "level"]}
               rules={computerSkillsRules.level}
             >
-              <Select>
+              <Select onChange={debouncedValidateForm}>
                 <Select.Option value={3}>ممتاز</Select.Option>
                 <Select.Option value={2}>جيد</Select.Option>
                 <Select.Option value={1}>مقبول</Select.Option>
@@ -102,7 +101,7 @@ const SkillsForm = (props) => {
               name={["computer_skills", 1, "level"]}
               rules={computerSkillsRules.level}
             >
-              <Select>
+              <Select onChange={debouncedValidateForm}>
                 <Select.Option value={3}>ممتاز</Select.Option>
                 <Select.Option value={2}>جيد</Select.Option>
                 <Select.Option value={1}>مقبول</Select.Option>
@@ -124,7 +123,7 @@ const SkillsForm = (props) => {
               name={["computer_skills", 2, "level"]}
               rules={computerSkillsRules.level}
             >
-              <Select>
+              <Select onChange={debouncedValidateForm}>
                 <Select.Option value={3}>ممتاز</Select.Option>
                 <Select.Option value={2}>جيد</Select.Option>
                 <Select.Option value={1}>مقبول</Select.Option>
@@ -144,7 +143,7 @@ const SkillsForm = (props) => {
               name={["computer_skills", 3, "level"]}
               rules={computerSkillsRules.level}
             >
-              <Select>
+              <Select onChange={debouncedValidateForm}>
                 <Select.Option value={3}>ممتاز</Select.Option>
                 <Select.Option value={2}>جيد</Select.Option>
                 <Select.Option value={1}>مقبول</Select.Option>
@@ -166,7 +165,7 @@ const SkillsForm = (props) => {
               name={["computer_skills", 4, "level"]}
               rules={computerSkillsRules.level}
             >
-              <Select>
+              <Select onChange={debouncedValidateForm}>
                 <Select.Option value={3}>ممتاز</Select.Option>
                 <Select.Option value={2}>جيد</Select.Option>
                 <Select.Option value={1}>مقبول</Select.Option>
@@ -186,7 +185,7 @@ const SkillsForm = (props) => {
               name={["computer_skills", 5, "level"]}
               rules={computerSkillsRules.level}
             >
-              <Select>
+              <Select onChange={debouncedValidateForm}>
                 <Select.Option value={3}>ممتاز</Select.Option>
                 <Select.Option value={2}>جيد</Select.Option>
                 <Select.Option value={1}>مقبول</Select.Option>
@@ -211,7 +210,7 @@ const SkillsForm = (props) => {
               name={["languages", 0, "reading"]}
               rules={languagesRules.reading}
             >
-              <Select placeholder="القراءة">
+              <Select placeholder="القراءة" onChange={debouncedValidateForm}>
                 <Select.Option value={3}>ممتاز</Select.Option>
                 <Select.Option value={2}>جيد</Select.Option>
                 <Select.Option value={1}>مقبول</Select.Option>
@@ -223,7 +222,7 @@ const SkillsForm = (props) => {
               name={["languages", 0, "writing"]}
               rules={languagesRules.writing}
             >
-              <Select placeholder="الكتابة">
+              <Select placeholder="الكتابة" onChange={debouncedValidateForm}>
                 <Select.Option value={3}>ممتاز</Select.Option>
                 <Select.Option value={2}>جيد</Select.Option>
                 <Select.Option value={1}>مقبول</Select.Option>
@@ -235,7 +234,7 @@ const SkillsForm = (props) => {
               name={["languages", 0, "speaking"]}
               rules={languagesRules.speaking}
             >
-              <Select placeholder="التحدّث">
+              <Select placeholder="التحدّث" onChange={debouncedValidateForm}>
                 <Select.Option value={3}>ممتاز</Select.Option>
                 <Select.Option value={2}>جيد</Select.Option>
                 <Select.Option value={1}>مقبول</Select.Option>
@@ -257,7 +256,7 @@ const SkillsForm = (props) => {
               name={["languages", 1, "reading"]}
               rules={languagesRules.reading}
             >
-              <Select placeholder="القراءة">
+              <Select placeholder="القراءة" onChange={debouncedValidateForm}>
                 <Select.Option value={3}>ممتاز</Select.Option>
                 <Select.Option value={2}>جيد</Select.Option>
                 <Select.Option value={1}>مقبول</Select.Option>
@@ -269,7 +268,7 @@ const SkillsForm = (props) => {
               name={["languages", 1, "writing"]}
               rules={languagesRules.writing}
             >
-              <Select placeholder="الكتابة">
+              <Select placeholder="الكتابة" onChange={debouncedValidateForm}>
                 <Select.Option value={3}>ممتاز</Select.Option>
                 <Select.Option value={2}>جيد</Select.Option>
                 <Select.Option value={1}>مقبول</Select.Option>
@@ -281,7 +280,7 @@ const SkillsForm = (props) => {
               name={["languages", 1, "speaking"]}
               rules={languagesRules.speaking}
             >
-              <Select placeholder="التحدّث">
+              <Select placeholder="التحدّث" onChange={debouncedValidateForm}>
                 <Select.Option value={3}>ممتاز</Select.Option>
                 <Select.Option value={2}>جيد</Select.Option>
                 <Select.Option value={1}>مقبول</Select.Option>
@@ -326,7 +325,7 @@ const SkillsForm = (props) => {
                             name={[name, "reading"]}
                             rules={languagesRules.reading}
                           >
-                            <Select placeholder="القراءة">
+                            <Select placeholder="القراءة" onChange={debouncedValidateForm}>
                               <Select.Option value={3}>ممتاز</Select.Option>
                               <Select.Option value={2}>جيد</Select.Option>
                               <Select.Option value={1}>مقبول</Select.Option>
@@ -339,7 +338,7 @@ const SkillsForm = (props) => {
                             name={[name, "writing"]}
                             rules={languagesRules.writing}
                           >
-                            <Select placeholder="الكتابة">
+                            <Select placeholder="الكتابة" onChange={debouncedValidateForm}>
                               <Select.Option value={3}>ممتاز</Select.Option>
                               <Select.Option value={2}>جيد</Select.Option>
                               <Select.Option value={1}>مقبول</Select.Option>
@@ -352,7 +351,7 @@ const SkillsForm = (props) => {
                             name={[name, "speaking"]}
                             rules={languagesRules.speaking}
                           >
-                            <Select placeholder="التحدّث">
+                            <Select placeholder="التحدّث" onChange={debouncedValidateForm}>
                               <Select.Option value={3}>ممتاز</Select.Option>
                               <Select.Option value={2}>جيد</Select.Option>
                               <Select.Option value={1}>مقبول</Select.Option>

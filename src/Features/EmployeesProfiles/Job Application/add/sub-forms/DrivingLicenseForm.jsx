@@ -17,7 +17,7 @@ import {
   FrownOutlined,
   MinusCircleOutlined,
 } from "@ant-design/icons/lib/icons";
-import { drivingLicenseRules } from "../validationRules";
+import { drivingLicenseRules } from "../../validationRules";
 import moment from "moment";
 
 const DrivingLicenseForm = (props) => {

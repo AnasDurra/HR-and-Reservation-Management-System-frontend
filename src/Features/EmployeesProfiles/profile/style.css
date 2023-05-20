@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+.left-float {
+  flex-wrap: wrap;
+}
+
+.info-container {
+  display: flex;
+  width: 80%;
+  flex-direction: column;
+}
+.segment-container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  margin-top: 1rem;
+}
+.hidden {
+  display: none;
+}

@@ -25,8 +25,8 @@ import {
   certificatesRules,
   educationRules,
   trainingCoursesRules,
-} from "../validationRules";
-import { getFile } from "../utils/helpers";
+} from "../../validationRules";
+import { getFile } from "../../utils/helpers";
 
 const EducationForm = (props) => {
   const [errorFields, setErrorFields] = useState([]);
@@ -76,7 +76,7 @@ const EducationForm = (props) => {
       >
         <Form.Item
           name={["education", 0, "education_level_id"]}
-          initialValue="1"
+          initialValue={1}
           noStyle
         >
           <Input type="hidden" />
@@ -114,7 +114,7 @@ const EducationForm = (props) => {
 
         <Form.Item
           name={["education", 1, "education_level_id"]}
-          initialValue="2"
+          initialValue={2}
           noStyle
         >
           <Input type="hidden" />
@@ -163,7 +163,7 @@ const EducationForm = (props) => {
 
         <Form.Item
           name={["education", 2, "education_level_id"]}
-          initialValue="3"
+          initialValue={3}
           noStyle
         >
           <Input type="hidden" />
@@ -222,7 +222,7 @@ const EducationForm = (props) => {
 
         <Form.Item
           name={["education", 3, "education_level_id"]}
-          initialValue="4"
+          initialValue={4}
           noStyle
         >
           <Input type="hidden" />
@@ -280,7 +280,7 @@ const EducationForm = (props) => {
 
         <Form.Item
           name={["education", 4, "education_level_id"]}
-          initialValue="5"
+          initialValue={5}
           noStyle
         >
           <Input type="hidden" />
@@ -338,7 +338,7 @@ const EducationForm = (props) => {
 
         <Form.Item
           name={["education", 5, "education_level_id"]}
-          initialValue="6"
+          initialValue={6}
           noStyle
         >
           <Input type="hidden" />
