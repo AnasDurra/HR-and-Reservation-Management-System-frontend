@@ -26,7 +26,6 @@ function* createJobApplicationSaga({ payload }) {
       })
     );
   } catch (error) {
-    console.log(error);
     yield put(
       createJobApplicationFail({
         error: error,

@@ -54,7 +54,6 @@ function GeneralInfo(props) {
   const [errorFields, setErrorFields] = useState([]);
   const [fileList, setFileList] = useState([]);
   const forceUpdate = useForceUpdate();
-  console.log(props.show);
   return (
     <div className={`segment-container ${props.show ? "" : "hidden"}`}>
       <Row gutter={16}>

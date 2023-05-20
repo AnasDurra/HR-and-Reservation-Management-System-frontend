@@ -59,7 +59,6 @@ function ViewJobApplications(props) {
             <Button
               type="link"
               onClick={() => {
-                console.log(record);
               }}
             >
               استعراض

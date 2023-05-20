@@ -18,6 +18,7 @@ const JobApplicationMultiStepForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isMountedRef = useRef(false);
+
   const [currentStep, setCurrentStep] = useState(0);
 
   const [generalInfoForm] = Form.useForm();
@@ -67,29 +68,9 @@ const JobApplicationMultiStepForm = () => {
       skillsForm.getFieldsValue(),
       additionalForm.getFieldsValue()
     );
-     formData = formatRequestBeforeSend(formData);
+    formData = formatRequestBeforeSend(formData);
 
     dispatch(createJobApplication(formData));
-
-    /*   const options = {
-      method: "POST",
-      headers,
-      mode: "cors",
-      body: formData,
-    };
-    fetch(Api, options)
-      .then(() => {
-        message.open({
-          type: "success",
-          content: "تم ارسال طلب الإضافة! ",
-          style: {
-            marginTop: "5vh",
-          },
-        });
-      })
-      .catch(() => {
-        message.error();
-      }); */
   };
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -155,7 +136,6 @@ const JobApplicationMultiStepForm = () => {
   }, [currentStep]);
 
   useEffect(() => {
-    console.log(isMountedRef.current);
     if (isMountedRef.current) {
       if (jobApplicationsState.loading) {
         message.open({
@@ -321,7 +301,7 @@ const JobApplicationMultiStepForm = () => {
           />
           <Button
             disabled={
-              false &&
+              true &&
               (!generalInfoFormValidateState ||
                 !employmentFormValidateState ||
                 !drivingLicenseFormValidateState ||
@@ -337,7 +317,7 @@ const JobApplicationMultiStepForm = () => {
                     handleSubmit();
                   } catch (error) {
                     // handle errors that occur in handleSubmit separately
-                    console.log(
+                    console.error(
                       "An error occurred while submitting the form:",
                       error
                     );

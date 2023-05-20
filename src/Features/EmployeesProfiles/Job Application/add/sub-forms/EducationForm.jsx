@@ -580,7 +580,6 @@ const EducationForm = (props) => {
                                 const isAllowed = allowedTypes.some((type) =>
                                   fileType.endsWith(type)
                                 );
-                                console.log(isAllowed);
                                 if (!isAllowed) {
                                   message.open({
                                     type: "error",
