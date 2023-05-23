@@ -4,7 +4,7 @@ import * as actions from './actions';
 import AxiosInstance from "../utils/axiosInstance";
 
 const getRoles = (payload) => {
-    return AxiosInstance().get('roles', payload);
+    return AxiosInstance().get('job-titles', payload);
 }
 
 const getPermissions = (payload) => {
@@ -12,7 +12,8 @@ const getPermissions = (payload) => {
 }
 
 const deleteRole = (payload) => {
-    return AxiosInstance().delete(`roles/${payload.id}`, payload);
+    console.log(payload);
+    return AxiosInstance().delete(`job-titles/${payload.id}`, payload);
 }
 
 const updateRole = (payload) => {

@@ -1,18 +1,20 @@
 import { Button, Form, Input, Modal, Select } from "antd";
+import { useEffect } from "react";
 
-export default function RoleModal({ open, onFinish, handleCancel, role, form }) {
+export default function RoleModal({ open, onFinish, handleCancel, role, form, permissions, getPermissions }) {
 
-    const permissions = [
-        {
-            id: 1,
-            name: 'إدارة الاقسام',
-        },
-        {
-            id: 2,
-            name: 'إدارة طلبات التوظيف',
-        },
-    ];
+    useEffect(() => {
+        // getPermissions();
+    }, []);
+
     const { Option } = Select;
+
+    const localPermissions = [
+        {
+            name: "إدارة الاقسام",
+            perm_id: 1
+        }
+    ];
 
 
     return (
@@ -64,7 +66,7 @@ export default function RoleModal({ open, onFinish, handleCancel, role, form }) 
 
                         }
                     >
-                        {permissions.map((p) => <Option value={p.id} key={p.id}>{p.name}</Option>)}
+                        {localPermissions.map((p) => <Option value={p.perm_id} key={p.perm_id}>{p.name}</Option>)}
                     </Select>
                 </Form.Item>
 

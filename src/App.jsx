@@ -12,8 +12,8 @@ import ViewDepartments from './Features/EmployeesProfiles/Departments/ViewDepart
 import ViewJobVacancies from './Features/EmployeesProfiles/JobVacancies/ViewJobVacancies';
 import ViewEmployeesPrfiles from './Features/EmployeesProfiles/Apps-Profiles/ViewEmployeesProfiles';
 import ViewJobApplications from './Features/EmployeesProfiles/Apps-Profiles/ViewJobApplications';
-import ViewRoles from './Features/EmployeesProfiles/Roles/ViewRoles';
-import ChangeEmployeePermissions from './Features/EmployeesProfiles/Roles/ChangeEmployeePermissions';
+import ViewRoles from './Features/Roles/ViewRoles';
+import ChangeEmployeePermissions from './Features/Roles/ChangeEmployeePermissions';
 
 function App(props) {
 

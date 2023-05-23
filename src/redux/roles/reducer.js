@@ -26,8 +26,8 @@ const rolesReducer = (state = initialState, action) => {
         case actionTypes.DELETE_ROLE:
             return { ...state, loading: true, error: null };
         case actionTypes.DELETE_ROLE_SUCCESS:
-            const rolesAfterDelete = state.roles.filter((role) => role.role_id !== action.payload.role.role_id);
-            return { ...state, loading: false, departments: rolesAfterDelete };
+            const rolesAfterDelete = state.roles.filter((role) => role.job_title_id !== action.payload.role.job_title_id);
+            return { ...state, loading: false, roles: rolesAfterDelete };
         case actionTypes.DELETE_ROLE_FAILED:
             return { ...state, loading: false, error: action.payload.error };
 
@@ -35,7 +35,7 @@ const rolesReducer = (state = initialState, action) => {
             return { ...state, loading: true, error: null };
         case actionTypes.UPDATE_ROLE_SUCCESS:
             const rolesAfterUpdate = state.roles.map((role) => role.dep_id !== action.payload.role.role_id ? role : action.payload.role);
-            return { ...state, loading: false, departments: rolesAfterUpdate };
+            return { ...state, loading: false, roles: rolesAfterUpdate };
         case actionTypes.UPDATE_ROLE_FAILED:
             return { ...state, loading: false, error: action.payload.error };
 
@@ -43,7 +43,7 @@ const rolesReducer = (state = initialState, action) => {
             return { ...state, loading: true, error: null };
         case actionTypes.CREATE_ROLE_SUCCESS:
             const rolesAfterCreate = state.roles.concat(action.payload.role);
-            return { ...state, loading: false, departments: rolesAfterCreate };
+            return { ...state, loading: false, roles: rolesAfterCreate };
         case actionTypes.CREATE_ROLE_FAILED:
             return { ...state, loading: false, error: action.payload.error };
 

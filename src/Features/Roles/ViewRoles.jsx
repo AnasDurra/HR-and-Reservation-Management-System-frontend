@@ -1,28 +1,18 @@
 import { Button, Form, Table, Tag } from "antd";
-import DeleteModal from "../../../Components/DeleteModal/DeleteModal";
+import DeleteModal from "../../Components/DeleteModal/DeleteModal";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";
-import Spinner from "../../../Components/Spinner/Spinner";
+import Spinner from "../../Components/Spinner/Spinner";
 import './ViewRoles.css';
 import RoleModal from "./RoleModal";
-import * as rolesActions from '../../../redux/roles/actions';
+import * as rolesActions from '../../redux/roles/actions';
+import { connect } from "react-redux";
 
 function ViewRoles(props) {
 
-    // useEffect(() => {
-    //     props.getDepartments();
-    // }, []);
-
-    const roles = [
-        {
-            id: 1,
-            name: 'منسق قسم التدريب',
-            description: 'يعمل منسق قسم التدريب على إدارة النشاط التدريبي داخل المركز',
-            employees_count: 4,
-            permissions: [1, 2],
-            pers_name: ['إدارة الاقسام', 'إدارة طلبات التوظيف', 'إدارة الاقسام', 'إدارة طلبات التوظيف', 'إدارة الاقسام', 'إدارة طلبات التوظيف', 'إدارة الاقسام', 'إدارة طلبات التوظيف'],
-        }
-    ];
+    useEffect(() => {
+        props.getRoles();
+    }, []);
 
     const [form] = Form.useForm();
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -33,15 +23,15 @@ function ViewRoles(props) {
 
     const deleteRole = () => {
         console.log('deleted: ', selectedRole);
-        // props.deleteDepartment({
-        //     id: selectedRole.dep_id,
-        // });
+        props.deleteRole({
+            id: selectedRole.job_title_id,
+        });
         closeDeleteModal();
     }
 
     const createRole = (data) => {
         console.log('created: ', data);
-        // props.createDepartment(data);
+        // props.createRole(data);
     }
 
     const updateRole = (data) => {
@@ -54,7 +44,7 @@ function ViewRoles(props) {
         // }
         // if (Object.keys(data).length !== 0) {
         //     data.id = selectedRole.dep_id;
-        //     props.updateDepartment(data);
+            // props.updateRole(data);
         // }
     }
 
@@ -99,7 +89,7 @@ function ViewRoles(props) {
             title: 'الصلاحيات',
             key: 'pres',
             render: (record) => {
-                return record.pers_name.map((i, key) => <Tag key={key}>{i}</Tag>);
+                return record.permissions.map(permission => <Tag key={permission.perm_id}>{permission.name}</Tag>);
             }
         },
         {
@@ -114,10 +104,12 @@ function ViewRoles(props) {
                         }} />
                         <EditOutlined onClick={() => {
                             setSelectedRole(record);
+                            let permissionsIDS = [];
+                            permissionsIDS = permissionsIDS.concat(record.permissions.map(p => p.perm_id));
                             form.setFieldsValue({
                                 name: record.name,
                                 description: record.description,
-                                permissions: record.permissions,
+                                permissions: permissionsIDS,
                             })
                             setOpenRoleModal(true);
                         }} />
@@ -132,8 +124,8 @@ function ViewRoles(props) {
             <div>
                 <Table
                     columns={columns}
-                    dataSource={roles}
-                    rowKey='id'
+                    dataSource={props.roles}
+                    rowKey='job_title_id'
                 />
                 <Button
                     className="roleButton"
@@ -152,10 +144,52 @@ function ViewRoles(props) {
                     department={selectedRole}
                     form={form}
                     onFinish={onFinish}
+                    permissions={props.permissions}
+                    getPermissions={props.getPermissions}
                 />
             </div>
         </Spinner>
     );
 }
 
-export default ViewRoles;
+const mapStateToProps = state => {
+    return {
+        roles: state.rolesReducer.roles,
+        error: state.rolesReducer.error,
+        loading: state.rolesReducer.loading,
+
+        permissions: state.rolesReducer.permissions,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getRoles: (payload) => {
+            dispatch(
+                rolesActions.getRoles(payload)
+            )
+        },
+        getPermissions: () => {
+            dispatch(
+                rolesActions.getPermissions()
+            )
+        },
+        createRole: (payload) => {
+            dispatch(
+                rolesActions.createRole(payload)
+            )
+        },
+        deleteRole: (payload) => {
+            dispatch(
+                rolesActions.deleteRole(payload)
+            )
+        },
+        updateRole: (payload) => {
+            dispatch(
+                rolesActions.updateRole(payload)
+            )
+        },
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewRoles);
