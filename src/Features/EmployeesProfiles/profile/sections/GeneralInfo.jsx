@@ -1,61 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Input,
   DatePicker,
-  Radio,
   Button,
   Form,
   Divider,
   Row,
   Col,
-  FloatButton,
-  Upload,
-  message,
   Select,
   Empty,
   Popconfirm,
 } from "antd";
-import {
-  FrownOutlined,
-  PlusOutlined,
-  MinusCircleOutlined,
-  UploadOutlined,
-  DeleteFilled,
-  DeleteOutlined,
-} from "@ant-design/icons/lib/icons";
-
+import { PlusOutlined, DeleteOutlined } from "@ant-design/icons/lib/icons";
 import {
   addressRules,
   dependantsRules,
-  imageAllowedTypes,
-  jobDataRules,
   passportRules,
   personalCardRules,
   personalDataRules,
-} from "../../Job Application/validationRules";
-
+} from "../../validationRules";
 import moment from "moment";
-import dayjs from "dayjs";
+import CustomCard from "../components/CustomCard";
+import useForceUpdate from "../../Hooks/useForceUpdate";
 import "../style.css";
 
-export const getFile = (e) => {
-  if (Array.isArray(e)) {
-    return e;
-  }
-  return e && e.fileList;
-};
-
-function useForceUpdate() {
-  const [value, setValue] = useState(0);
-  return () => setValue((value) => value + 1);
-}
-
-function GeneralInfo(props) {
-  const [errorFields, setErrorFields] = useState([]);
-  const [fileList, setFileList] = useState([]);
+const GeneralInfo = (props) => {
   const forceUpdate = useForceUpdate();
   return (
-    <div className={`segment-container ${props.show ? "" : "hidden"}`}>
+    <div className={`${props.show ? "" : "hidden"}`}>
       <Row gutter={16}>
         <Col span={12}>
           <Form.Item
@@ -184,7 +156,9 @@ function GeneralInfo(props) {
           </Form.Item>
         </Col>
       </Row>
-      <Divider className="divider"> عنوان الإقامة الحالي</Divider>
+      <Divider className="divider">
+        <span className="divider-text">عنوان الإقامة الحالي</span>
+      </Divider>
       <Row gutter={8}>
         <Col span={8}>
           <Form.Item
@@ -214,7 +188,9 @@ function GeneralInfo(props) {
           </Form.Item>
         </Col>
       </Row>
-      <Divider className="divider">البطاقة الشخصيّة</Divider>
+      <Divider className="divider">
+        <span className="divider-text">البطاقة الشخصيّة</span>
+      </Divider>
       <Row gutter={16}>
         <Col span={8}>
           <Form.Item
@@ -247,7 +223,10 @@ function GeneralInfo(props) {
           </Form.Item>
         </Col>
       </Row>
-      <Divider className="divider">الإعالة</Divider>
+      <Divider className="divider">
+        {" "}
+        <span className="divider-text"> الإعالة</span>
+      </Divider>
       <Form.List name="dependants" initialValue={""}>
         {(fields, { add, remove }) => {
           return (
@@ -268,72 +247,58 @@ function GeneralInfo(props) {
 
               {fields.map(({ key, name, ...restField }) => (
                 <div key={key}>
-                  <Row span={8}>
-                    <Col>
-                      <Divider className="divider">
-                        {" "}
-                        {`المعال رقم ${name + 1}`}
-                      </Divider>
-                    </Col>
-                  </Row>
-                  <Row gutter={16}>
-                    {props.editMode && (
-                      <Col span={2}>
-                        <Popconfirm
-                          title={`حذف المعال رقم ${name + 1}`}
-                          description="هل أنت متأكد من رغبتك بحذف المعال ؟"
-                          onConfirm={() => remove(name)}
-                          okText="نعم"
-                          cancelText="لا"
-                          placement="leftTop"
+                  <CustomCard
+                    title={`المعال رقم ${name + 1}`}
+                    deleteTitle={`حذف المعال رقم ${name + 1}`}
+                    deleteDescription="هل أنت متأكد من رغبتك بحذف المعال ؟"
+                    editMode={props.editMode}
+                    onDelete={() => remove(name)}
+                  >
+                    <Row gutter={16}>
+                      <Col span={7}>
+                        <Form.Item
+                          {...restField}
+                          label="الاسم"
+                          name={[name, "name"]}
+                          rules={dependantsRules.name}
                         >
-                          <DeleteOutlined />
-                        </Popconfirm>
+                          <Input />
+                        </Form.Item>
                       </Col>
-                    )}
-                    <Col span={7}>
-                      <Form.Item
-                        {...restField}
-                        label="الاسم"
-                        name={[name, "name"]}
-                        rules={dependantsRules.name}
-                      >
-                        <Input />
-                      </Form.Item>
-                    </Col>
-                    <Col span={7}>
-                      <Form.Item
-                        {...restField}
-                        label="القرابة"
-                        name={[name, "relationship"]}
-                        rules={dependantsRules.relationship}
-                      >
-                        <Input />
-                      </Form.Item>
-                    </Col>
-                    <Col span={7}>
-                      <Form.Item
-                        {...restField}
-                        label="العمر"
-                        name={[name, "age"]}
-                        rules={dependantsRules.age}
-                      >
-                        <Input />
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col span={14} offset={2}>
-                      <Form.Item
-                        {...restField}
-                        label="العنوان"
-                        name={[name, "address"]}
-                        rules={dependantsRules.address}
-                      >
-                        <Input />
-                      </Form.Item>
-                    </Col>
-                  </Row>
+                      <Col span={7}>
+                        <Form.Item
+                          {...restField}
+                          label="القرابة"
+                          name={[name, "relationship"]}
+                          rules={dependantsRules.relationship}
+                        >
+                          <Input />
+                        </Form.Item>
+                      </Col>
+                      <Col span={7}>
+                        <Form.Item
+                          {...restField}
+                          label="العمر"
+                          name={[name, "age"]}
+                          rules={dependantsRules.age}
+                        >
+                          <Input />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col span={14} offset={2}>
+                        <Form.Item
+                          {...restField}
+                          label="العنوان"
+                          name={[name, "address"]}
+                          rules={dependantsRules.address}
+                        >
+                          <Input />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                  </CustomCard>
                 </div>
               ))}
               {props.editMode && fields.length > 0 && (
@@ -356,7 +321,9 @@ function GeneralInfo(props) {
         }}
       </Form.List>
       <>
-        <Divider className="divider">جواز السفر</Divider>
+        <Divider className="divider">
+          <span className="divider-text"> حواز السفر</span>
+        </Divider>
         {props.form.getFieldValue("passport") ? (
           <>
             <Row gutter={16}>
@@ -373,7 +340,7 @@ function GeneralInfo(props) {
                     cancelText="لا"
                     placement="leftTop"
                   >
-                    <DeleteOutlined />
+                    <DeleteOutlined className="delete-icon" />
                   </Popconfirm>
                 </Col>
               )}
@@ -432,6 +399,6 @@ function GeneralInfo(props) {
       </>
     </div>
   );
-}
+};
 
 export default GeneralInfo;

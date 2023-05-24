@@ -289,7 +289,7 @@ const SkillsForm = (props) => {
           </Col>
         </Row>
         {props.isAdditionalLanguage && (
-          <Form.List name="dependents" initialValue={""}>
+          <Form.List name="languages" initialValue={""}>
             {(fields, { add, remove }) => {
               if (fields.length === 0) {
                 add();
@@ -412,7 +412,6 @@ const SkillsForm = (props) => {
             </Col>
           </Row>
         )}
-        <Row></Row>
       </Form>
       <Button
         type="primary"

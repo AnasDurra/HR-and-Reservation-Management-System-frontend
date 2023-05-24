@@ -18,7 +18,7 @@ import {
   PlusOutlined,
   MinusCircleOutlined,
 } from "@ant-design/icons/lib/icons";
-import { convictionsRules, referencesRules } from "../../validationRules";
+import { convictionsRules, referencesRules } from "../../../validationRules";
 
 const { TextArea } = Input;
 

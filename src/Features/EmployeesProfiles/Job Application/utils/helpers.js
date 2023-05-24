@@ -1,17 +1,3 @@
-export const dateRangePickerFormat = (dates, dateStrings) => {
-  return {
-    start_date: dateStrings[0],
-    end_date: dateStrings[1],
-  };
-};
-
-export const getFile = (e) => {
-  if (Array.isArray(e)) {
-    return e;
-  }
-  return e && e.fileList;
-};
-
 export const formatRequestBeforeSend = (formData) => {
   
   if (formData.prevEmployments) {

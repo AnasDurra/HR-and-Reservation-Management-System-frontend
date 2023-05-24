@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Steps, Button, message, Form, FloatButton, Progress } from "antd";
 import GeneralInfoForm from "./sub-forms/GeneralInfoForm";
-import "./style.css";
 import EmploymentForm from "./sub-forms/EmploymentForm";
 import DrivingLicenseForm from "./sub-forms/DrivingLicenseForm";
 import EducationForm from "./sub-forms/EducationForm";
@@ -10,8 +9,8 @@ import AdditionalForm from "./sub-forms/AdditionalForm";
 import { formatRequestBeforeSend } from "../utils/helpers";
 import { useDispatch, useSelector } from "react-redux";
 import { createJobApplication } from "../../../../redux/Features/Employee Profile/Job application/slice";
-import { dummy } from "./dummy";
 import { useNavigate } from "react-router-dom";
+import "./style.css";
 
 const JobApplicationMultiStepForm = () => {
   const jobApplicationsState = useSelector((state) => state.jobApplications);
