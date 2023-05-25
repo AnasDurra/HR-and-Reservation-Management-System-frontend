@@ -92,6 +92,7 @@
     border-radius: 10px 0px 0px 10px;
     background-color: rgb(12, 62, 237);
     color: white;
+    box-shadow: 2px 6px 12px rgba(23, 35, 211, 0.2);
 }
 
 .activeSubItem {

@@ -31,21 +31,42 @@ function ViewRoles(props) {
 
     const createRole = (data) => {
         console.log('created: ', data);
-        // props.createRole(data);
+        props.createRole(data);
     }
 
     const updateRole = (data) => {
         console.log('updated: ', data);
-        // if (data.name === selectedRole.name) {
-        //     delete data.name;
-        // }
-        // if (data.description === selectedRole.description) {
-        //     delete data.description;
-        // }
-        // if (Object.keys(data).length !== 0) {
-        //     data.id = selectedRole.dep_id;
-            // props.updateRole(data);
-        // }
+        let rolePermissions = [];
+        rolePermissions = rolePermissions.concat(selectedRole.permissions.map(p => p.perm_id));
+
+        if (data.name === selectedRole.name) {
+            delete data.name;
+        }
+        if (data.description === selectedRole.description) {
+            delete data.description;
+        }
+        if(!permissionsHasChanged(data.permissions_ids, rolePermissions)) {
+            delete data.permissions_ids;
+        }
+        if (Object.keys(data).length !== 0) {
+            console.log(data);
+            data.id = selectedRole.job_title_id;
+            props.updateRole(data);
+        }
+    }
+
+    const permissionsHasChanged = (a, b) => {
+        if (a === b) return false;
+        if (a == null || b == null) return true;
+        if (a.length !== b.length) return true;
+      
+        a.sort();
+        b.sort();
+        for (let i = 0; i < a.length; i++) {
+          if (a[i] !== b[i]) return true;
+        }
+
+        return false;
     }
 
     const closeDeleteModal = () => {
@@ -103,13 +124,14 @@ function ViewRoles(props) {
                             setOpenDeleteModal(true);
                         }} />
                         <EditOutlined onClick={() => {
+                            console.log(record);
                             setSelectedRole(record);
                             let permissionsIDS = [];
                             permissionsIDS = permissionsIDS.concat(record.permissions.map(p => p.perm_id));
                             form.setFieldsValue({
                                 name: record.name,
                                 description: record.description,
-                                permissions: permissionsIDS,
+                                permissions_ids: permissionsIDS,
                             })
                             setOpenRoleModal(true);
                         }} />
