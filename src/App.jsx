@@ -14,6 +14,7 @@ import ViewEmployeesPrfiles from './Features/EmployeesProfiles/Apps-Profiles/Vie
 import ViewJobApplications from './Features/EmployeesProfiles/Apps-Profiles/ViewJobApplications';
 import ViewRoles from './Features/Roles/ViewRoles';
 import ChangeEmployeePermissions from './Features/Roles/ChangeEmployeePermissions';
+import ViewShifts from './Features/Attendance/Shifts/ViewShifts';
 
 function App(props) {
 
@@ -53,6 +54,7 @@ function App(props) {
             <Route path='/jobApplications' element={<ViewJobApplications />} />
             <Route path='/roles' element={<ViewRoles />} />
             <Route path='/changeEmployeePermissions' element={<ChangeEmployeePermissions />} />
+            <Route path='/shifts' element={<ViewShifts />} />
 
             <Route path='*' element={<Navigate to='/' />} />
 

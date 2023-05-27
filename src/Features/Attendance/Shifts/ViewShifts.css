@@ -1,0 +1,29 @@
+.shiftButton {
+    margin-top: 30px;
+}
+
+#actions {
+    display: flex;
+    justify-content: center;
+}
+
+#actions > * {
+    margin: 0px 5px;
+}
+
+.shiftModal {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.shiftModal > button {
+    margin: 0px 8px 0px 0px;
+}
+
+.ant-picker-dropdown {
+    z-index: 1500 !important;
+}
+
+.ant-picker-input > input {
+    font-family: 'cairo' !important;
+}
