@@ -12,16 +12,15 @@ const getPermissions = (payload) => {
 }
 
 const deleteRole = (payload) => {
-    console.log(payload);
     return AxiosInstance().delete(`job-titles/${payload.id}`, payload);
 }
 
 const updateRole = (payload) => {
-    return AxiosInstance().put(`roles/${payload.id}`, payload);
+    return AxiosInstance().put(`job-titles/${payload.id}`, payload);
 }
 
 const createRole = (payload) => {
-    return AxiosInstance().post('roles', payload);
+    return AxiosInstance().post('job-titles', payload);
 }
 
 

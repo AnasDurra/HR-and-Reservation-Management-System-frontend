@@ -4,17 +4,10 @@ import { useEffect } from "react";
 export default function RoleModal({ open, onFinish, handleCancel, role, form, permissions, getPermissions }) {
 
     useEffect(() => {
-        // getPermissions();
+        getPermissions();
     }, []);
 
     const { Option } = Select;
-
-    const localPermissions = [
-        {
-            name: "إدارة الاقسام",
-            perm_id: 1
-        }
-    ];
 
 
     return (
@@ -47,7 +40,7 @@ export default function RoleModal({ open, onFinish, handleCancel, role, form, pe
                 </Form.Item>
 
                 <Form.Item
-                    name="permissions"
+                    name="permissions_ids"
                     rules={[
                         {
                             required: true,
@@ -66,7 +59,7 @@ export default function RoleModal({ open, onFinish, handleCancel, role, form, pe
 
                         }
                     >
-                        {localPermissions.map((p) => <Option value={p.perm_id} key={p.perm_id}>{p.name}</Option>)}
+                        {permissions.map((p) => <Option value={p.perm_id} key={p.perm_id}>{p.name}</Option>)}
                     </Select>
                 </Form.Item>
 
