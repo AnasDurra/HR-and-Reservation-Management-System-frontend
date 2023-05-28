@@ -4,6 +4,7 @@ import DepartmentsSaga from './departments/saga';
 import JobVacanciesSaga from './jobVacancies/saga';
 import RolesSaga from './roles/saga';
 import ShiftsSaga from './shifts/saga';
+import BiometricDevicesSaga from './biometricDevices/saga';
 
 export default function* rootSaga() {
     yield all([
@@ -12,5 +13,6 @@ export default function* rootSaga() {
         JobVacanciesSaga(),
         RolesSaga(),
         ShiftsSaga(),
+        BiometricDevicesSaga(),
     ]);
 }

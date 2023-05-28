@@ -4,6 +4,7 @@ import departmentsReducer from "./departments/reducer";
 import jobVacanciesReducer from "./jobVacancies/reducer";
 import rolesReducer from "./roles/reducer";
 import shiftsReducer from "./shifts/reducer";
+import biometricDevicesReducer from "./biometricDevices/reducer";
 
 export default {
     userReducer: userReducer,
@@ -11,4 +12,5 @@ export default {
     jobVacanciesReducer: jobVacanciesReducer,
     rolesReducer: rolesReducer,
     shiftsReducer: shiftsReducer,
+    biometricDevicesReducer: biometricDevicesReducer,
 };

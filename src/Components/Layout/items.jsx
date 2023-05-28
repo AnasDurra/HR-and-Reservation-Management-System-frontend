@@ -32,6 +32,10 @@ export const items = [
             {
                 text: 'فترات العمل',
                 path: '/shifts'
+            },
+            {
+                text: 'اجهزة البصمات',
+                path: '/biometricDevices'
             }
         ]
     }
