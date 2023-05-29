@@ -20,9 +20,9 @@ import {
 import {
   certificatesAllowedTypes,
   certificatesRules,
-} from "../../validationRules";
-import { getFile } from "../../utils/getFile";
-import useForceUpdate from "../../Hooks/useForceUpdate";
+} from "../../../validationRules";
+import { getFile } from "../../../utils/getFile";
+import useForceUpdate from "../../../Hooks/useForceUpdate";
 import { downloadFile } from "../utils/helpers";
 import "../style.css";
 

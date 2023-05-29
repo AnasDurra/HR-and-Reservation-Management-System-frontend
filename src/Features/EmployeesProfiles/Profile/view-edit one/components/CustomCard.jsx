@@ -2,8 +2,6 @@ import { Card, Col, Popconfirm } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 
 const CustomCard = ({ title, deleteTitle, deleteDescription, onDelete, editMode,children } ) => {
- 
-
   return (
     <Card
       hoverable={true}

@@ -11,11 +11,13 @@ import Permissions from "./Components/AccessRoute/Permissions";
 import ViewDepartments from "./Features/EmployeesProfiles/Departments/ViewDepartments";
 import JobApplicationMultiStepForm from "./Features/EmployeesProfiles/Job Application/add/JobApplicationMultiStepForm";
 import ViewJobVacancies from "./Features/EmployeesProfiles/JobVacancies/ViewJobVacancies";
-import ViewEmployeesPrfiles from "./Features/EmployeesProfiles/Apps-Profiles/ViewEmployeesProfiles";
-import ViewJobApplications from "./Features/EmployeesProfiles/Job Application/view/all/ViewJobApplications";
+import ViewJobApplications from "./Features/EmployeesProfiles/Job Application/view all/ViewJobApplications";
 import ViewRoles from "./Features/EmployeesProfiles/Roles/ViewRoles";
 import ChangeEmployeePermissions from "./Features/EmployeesProfiles/Roles/ChangeEmployeePermissions";
-import ViewEmployeeProfile from "./Features/EmployeesProfiles/profile/ViewEmployeeProfile";
+import ViewEmployeesProfiles from "./Features/EmployeesProfiles/Profile/view all/ViewEmployeesProfiles";
+import ViewEmployeeProfile from "./Features/EmployeesProfiles/Profile/view-edit one/ViewEmployeeProfile";
+import ViewJobApplication from "./Features/EmployeesProfiles/Job Application/view one/ViewJobApplication";
+import Log from "./Features/Log/Log";
 
 function App(props) {
   return (
@@ -52,9 +54,16 @@ function App(props) {
             <Route path="jobApplications">
               <Route index element={<ViewJobApplications />} />
               <Route path="add" element={<JobApplicationMultiStepForm />} />
+              <Route path="jobApplication" element={<ViewJobApplication />} />
             </Route>
 
-            <Route path="/employeeProfile" element={<ViewEmployeeProfile />} />
+            <Route path="employees">
+              <Route index element={<ViewEmployeesProfiles />} />
+              <Route path="profile" element={<ViewEmployeeProfile />} />
+            </Route>
+            <Route path="log">
+              <Route index element={<Log />} />
+            </Route>
 
             {/*Dummy Routes*/}
             <Route
@@ -65,6 +74,8 @@ function App(props) {
                 </div>
               }
             />
+            {/*Dummy Routes*/}
+            <Route path="/test" element={<Log />} />
             <Route
               path="/jobVacancies/add"
               element={<div>Add job Vacancy</div>}
@@ -72,10 +83,7 @@ function App(props) {
             <Route path="/employees" element={<div>All Emplyees</div>} />
             <Route path="/departments" element={<ViewDepartments />} />
             <Route path="/jobVacancies" element={<ViewJobVacancies />} />
-            <Route
-              path="/employeesProfiles"
-              element={<ViewEmployeesPrfiles />}
-            />
+
             <Route path="/jobApplications" element={<ViewJobApplications />} />
             <Route path="/roles" element={<ViewRoles />} />
             <Route

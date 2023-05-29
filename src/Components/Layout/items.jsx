@@ -3,6 +3,7 @@ import {
  
   ApartmentOutlined, LockOutlined,
   FileDoneOutlined,
+  HistoryOutlined,
 } from "@ant-design/icons";
 
 export const items = [
@@ -36,8 +37,14 @@ export const items = [
       path: "/jobApplications",
     },
     {
-        text:"حساب الموظف",
+        text:"الموظّفين",
         icon: <FileDoneOutlined />,
-        path: "/employeeProfile",
+        path: "/employees",
       },
+      {
+        text:"سجل الأحداث",
+        icon: <HistoryOutlined />,
+        path: "/log",
+      },
+
 ];

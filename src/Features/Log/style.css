@@ -1,0 +1,15 @@
+.column-warning {
+  background-color: #ffffff;
+  width: 4.5%;
+}
+.column-one {
+  background-color: #f6f6ef;
+  width: 16.5%;
+}
+.column-two {
+  background-color: #eef6fc;
+  width: 16.5%;
+ align-content: center;
+
+
+}

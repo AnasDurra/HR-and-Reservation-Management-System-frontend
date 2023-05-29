@@ -10,7 +10,7 @@ import {
   Empty,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons/lib/icons";
-import { educationRules, trainingCoursesRules } from "../../validationRules";
+import { educationRules, trainingCoursesRules } from "../../../validationRules";
 import CustomCard from "../components/CustomCard";
 import "../style.css";
 

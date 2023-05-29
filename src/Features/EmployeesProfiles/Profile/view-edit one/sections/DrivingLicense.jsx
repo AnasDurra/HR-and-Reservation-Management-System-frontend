@@ -10,8 +10,8 @@ import {
   Popconfirm,
 } from "antd";
 import { DeleteOutlined } from "@ant-design/icons/lib/icons";
-import { drivingLicenseRules } from "../../validationRules";
-import useForceUpdate from "../../Hooks/useForceUpdate";
+import { drivingLicenseRules } from "../../../validationRules";
+import useForceUpdate from "../../../Hooks/useForceUpdate";
 import "../style.css";
 
 const DrivingLicense = (props) => {

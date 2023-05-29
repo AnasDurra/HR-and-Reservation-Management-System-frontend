@@ -5,7 +5,7 @@ import CustomCard from "../components/CustomCard";
 import {
   convictionsRules,
   referencesRules,
-} from "../../validationRules";
+} from "../../../validationRules";
 import "../style.css";
 
 const Additional = (props) => {

@@ -4,6 +4,8 @@ export const jobApplicationsSlice = createSlice({
   name: "jobApplications",
   initialState: {
     jobApplications: [],
+    jobApplication: null,
+    jobApplicationsSlice: null,
     loading: false,
     error: null,
   },
@@ -33,6 +35,18 @@ export const jobApplicationsSlice = createSlice({
       state.loading = false;
       state.error = action.payload.error;
     },
+    getJobApplication: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    getJobApplicationSuccess: (state, action) => {
+      state.loading = false;
+      state.jobApplication = action.payload.jobApplication;
+    },
+    getJobApplicationFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
   },
 });
 
@@ -42,7 +56,10 @@ export const {
   createJobApplicationFail,
   getJobApplications,
   getJobApplicationsSuccess,
-  getJobApplicationsFail
+  getJobApplicationsFail,
+  getJobApplication,
+  getJobApplicationSuccess,
+  getJobApplicationFail,
 } = jobApplicationsSlice.actions;
 
 export default jobApplicationsSlice.reducer;

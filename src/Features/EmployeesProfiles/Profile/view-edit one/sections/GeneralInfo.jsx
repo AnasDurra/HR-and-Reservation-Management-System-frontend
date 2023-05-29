@@ -18,10 +18,10 @@ import {
   passportRules,
   personalCardRules,
   personalDataRules,
-} from "../../validationRules";
+} from "../../../validationRules";
 import moment from "moment";
 import CustomCard from "../components/CustomCard";
-import useForceUpdate from "../../Hooks/useForceUpdate";
+import useForceUpdate from "../../../Hooks/useForceUpdate";
 import "../style.css";
 
 const GeneralInfo = (props) => {

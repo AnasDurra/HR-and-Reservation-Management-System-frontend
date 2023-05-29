@@ -2,12 +2,9 @@ import React, { useState, useEffect } from "react";
 import { debounce } from "lodash";
 import {
   Input,
-  DatePicker,
-  Radio,
   Button,
   Form,
   Divider,
-  Space,
   Row,
   Col,
   FloatButton,
@@ -16,11 +13,10 @@ import {
 } from "antd";
 import {
   FrownOutlined,
-  PlusOutlined,
   MinusCircleOutlined,
 } from "@ant-design/icons/lib/icons";
-import { predefinedSkill } from "../../constants";
-import { computerSkillsRules, languagesRules } from "../../validationRules";
+import { predefinedSkill } from "../../../constants";
+import { computerSkillsRules, languagesRules } from "../../../validationRules";
 
 const SkillsForm = (props) => {
   const [errorFields, setErrorFields] = useState([]);

@@ -17,8 +17,7 @@ import {
   FrownOutlined,
   MinusCircleOutlined,
 } from "@ant-design/icons/lib/icons";
-import { drivingLicenseRules } from "../../validationRules";
-import moment from "moment";
+import { drivingLicenseRules } from "../../../validationRules";
 
 const DrivingLicenseForm = (props) => {
   const [errorFields, setErrorFields] = useState([]);

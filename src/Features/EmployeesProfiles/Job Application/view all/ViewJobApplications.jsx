@@ -1,15 +1,15 @@
 import { Button, Table, Tag } from "antd";
-import Spinner from "../../../../../Components/Spinner/Spinner";
+import Spinner from "../../../../Components/Spinner/Spinner";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getJobApplications } from "../../../../../redux/Features/Employee Profile/Job application/slice";
+import { getJobApplications } from "../../../../redux/Features/Employee Profile/Job application/slice";
 import "./ViewJobApplications.css";
 const colorMapping = {
-  1: "orange",
-  2: "green",
-  3: "red",
-  4: "gray",
+  1: "#FFA500",
+  2: "#008000",
+  3: "#FF0000",
+  4: "#808080",
 };
 
 function ViewJobApplications(props) {
@@ -59,6 +59,7 @@ function ViewJobApplications(props) {
             <Button
               type="link"
               onClick={() => {
+                navigate(`jobApplication?id=${record.id}`);
               }}
             >
               استعراض

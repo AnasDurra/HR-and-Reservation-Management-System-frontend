@@ -1,12 +1,14 @@
 import { all, fork, takeEvery, call, put } from "redux-saga/effects";
-
 import {
   createJobApplication,
   createJobApplicationFail,
   createJobApplicationSuccess,
   getJobApplications,
   getJobApplicationsFail,
-  getJobApplicationsSuccess
+  getJobApplicationsSuccess,
+  getJobApplication,
+  getJobApplicationSuccess,
+  getJobApplicationFail,
 } from "./slice";
 import AxiosInstance from "../../../utils/axiosInstance";
 
@@ -62,10 +64,37 @@ function* watchGetJobApplications() {
   yield takeEvery(getJobApplications, getJobApplicationsSaga);
 }
 
+const getOne = (payload) => {
+  return AxiosInstance().get(`job-applications/${payload}`);
+};
 
+function* getJobApplicationSaga({ payload }) {
+  try {
+    const response = yield call(getOne, payload);
+    yield put(
+      getJobApplicationSuccess({
+        jobApplication: response.data.data,
+      })
+    );
+  } catch (error) {
+    console.log(error);
+    yield put(
+      getJobApplicationFail({
+        error: error,
+      })
+    );
+  }
+}
+function* watchGetJobApplication() {
+  yield takeEvery(getJobApplication, getJobApplicationSaga);
+}
 
 function* jobApplicationsSaga() {
-  yield all([fork(watchCreateJobApplication),fork(watchGetJobApplications)]);
+  yield all([
+    fork(watchCreateJobApplication),
+    fork(watchGetJobApplications),
+    fork(watchGetJobApplication),
+  ]);
 }
 
 export default jobApplicationsSaga;

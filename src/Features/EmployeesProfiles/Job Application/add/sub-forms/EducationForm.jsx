@@ -7,7 +7,6 @@ import {
   Button,
   Form,
   Divider,
-  Space,
   Row,
   Col,
   FloatButton,
@@ -25,8 +24,8 @@ import {
   certificatesRules,
   educationRules,
   trainingCoursesRules,
-} from "../../validationRules";
-import { getFile } from "../../utils/helpers";
+} from "../../../validationRules";
+import { getFile } from "../../../utils/getFile";
 
 const EducationForm = (props) => {
   const [errorFields, setErrorFields] = useState([]);
