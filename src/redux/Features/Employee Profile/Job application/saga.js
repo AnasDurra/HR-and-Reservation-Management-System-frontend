@@ -39,16 +39,18 @@ function* watchCreateJobApplication() {
   yield takeEvery(createJobApplication, createJobApplicationSaga);
 }
 
-const getAll = () => {
-  return AxiosInstance().get("job-applications");
+const getAll = (payload) => {
+  return AxiosInstance().get(
+    `job-applications${payload ? `?page=${payload}` : ""}`
+  );
 };
 
-function* getJobApplicationsSaga() {
+function* getJobApplicationsSaga({ payload }) {
   try {
-    const response = yield call(getAll);
+    const response = yield call(getAll, payload);
     yield put(
       getJobApplicationsSuccess({
-        jobApplications: response.data.data,
+        jobApplications: response.data,
       })
     );
   } catch (error) {

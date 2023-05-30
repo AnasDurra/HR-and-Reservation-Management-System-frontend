@@ -1,6 +1,6 @@
 import { Button, Table, Tag } from "antd";
 import Spinner from "../../../../Components/Spinner/Spinner";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getJobApplications } from "../../../../redux/Features/Employee Profile/Job application/slice";
@@ -13,10 +13,12 @@ const colorMapping = {
 };
 
 function ViewJobApplications(props) {
-  const jobApplicationsState = useSelector((state) => state.jobApplications);
+  const jobApplicationsSlice = useSelector(
+    (state) => state.jobApplicationsSlice
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  console.log(jobApplicationsSlice);
   useEffect(() => {
     dispatch(getJobApplications());
   }, []);
@@ -70,27 +72,47 @@ function ViewJobApplications(props) {
       width: "10%",
     },
   ];
+  const handlePageChange = (page) => {
+    dispatch(getJobApplications(page));
+  };
 
   return (
-    <Spinner loading={jobApplicationsState.loading}>
-      <div className="table-container">
+    <div className="table-container">
+      <Spinner loading={jobApplicationsSlice.loading}>
         <Table
-          columns={columns}
-          dataSource={jobApplicationsState.jobApplications}
-          rowKey="id"
-          size="middle"
-          pagination={{ pageSize: 8 }}
-        />
-        <Button
-          className="jobApplicationsButton"
-          onClick={() => {
-            navigate("add");
+          dataSource={jobApplicationsSlice?.jobApplications?.data}
+          pagination={{
+            current: jobApplicationsSlice.jobApplications?.meta?.current_page,
+            pageSize: jobApplicationsSlice.jobApplications?.meta?.per_page,
+            total: jobApplicationsSlice.jobApplications?.meta?.total,
+            onChange: handlePageChange,
+            showQuickJumper: false,
+            showSizeChanger: false,
+            itemRender: (page, type, originalElement) => {
+              /* if (type === "prev") {
+        return <a>السابق</a>;
+      }
+      if (type === "next") {
+        return <a>التالي</a>;
+      } */
+              return originalElement;
+            },
           }}
-        >
-          إضافة طلب توظيف
-        </Button>
-      </div>
-    </Spinner>
+          rowKey="id"
+          size="small"
+          columns={columns}
+        />
+      </Spinner>
+
+      <Button
+        className="jobApplicationsButton"
+        onClick={() => {
+          navigate("add");
+        }}
+      >
+        إضافة طلب توظيف
+      </Button>
+    </div>
   );
 }
 

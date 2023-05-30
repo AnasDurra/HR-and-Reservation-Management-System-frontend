@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const jobApplicationsSlice = createSlice({
   name: "jobApplications",
   initialState: {
-    jobApplications: [],
+    jobApplications: null,
     jobApplication: null,
     jobApplicationsSlice: null,
     loading: false,
@@ -16,7 +16,7 @@ export const jobApplicationsSlice = createSlice({
     },
     createJobApplicationSuccess: (state, action) => {
       state.loading = false;
-      state.jobApplications.push(action.payload.jobApplication);
+      state.jobApplications.push(action.payload.jobApplications);
     },
     createJobApplicationFail: (state, action) => {
       state.loading = false;

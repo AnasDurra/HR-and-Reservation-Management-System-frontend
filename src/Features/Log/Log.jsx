@@ -2,11 +2,23 @@ import React from "react";
 import { Button, Table, Tag } from "antd";
 import EmployeeMiniCard from "./components/EmployeeMiniCard";
 import { ProfileOutlined, WarningOutlined } from "@ant-design/icons";
-import "./style.css";
+import "./log.css";
 import Filter from "./components/Filter";
 const columns = [
   {
-    title: "حساسيَة الحدث",
+    title: (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        {"الدرجة"}
+      </div>
+    ),
     dataIndex: ["action", "severity"],
     key: "action_severity",
     className: "column-warning",
@@ -25,13 +37,37 @@ const columns = [
     },
   },
   {
-    title: " الحدث",
+    title: (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        {" الحدث"}
+      </div>
+    ),
     dataIndex: ["action", "name"],
     key: "action_name",
     className: "column-two",
   },
   {
-    title: "معرّف القائم بالحدث ",
+    title: (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        {" معرَف الفائم بالحدث"}
+      </div>
+    ),
     dataIndex: "user_id",
     key: "user_id",
     className: "column-one",
@@ -49,7 +85,7 @@ const columns = [
           <Tag
             icon={<ProfileOutlined />}
             style={{
-              backgroundColor: "#ffffff",
+              backgroundColor: "#f0f0f0",
               fontSize: "14px",
               padding: "0.2rem",
             }}
@@ -62,7 +98,19 @@ const columns = [
     },
   },
   {
-    title: "معرَفات المتأثرين بالحدث",
+    title: (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        {" معرفات المتأثرين بالحدث"}
+      </div>
+    ),
     dataIndex: "affected_user_id",
     key: "affected_user_id",
     className: "column-two",
@@ -81,7 +129,7 @@ const columns = [
           <Tag
             icon={<ProfileOutlined />}
             style={{
-              backgroundColor: "#ffffff",
+              backgroundColor: "#f0f0f0",
               fontSize: "14px",
               padding: "0.2rem",
             }}
@@ -95,13 +143,38 @@ const columns = [
   },
 
   {
-    title: "وصف الحدث",
+    title: (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        {" وصف الحدث"}
+      </div>
+    ),
     dataIndex: ["action", "description"],
     key: "action_description",
     className: "column-one",
   },
   {
-    title: "التاريخ",
+    title: (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        {" التاريخ"}
+      </div>
+    ),
+
     dataIndex: "date",
     key: "date",
     className: "column-two",
@@ -132,16 +205,39 @@ const data = [
     },
     date: "2023-05-28",
   },
+
+  {
+    key: "1",
+    user_id: 1,
+    affected_user_id: [2, 4, 23, 23, 2],
+    action: {
+      name: "delete",
+      description: "delete student",
+      severity: "high",
+    },
+    date: "2023-05-28",
+  },
   // Add more data objects here
 ];
 
+const getColorClass = (index) => {
+  const classes = ["row-odd", "row-even"];
+  return classes[index % classes.length];
+};
+
 const Log = () => {
   return (
-    <div style={{ display: "flex", flexDirection: "column"}}>
-      <div style={{marginBottom:"1rem"}}>
+    <div style={{ display: "flex", flexDirection: "row" }}>
+      <Table
+        className="my-table"
+        columns={columns}
+        dataSource={data}
+        pagination={true}
+        rowClassName={(record, index) => getColorClass(index)}
+      />{" "}
+      <div style={{  width: "22%" , marginRight:"0.5rem"}}>
         <Filter />
       </div>
-      <Table columns={columns} dataSource={data} pagination={true} />{" "}
     </div>
   );
 };

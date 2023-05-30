@@ -9,5 +9,5 @@ export default {
   departmentsReducer: departmentsReducer,
   jobVacanciesReducer: jobVacanciesReducer,
   rolesReducer: rolesReducer,
-  jobApplications:jobApplicationsReducer,
+  jobApplicationsSlice:jobApplicationsReducer,
 };
