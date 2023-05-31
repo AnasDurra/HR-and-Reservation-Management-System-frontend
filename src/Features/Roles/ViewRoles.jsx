@@ -45,7 +45,7 @@ function ViewRoles(props) {
         if (data.description === selectedRole.description) {
             delete data.description;
         }
-        if(!permissionsHasChanged(data.permissions_ids, rolePermissions)) {
+        if (!permissionsHasChanged(data.permissions_ids, rolePermissions)) {
             delete data.permissions_ids;
         }
         if (Object.keys(data).length !== 0) {
@@ -59,11 +59,11 @@ function ViewRoles(props) {
         if (a === b) return false;
         if (a == null || b == null) return true;
         if (a.length !== b.length) return true;
-      
+
         a.sort();
         b.sort();
         for (let i = 0; i < a.length; i++) {
-          if (a[i] !== b[i]) return true;
+            if (a[i] !== b[i]) return true;
         }
 
         return false;

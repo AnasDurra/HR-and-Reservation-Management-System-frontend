@@ -16,6 +16,7 @@ import ViewRoles from './Features/Roles/ViewRoles';
 import ChangeEmployeePermissions from './Features/Roles/ChangeEmployeePermissions';
 import ViewShifts from './Features/Attendance/Shifts/ViewShifts';
 import ViewBiometricDevices from './Features/Attendance/BiometricDevices/ViewBiometricDevices';
+import ViewTimeSheetLog from './Features/Attendance/TimeSheetLog/ViewTimeSheetLog';
 
 function App(props) {
 
@@ -57,6 +58,7 @@ function App(props) {
             <Route path='/changeEmployeePermissions' element={<ChangeEmployeePermissions />} />
             <Route path='/shifts' element={<ViewShifts />} />
             <Route path='/biometricDevices' element={<ViewBiometricDevices />} />
+            <Route path='/timeSheetLog' element={<ViewTimeSheetLog />} />
 
             <Route path='*' element={<Navigate to='/' />} />
 

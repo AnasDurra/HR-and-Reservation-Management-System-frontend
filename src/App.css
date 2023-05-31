@@ -4,3 +4,23 @@
   font-weight: normal;
   font-style: normal;
 }
+
+.ant-table-content::-webkit-scrollbar {
+  /* width of the entire scrollbar */
+  height: 8px;
+  width: 8px;
+}
+
+.ant-table-content::-webkit-scrollbar-track {
+  /* color of the tracking area */
+  background: white;
+}
+
+.ant-table-content::-webkit-scrollbar-thumb {
+  background-color: #acacac;
+  /* color of the scroll thumb */
+  border-radius: 20px;
+  /* roundness of the scroll thumb */
+  border: 3px solid #acacac;
+  /* creates padding around scroll thumb */
+}

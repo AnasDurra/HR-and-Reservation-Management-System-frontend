@@ -36,7 +36,11 @@ export const items = [
             {
                 text: 'اجهزة البصمات',
                 path: '/biometricDevices'
-            }
+            },
+            {
+                text: 'سجل الدوام',
+                path: '/timeSheetLog'
+            },
         ]
     }
 ];

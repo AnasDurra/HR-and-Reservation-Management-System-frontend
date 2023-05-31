@@ -38,6 +38,10 @@ export default function BioMetricDeviceModal({ open, onFinish, handleCancel, dev
                             required: true,
                             message: 'الرجاء ادخال عنوان الـ ip الخاص بالجهاز',
                         },
+                        {
+                            pattern: /^(\d{1,3}\.){3}\d{1,3}$/,
+                            message: 'الرجاء ادخال عنوان ipv4 صالح'
+                        }
                     ]}
                 >
                     <Input placeholder='عنوان الـ ip' />

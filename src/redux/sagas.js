@@ -5,6 +5,7 @@ import JobVacanciesSaga from './jobVacancies/saga';
 import RolesSaga from './roles/saga';
 import ShiftsSaga from './shifts/saga';
 import BiometricDevicesSaga from './biometricDevices/saga';
+import TimeSheetSaga from './timeSheet/saga';
 
 export default function* rootSaga() {
     yield all([
@@ -14,5 +15,6 @@ export default function* rootSaga() {
         RolesSaga(),
         ShiftsSaga(),
         BiometricDevicesSaga(),
+        TimeSheetSaga(),
     ]);
 }
