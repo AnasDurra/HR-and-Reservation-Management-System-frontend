@@ -46,7 +46,7 @@ export const timeSheetReducer = createSlice({
         addLeaveRecordSuccess: (state, action) => {
             state.loading = false;
             // let log = state.timeSheetLog.filter(t => t.id !== action.payload.id);
-            // log = log.unshift(action.payload);
+            // log.unshift(action.payload);
             // state.timeSheetLog = log;
         },
         addLeaveRecordFailed: (state, action) => {

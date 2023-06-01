@@ -19,7 +19,7 @@ function ViewTimeSheetLog() {
     const [openTimeSheetModal, setOpenTimeSheetModal] = useState(false);
     const [addAttendance, setAddAttendance] = useState(false);
 
-console.log(timeSheetLog);
+    console.log(timeSheetLog);
     useEffect(() => {
         dispatch(getTimeSheetLog());
     }, []);
@@ -124,14 +124,30 @@ console.log(timeSheetLog);
         },
         {
             title: 'وقت الخروج',
-            dataIndex: 'check_out_time',
             key: 'check_out_time',
-            render: (time) => <Tag color="blue">{time ? time : 'غير مسجّل'}</Tag>
+            render: (record) => {
+                return (
+                    <div style={{ display: 'flex', justifyContent: 'flexStart', alignItems: 'center' }}>
+                        <Tag color="blue">
+                            {record.check_out_time ? record.check_out_time : 'غير مسجّل'}
+                        </Tag>
+                        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                            <Tag color={record['leaveBefore'] ? 'red' : 'green'} style={{ marginBottom: '3px' }}>
+                                {record['leaveBefore'] ? 'غادر مبكرا' : 'على الوقت'}
+                            </Tag>
+                            {record['leaveBefore'] ?
+                                <Tag color="red">
+                                    {record['leaveBefore']}
+                                </Tag> : null}
+                        </div>
+                    </div>
+                );
+            }
         },
     ];
 
     return (
-        <Spinner loading={false}>
+        <Spinner loading={loading}>
             <div>
                 <div className="timeSheetLogActionButtons">
                     <Button
