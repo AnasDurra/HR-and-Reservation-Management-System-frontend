@@ -1,4 +1,5 @@
 import { Button, DatePicker, Form, Input, Modal, Select, TimePicker } from "antd";
+import dayjs from "dayjs";
 
 export default function TimeSheetModal({ open, onFinish, handleCancel, action, form }) {
 
@@ -40,7 +41,7 @@ export default function TimeSheetModal({ open, onFinish, handleCancel, action, f
                         },
                     ]}
                 >
-                    <DatePicker placeholder='التاريخ' />
+                    <DatePicker defaultValue={dayjs()} placeholder='التاريخ' />
                 </Form.Item>
 
                 <Form.Item
@@ -74,7 +75,7 @@ export default function TimeSheetModal({ open, onFinish, handleCancel, action, f
                         },
                     ]}
                 >
-                    <TimePicker placeholder='الوقت' />
+                    <TimePicker defaultValue={dayjs().second(0)} placeholder='الوقت' />
                 </Form.Item>
 
 
