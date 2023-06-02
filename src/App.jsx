@@ -28,7 +28,7 @@ function App(props) {
         theme={{
           token: {
             fontFamily: 'cairo',
-            colorPrimary: 'rgb(12, 62, 237);',
+            colorPrimary: '#0c3ded',
           },
           components: {
             Button: {

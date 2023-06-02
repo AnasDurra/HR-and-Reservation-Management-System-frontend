@@ -3,6 +3,7 @@ import LoginForm from './LoginForm';
 import * as userActions from '../../redux/user/actions';
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Typography } from 'antd';
 
 function LogInPage(props) {
 
@@ -17,7 +18,7 @@ function LogInPage(props) {
     return (
         <div className="loginContainer">
             <img className='image' src="./undraw_sign_in_re_o58h.svg" />
-            <LoginForm onFinish={onFinish} />
+            <LoginForm loading={props.loading} onFinish={onFinish} />
         </div>
     );
 };

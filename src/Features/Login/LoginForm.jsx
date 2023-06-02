@@ -1,7 +1,7 @@
 import { Button, Form, Input, Typography } from "antd";
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
-function LoginForm({ onFinish }) {
+function LoginForm({ onFinish, loading }) {
     return (
         <div className='form'>
             <Typography.Title level={2}  >أهلا بك!</Typography.Title>
@@ -42,7 +42,12 @@ function LoginForm({ onFinish }) {
 
                 <Form.Item
                 >
-                    <Button className='submitButton' type="primary" htmlType="submit">
+                    <Button 
+                        loading={loading} 
+                        className='submitButton' 
+                        type="primary" 
+                        htmlType="submit"
+                    >
                         تأكيد
                     </Button>
                 </Form.Item>
