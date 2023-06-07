@@ -1,95 +1,83 @@
-import {all, fork, takeEvery, call, put} from "redux-saga/effects";
-import * as actionTypes from './constants';
-import * as actions from './actions';
+import { all, fork, takeEvery, call, put } from "redux-saga/effects";
 import AxiosInstance from "../utils/axiosInstance";
+import { getJobVacanciesSuccess, getJobVacanciesFailed } from "./reducer";
+import { addJobVacancySuccess, addJobVacancyFailed } from "./reducer";
+import { deleteJobVacancySuccess, deleteJobVacancyFailed } from "./reducer";
+import { updateJobVacancySuccess, updateJobVacancyFailed } from "./reducer";
+
 
 const getJobVacancies = (payload) => {
-    return AxiosInstance().get('endPoint', payload);
+    return AxiosInstance().get(`job-vacancies${payload ? `?page=${payload}` : ""}`);
 }
 
 const deleteJobVacancy = (payload) => {
-    return AxiosInstance().delete('endPoint', payload);
+    return AxiosInstance().delete(`job-vacancies/${payload.id}`, payload);
 }
 
 const updateJobVacancy = (payload) => {
-    return AxiosInstance().put('endPoint', payload);
+    return AxiosInstance().put(`job-vacancies/${payload.id}`, payload);
 }
 
 const createJobVacancy = (payload) => {
-    return AxiosInstance().post('endPoint', payload);
+    return AxiosInstance().post('job-vacancies', payload);
 }
 
 
-function* getJobVacanciesSaga({payload}) {
+function* getJobVacanciesSaga({ payload }) {
     try {
         const response = yield call(getJobVacancies, payload);
-        yield put(actions.getJobVacanciesSuccess({
-            jobVacancies: response.data.data,
-        }));
+        console.log(response);
+        yield put(getJobVacanciesSuccess(response.data));
     }
-    catch(error) {
-        yield put(actions.getJobVacanciesFailed({                                                                         
-            error: error
-        }));
+    catch (error) {
+        yield put(getJobVacanciesFailed(error));
     }
 }
 
-function* deletejobVacancySaga({payload}) {
+function* deletejobVacancySaga({ payload }) {
     try {
         const response = yield call(deleteJobVacancy, payload);
-        yield put(actions.deleteJobVacancySuccess({
-            JobVacancy: response.data.data,
-        }));
+        yield put(deleteJobVacancySuccess(response.data.data));
     }
-    catch(error) {
-        yield put(actions.deleteJobVacancyFailed({                                                                         
-            error: error
-        }));
+    catch (error) {
+        yield put(deleteJobVacancyFailed(error));
     }
 }
 
-function* updateJobVacancySaga({payload}) {
+function* updateJobVacancySaga({ payload }) {
     try {
         const response = yield call(updateJobVacancy, payload);
-        yield put(actions.updateJobVacancySuccess({
-            JobVacancy: response.data.data,
-        }));
+        yield put(updateJobVacancySuccess(response.data.data));
     }
-    catch(error) {
-        yield put(actions.updateJobVacancyFailed({                                                                         
-            error: error
-        }));
+    catch (error) {
+        yield put(updateJobVacancyFailed(error));
     }
 }
 
-function* createJobVacancySaga({payload}) {
+function* createJobVacancySaga({ payload }) {
     try {
         const response = yield call(createJobVacancy, payload);
-        yield put(actions.createJobVacancySuccess({
-            JobVacancy: response.data.data,
-        }));
+        yield put(addJobVacancySuccess(response.data.data));
     }
-    catch(error) {
-        yield put(actions.createJobVacancyFailed({                                                                         
-            error: error
-        }));
+    catch (error) {
+        yield put(addJobVacancyFailed(error));
     }
 }
 
-function* watchGetJobVacancies () {
-    yield takeEvery(actionTypes.GET_JOB_VACANCIES, getJobVacanciesSaga);
+function* watchGetJobVacancies() {
+    yield takeEvery('jobVacanciesReducer/getJobVacancies', getJobVacanciesSaga);
 }
 
-function* watchDeleteJobVacancy () {
-    yield takeEvery(actionTypes.DELETE_JOB_VACANCY, deletejobVacancySaga);
+function* watchDeleteJobVacancy() {
+    yield takeEvery('jobVacanciesReducer/deleteJobVacancy', deletejobVacancySaga);
 }
 
-function* watchUpdateJobVacancy () {
-    yield takeEvery(actionTypes.UPDATE_JOB_VACANCY, updateJobVacancySaga);
+function* watchUpdateJobVacancy() {
+    yield takeEvery('jobVacanciesReducer/updateJobVacancy', updateJobVacancySaga);
 }
 
-function* watchCreateJobVacancy () {
-    yield takeEvery(actionTypes.CREATE_JOB_VACANCY, createJobVacancySaga);
+function* watchCreateJobVacancy() {
+    yield takeEvery('jobVacanciesReducer/addJobVacancy', createJobVacancySaga);
 }
 
 
