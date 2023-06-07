@@ -14,9 +14,9 @@ import ViewJobVacancies from "./Features/EmployeesProfiles/JobVacancies/ViewJobV
 import ViewJobApplications from "./Features/EmployeesProfiles/Job Application/view all/ViewJobApplications";
 import ViewRoles from "./Features/Roles/ViewRoles";
 import ChangeEmployeePermissions from "./Features/Roles/ChangeEmployeePermissions";
-import ViewShifts from './Features/Attendance/Shifts/ViewShifts';
-import ViewBiometricDevices from './Features/Attendance/BiometricDevices/ViewBiometricDevices';
-import ViewTimeSheetLog from './Features/Attendance/TimeSheetLog/ViewTimeSheetLog';
+import ViewShifts from "./Features/Attendance/Shifts/ViewShifts";
+import ViewBiometricDevices from "./Features/Attendance/BiometricDevices/ViewBiometricDevices";
+import ViewTimeSheetLog from "./Features/Attendance/TimeSheetLog/ViewTimeSheetLog";
 import ViewEmployeesProfiles from "./Features/EmployeesProfiles/Profile/view all/ViewEmployeesProfiles";
 import ViewEmployeeProfile from "./Features/EmployeesProfiles/Profile/view-edit one/ViewEmployeeProfile";
 import ViewJobApplication from "./Features/EmployeesProfiles/Job Application/view one/ViewJobApplication";
@@ -30,8 +30,8 @@ function App(props) {
         locale={arEG}
         theme={{
           token: {
-            fontFamily: 'cairo',
-            colorPrimary: '#0c3ded',
+            fontFamily: "cairo",
+            colorPrimary: "#0c3ded",
           },
           components: {
             Button: {
@@ -53,46 +53,30 @@ function App(props) {
             {/* </Route> */}
 
             <Route path="/departments" element={<ViewDepartments />} />
-
+            <Route path="/jobVacancies" element={<ViewJobVacancies />} />
+            <Route path="employees">
+              <Route index element={<ViewEmployeesProfiles />} />
+              <Route path="profile" element={<ViewEmployeeProfile />} />
+            </Route>
             <Route path="jobApplications">
               <Route index element={<ViewJobApplications />} />
               <Route path="add" element={<JobApplicationMultiStepForm />} />
               <Route path="jobApplication" element={<ViewJobApplication />} />
             </Route>
-
-            <Route path="employees">
-              <Route index element={<ViewEmployeesProfiles />} />
-              <Route path="profile" element={<ViewEmployeeProfile />} />
-            </Route>
             <Route path="log">
               <Route index element={<Log />} />
             </Route>
-
-            {/*Dummy Routes*/}
-            <Route
-              path="/jobVacancies"
-              element={
-                <div>
-                  <Button>Users</Button>
-                </div>
-              }
-            />
-            {/*Dummy Routes*/}
-            <Route path="/test" element={<Log />} />
-            <Route
-              path="/jobVacancies/add"
-              element={<div>Add job Vacancy</div>}
-            />
-            <Route path="/employees" element={<div>All Emplyees</div>} />
-            <Route path="/departments" element={<ViewDepartments />} />
-            <Route path="/jobVacancies" element={<ViewJobVacancies />} />
-
-            <Route path="/jobApplications" element={<ViewJobApplications />} />
             <Route path="/roles" element={<ViewRoles />} />
             <Route
               path="/changeEmployeePermissions"
               element={<ChangeEmployeePermissions />}
             />
+            <Route path="/shifts" element={<ViewShifts />} />
+            <Route
+              path="/biometricDevices"
+              element={<ViewBiometricDevices />}
+            />
+            <Route path="/timeSheetLog" element={<ViewTimeSheetLog />} />
 
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

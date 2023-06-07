@@ -3,11 +3,6 @@ import {
   ApartmentOutlined,
   LockOutlined,
   ClockCircleOutlined,
-} from "@ant-design/icons";
-import {
-  DashboardOutlined,
-  ApartmentOutlined,
-  LockOutlined,
   FileDoneOutlined,
   HistoryOutlined,
 } from "@ant-design/icons";
