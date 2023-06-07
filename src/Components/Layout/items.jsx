@@ -5,6 +5,7 @@ import {
   ClockCircleOutlined,
   FileDoneOutlined,
   HistoryOutlined,
+  ProfileOutlined,
 } from "@ant-design/icons";
 
 export const items = [
@@ -57,7 +58,7 @@ export const items = [
   },
   {
     text: "الموظّفين",
-    icon: <FileDoneOutlined />,
+    icon: <ProfileOutlined />,
     path: "/employees",
   },
   {
