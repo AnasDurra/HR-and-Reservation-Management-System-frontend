@@ -10,17 +10,9 @@ import {
   updateJobApplication,
 } from "../../../../redux/Features/Employee Profile/Job application/slice";
 import Spinner from "../../../../Components/Spinner/Spinner";
-import {
-  SettingOutlined,
-} from "@ant-design/icons";
-import {
-  Button,
-  Dropdown,
-  Modal,
-  Select,
-  Space,
-  Tag,
-} from "antd";
+import { SettingOutlined } from "@ant-design/icons";
+import { Button, Dropdown, Modal, Select, Space, Tag } from "antd";
+import CreateProfileDrawer from "../components/CreateProfileDrawer";
 
 const colorMapping = {
   1: "#FFA500",
@@ -37,6 +29,7 @@ const statusMapping = {
 
 const ViewJobApplication = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [form] = useForm();
   const dispatch = useDispatch();
@@ -76,6 +69,12 @@ const ViewJobApplication = () => {
   const handleModalCancel = () => {
     setIsModalOpen(false);
   };
+  const openDrawer = () => {
+    setIsDrawerOpen(true);
+  };
+  const closeDrawer = () => {
+    setIsDrawerOpen(false);
+  };
 
   const handleRemoveField = (fieldName) => {
     const fields = form.getFieldsValue();
@@ -104,7 +103,7 @@ const ViewJobApplication = () => {
   useEffect(() => {
     form.resetFields();
     form.setFieldsValue(jobApplication?.employee_data);
-   /*  if (isEditMode) {
+    /*  if (isEditMode) {
       toggleEditMode();
     } */
   }, [jobApplication]);
@@ -186,8 +185,13 @@ const ViewJobApplication = () => {
       ],
     },
     {
-      label: <span onClick={deleteJobApplication}> حذف</span>,
+      label: <span onClick={openDrawer}>إنشاء حساب موظَف</span>,
       key: "3",
+      disabled: jobApplication?.application_status?.id !== 2,
+    },
+    {
+      label: <span onClick={deleteJobApplication}> حذف</span>,
+      key: "4",
       danger: true,
     },
   ];
@@ -297,6 +301,11 @@ const ViewJobApplication = () => {
           </Select>
         </div>
       </Modal>
+      <CreateProfileDrawer
+        employeeName={jobApplication?.employee_data?.personal_data?.full_name}
+        open={isDrawerOpen}
+        onClose={closeDrawer}
+      />
     </Spinner>
   );
 };

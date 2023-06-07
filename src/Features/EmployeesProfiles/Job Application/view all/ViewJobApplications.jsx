@@ -8,6 +8,7 @@ import {
   getJobApplications,
 } from "../../../../redux/Features/Employee Profile/Job application/slice";
 import "./ViewJobApplications.css";
+import CreateProfileDrawer from "../components/CreateProfileDrawer";
 const colorMapping = {
   1: "#FFA500",
   2: "#008000",
@@ -72,25 +73,6 @@ function ViewJobApplications(props) {
       render: (_, { status }) => (
         <Tag color={colorMapping[status]}>{statusMapping[status]}</Tag>
       ),
-    },
-    {
-      title: "العمليات",
-      key: "actions",
-      /*   render: (record) => {
-        return (
-          <div id="actions">
-            <Button
-              type="link"
-              onClick={() => {
-                navigate(`jobApplication?id=${record.id}`);
-              }}
-            >
-              استعراض
-            </Button>
-          </div>
-        );
-      }, */
-      width: "10%",
     },
   ];
 

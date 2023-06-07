@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Table, Tag } from "antd";
 import EmployeeMiniCard from "./components/EmployeeMiniCard";
 import { ProfileOutlined, WarningOutlined } from "@ant-design/icons";
 import "./log.css";
 import Filter from "./components/Filter";
+import CreateProfileDrawer from "../EmployeesProfiles/Job Application/components/CreateProfileDrawer";
 const columns = [
   {
     title: (
@@ -226,19 +227,35 @@ const getColorClass = (index) => {
 };
 
 const Log = () => {
+  const [open, setOpen] = useState(false);
   return (
-    <div style={{ display: "flex", flexDirection: "row" }}>
-      <Table
-        className="my-table"
-        columns={columns}
-        dataSource={data}
-        pagination={true}
-        rowClassName={(record, index) => getColorClass(index)}
-      />{" "}
-      <div style={{  width: "22%" , marginRight:"0.5rem"}}>
-        <Filter />
+    <>
+      <CreateProfileDrawer
+        onClose={() => {
+          setOpen(!open);
+        }}
+        open={open}
+      employeeName={"انس ريش"}
+      />
+
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        <Table
+          className="my-table"
+          columns={columns}
+          dataSource={data}
+          pagination={true}
+          rowClassName={(record, index) => getColorClass(index)}
+        />{" "}
+        <div style={{ width: "22%", marginRight: "0.5rem" }}>
+          <Filter />
+        </div>
+        <Button
+          onClick={() => {
+            setOpen(!open);
+          }}
+        ></Button>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,15 +1,5 @@
-import { Card, Form, Image, Segmented } from "antd";
-import { useEffect, useState } from "react";
+import { Form, Image, Segmented } from "antd";
 import "./style.css";
-import GeneralInfoForm from "../../Job Application/add/sub-forms/GeneralInfoForm";
-import GeneralInfo from "./sections/GeneralInfo";
-import DrivingLicense from "./sections/DrivingLicense";
-import Employment from "./sections/Employment";
-import Skills from "./sections/Skills";
-import Education from "./sections/Education";
-import "./style.css";
-import Certificates from "./sections/Certificates";
-import Additional from "./sections/Additional";
 import ViewEditJobApplicationForm from "./components/ViewEditJobApplicationForm";
 const ViewEmployeeProfile = (props) => {
   const [form] = Form.useForm();

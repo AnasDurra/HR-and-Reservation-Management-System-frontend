@@ -1,20 +1,33 @@
-import { Col, Divider, Form, Row, Select } from "antd";
-import { useState } from "react";
+import {
+  Button,
+  Col,
+  Divider,
+  Form,
+  Input,
+  Row,
+  Select,
+  Space,
+  Drawer,
+} from "antd";
+import { useForm } from "antd/lib/form/Form";
+import { useEffect, useState } from "react";
 
-function CreateProfileDrawer({ onClose}) {
+function CreateProfileDrawer({ onClose, open, employeeName }) {
   const [form] = useForm();
+  console.log(open);
+
+  useEffect(() => {
+    //TODO fetch departments & job titles & schedules
+  }, []);
 
   const createProfile = () => {};
   return (
     <Drawer
-      title={"إنشاء حساب موظَف"}
+      title={`إنشاء حساب موظّف ( ${employeeName} )`}
       placement="top"
-      width={"100%"}
-      height={"80%"}
-      size={size}
       onClose={onClose}
       open={open}
-      extra={
+      footer={
         <Space>
           <Button onClick={onClose}>الغاء</Button>
           <Button type="primary" onClick={createProfile}>
@@ -22,34 +35,43 @@ function CreateProfileDrawer({ onClose}) {
           </Button>
         </Space>
       }
+      height={"60%"}
     >
-      <Form form={form} layout="horizontal">
+      <Form
+        form={form}
+        layout="vertical"
+        //  style={{ width: "50%", height: "50%" }}
+      >
         <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item label="اسم المستخدم">
+          <Col span={8}>
+            <Form.Item
+              label="اسم المستخدم"
+              validateStatus="error"
+              help="قم بإدخال اسم مستخدم غير موجود مسبقاَ في النظام"
+            >
               <Input />
             </Form.Item>
           </Col>
-          <Col span={12}>
+          <Col span={8}>
             <Form.Item label="كلمة السر">
               <Input />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col span={12}>
+          <Col span={8}>
             <Form.Item label="القسم">
               <Select />
             </Form.Item>
           </Col>
-          <Col span={12}>
+          <Col span={8}>
             <Form.Item label="المسمَى الوظيفي">
               <Select />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col span={12}>
+          <Col span={8}>
             <Form.Item label="جدول الدوام">
               <Select />
             </Form.Item>
