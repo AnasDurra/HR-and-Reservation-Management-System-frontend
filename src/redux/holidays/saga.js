@@ -3,6 +3,7 @@ import AxiosInstance from "../utils/axiosInstance";
 import { getHolidaysSuccess, getHolidaysFailed } from "./reducer";
 import { addHolidaySuccess, addHolidayFailed } from "./reducer";
 import { deleteHolidaySuccess, deleteHolidayFailed } from "./reducer";
+import { updateHolidaySuccess, updateHolidayFailed } from "./reducer";
 
 const getHolidays = (payload) => {
     return AxiosInstance().get('holidays');
@@ -14,6 +15,10 @@ const addHoliday = (payload) => {
 
 const deleteHoliday = (payload) => {
     return AxiosInstance().delete(`holidays/${payload.id}`);
+}
+
+const updateHoliday = (payload) => {
+    return AxiosInstance().put(`holidays/${payload.id}`, payload);
 }
 
 function* getHolidaysSaga({ payload }) {
@@ -46,6 +51,16 @@ function* deleteHolidaySaga({ payload }) {
     }
 }
 
+function* updateHolidaySaga({ payload }) {
+    try {
+        const response = yield call(updateHoliday, payload);
+        yield put(updateHolidaySuccess(response.data.data));
+    }
+    catch (error) {
+        yield put(updateHolidayFailed(error));
+    }
+}
+
 function* watchGetHolidays() {
     yield takeEvery('holidaysReducer/getHolidays', getHolidaysSaga);
 }
@@ -58,12 +73,17 @@ function* watchDeleteHoliday() {
     yield takeEvery('holidaysReducer/deleteHoliday', deleteHolidaySaga);
 }
 
+function* watchUpdateHoliday() {
+    yield takeEvery('holidaysReducer/updateHoliday', updateHolidaySaga);
+}
+
 
 function* HolidaysSaga() {
     yield all([
         fork(watchGetHolidays),
         fork(watchAddHoliday),
         fork(watchDeleteHoliday),
+        fork(watchUpdateHoliday),
     ]);
 }
 

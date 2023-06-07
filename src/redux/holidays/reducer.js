@@ -26,7 +26,9 @@ export const holidaysReducer = createSlice({
             state.error = null;
         },
         addHolidaySuccess: (state, action) => {
-            // state.holidays = action.payload;
+            const holidaysAfterAdd = state.holidays;
+            holidaysAfterAdd.unshift(action.payload);
+            state.holidays = holidaysAfterAdd;
             state.loading = false;
         },
         addHolidayFailed: (state, action) => {
@@ -39,10 +41,27 @@ export const holidaysReducer = createSlice({
             state.error = null;
         },
         deleteHolidaySuccess: (state, action) => {
-            // state.holidays = action.payload;
+            let holidaysAfterDelete = state.holidays;
+            holidaysAfterDelete = holidaysAfterDelete.filter(h => h.holiday_id !== action.payload.holiday_id);
+            state.holidays = holidaysAfterDelete;
             state.loading = false;
         },
         deleteHolidayFailed: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        updateHoliday: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        updateHolidaySuccess: (state, action) => {
+            let holidaysAfterUpdate = state.holidays;
+            holidaysAfterUpdate = holidaysAfterUpdate.map(h => h.holiday_id !== action.payload.holiday_id ? h : action.payload);
+            state.holidays = holidaysAfterUpdate;
+            state.loading = false;
+        },
+        updateHolidayFailed: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },
@@ -59,6 +78,9 @@ export const {
     deleteHoliday,
     deleteHolidaySuccess,
     deleteHolidayFailed,
+    updateHoliday,
+    updateHolidaySuccess,
+    updateHolidayFailed
 } = holidaysReducer.actions;
 
 export default holidaysReducer.reducer;

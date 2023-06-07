@@ -1,18 +1,19 @@
-import { DeleteOutlined } from "@ant-design/icons";
-import { Button, DatePicker, Form, Input, Modal, Switch, Table, Tag, Typography } from "antd";
+import { DeleteOutlined, SwapOutlined, SwitcherOutlined } from "@ant-design/icons";
+import { Button, Modal, Table, Tag } from "antd";
 import './Holidays.css';
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { getHolidays } from "../../../../redux/holidays/reducer";
+import { getHolidays, addHoliday, deleteHoliday, updateHoliday } from "../../../../redux/holidays/reducer";
 import HolidayForm from "./HolidayForm";
+import dayjs from "dayjs";
 
 export default function Holidays({ open, setOpen }) {
 
     const holidays = useSelector(state => state.holidaysReducer.holidays);
-
     const dispatch = useDispatch();
 
-    const [addHoliday, setAddHoliday] = useState(false);
+    const [isAddHoliday, setIsAddHoliday] = useState(false);
+    const [selectedHoliday, setSelectedHoliday] = useState(null);
 
 
     useEffect(() => {
@@ -32,9 +33,26 @@ export default function Holidays({ open, setOpen }) {
         },
         {
             title: 'متكررة',
-            dataIndex: 'is_recurring',
             key: 'is_recurring',
-            render: (is_recurring) => is_recurring ? <Tag color="green">نعم</Tag> : <Tag color="red">لا</Tag>
+            render: (record) => {
+                return (
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
+                        <Tag
+                            color={record.is_recurring ? "green" : "red"}
+                        >
+                            {record.is_recurring ? 'نعم' : 'لا'}
+                        </Tag>
+                        <SwapOutlined
+                            onClick={() =>
+                                dispatch(updateHoliday({
+                                    id: record.holiday_id,
+                                    is_recurring: !record.is_recurring,
+                                }))
+                            }
+                        />
+                    </div>
+                );
+            }
         },
         {
             title: 'العمليات',
@@ -43,20 +61,11 @@ export default function Holidays({ open, setOpen }) {
                 return (
                     <div id="actions">
                         <DeleteOutlined onClick={() => {
-                            // setSelectedShift(record);
-                            // setOpenDeleteModal(true);
+                            setSelectedHoliday(record);
+                            dispatch(deleteHoliday({
+                                id: record.holiday_id,
+                            }));
                         }} />
-                        {/* <EditOutlined onClick={() => {
-                            setSelectedShift(record);
-                            console.log(record);
-                            let time = [];
-                            time = time.concat(dayjs(record.time_in, 'HH:mm:ss'), dayjs(record.time_out, 'HH:mm:ss'));
-                            form.setFieldsValue({
-                                name: record.name,
-                                time: time
-                            })
-                            setOpenShiftModal(true);
-                        }} /> */}
                     </div>
                 );
             },
@@ -65,7 +74,13 @@ export default function Holidays({ open, setOpen }) {
     ];
 
     const onFinish = (data) => {
-        console.log(data);
+        data.date = formatTime(data.date);
+        dispatch(addHoliday(data));
+        setIsAddHoliday(false);
+    }
+
+    const formatTime = (date) => {
+        return dayjs(date.$d).format('YYYY-MM-DD');
     }
 
     return (
@@ -82,15 +97,15 @@ export default function Holidays({ open, setOpen }) {
                 title={
                     <Button
                         onClick={() => {
-                            setAddHoliday(!addHoliday);
+                            setIsAddHoliday(!isAddHoliday);
                         }}
                     >
-                        {addHoliday ? 'العودة' : 'إضافة إجازة'}
+                        {isAddHoliday ? 'العودة' : 'إضافة إجازة'}
                     </Button>}
-                onCancel={() => { setOpen(false); setAddHoliday(false); }}
+                onCancel={() => { setOpen(false); setIsAddHoliday(false); }}
                 footer={null}
             >
-                {!addHoliday ?
+                {!isAddHoliday ?
                     <Table
                         rowKey="holiday_id"
                         columns={columns}
