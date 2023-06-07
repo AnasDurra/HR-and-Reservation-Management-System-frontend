@@ -3,6 +3,10 @@ import UserSaga from './user/saga';
 import DepartmentsSaga from './departments/saga';
 import JobVacanciesSaga from './jobVacancies/saga';
 import RolesSaga from './roles/saga';
+import ShiftsSaga from './shifts/saga';
+import BiometricDevicesSaga from './biometricDevices/saga';
+import TimeSheetSaga from './timeSheet/saga';
+import HolidaysSaga from './holidays/saga';
 
 export default function* rootSaga() {
     yield all([
@@ -10,5 +14,9 @@ export default function* rootSaga() {
         DepartmentsSaga(),
         JobVacanciesSaga(),
         RolesSaga(),
+        ShiftsSaga(),
+        BiometricDevicesSaga(),
+        TimeSheetSaga(),
+        HolidaysSaga(),
     ]);
 }

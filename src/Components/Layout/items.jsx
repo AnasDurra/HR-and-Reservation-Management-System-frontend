@@ -1,4 +1,4 @@
-import { DashboardOutlined, ApartmentOutlined, LockOutlined } from "@ant-design/icons";
+import { DashboardOutlined, ApartmentOutlined, LockOutlined, ClockCircleOutlined } from "@ant-design/icons";
 
 export const items = [
     {
@@ -24,5 +24,23 @@ export const items = [
                 path: '/changeEmployeePermissions',
             },
         ],
+    },
+    {
+        text: 'إدارة الدوام',
+        icon: <ClockCircleOutlined />,
+        items: [
+            {
+                text: 'فترات العمل',
+                path: '/shifts'
+            },
+            {
+                text: 'اجهزة البصمات',
+                path: '/biometricDevices'
+            },
+            {
+                text: 'سجل الدوام',
+                path: '/timeSheetLog'
+            },
+        ]
     }
 ];

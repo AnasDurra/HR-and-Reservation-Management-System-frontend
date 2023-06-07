@@ -1,0 +1,84 @@
+import { Button, DatePicker, Form, Modal, Select, TimePicker } from "antd";
+import dayjs from "dayjs";
+
+export default function MakeVacationRequestModal({ open, onFinish, handleCancel, action, form }) {
+
+    return (
+        <Modal
+            // zIndex={1200}
+            centered
+            open={open}
+            title="تقديم طلب إجازة"
+            onCancel={handleCancel}
+            footer={null}
+        >
+            <Form
+                form={form}
+                size='middle'
+                name="vacationForm"
+                onFinish={onFinish}
+                autoComplete="off"
+            >
+
+                <Form.Item
+                    name={action ? "attendance_date" : "leave_date"}
+                    rules={[
+                        {
+                            required: true,
+                            message: 'الرجاء ادخال التاريخ',
+                        },
+                    ]}
+                >
+                    <DatePicker.RangePicker placeholder='التاريخ' />
+                </Form.Item>
+
+                <Form.Item
+                    name="emp_id"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'الرجاء اختيار الموظف',
+                        },
+                    ]}
+                >
+                    <Select
+                        showSearch
+                        placeholder="اختيار الموظف"
+                        filterOption={(input, option) => {
+                            console.log(option);
+                            return (option?.children ?? '').toLowerCase().includes(input.toLowerCase())
+                        }
+                        }
+                    >
+                        {employees.map((e) => <Option value={e.id} key={e.id}>{e.name}</Option>)}
+                    </Select>
+                </Form.Item>
+
+                <Form.Item
+                    name={action ? "attendance_time" : "leave_time"}
+                    rules={[
+                        {
+                            required: true,
+                            message: 'الرجاء ادخال الوقت',
+                        },
+                    ]}
+                >
+                    <TimePicker defaultValue={dayjs().second(0)} placeholder='الوقت' />
+                </Form.Item>
+
+
+                <Form.Item>
+                    <div className="timeSheetModal">
+                        <Button type="primary" htmlType="submit">
+                            تأكيد
+                        </Button>
+                        <Button key="back" onClick={handleCancel}>
+                            إلغاء
+                        </Button>
+
+                    </div>
+                </Form.Item>
+            </Form>
+        </Modal>
+    );
+}

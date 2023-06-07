@@ -14,6 +14,9 @@ import ViewEmployeesPrfiles from './Features/EmployeesProfiles/Apps-Profiles/Vie
 import ViewJobApplications from './Features/EmployeesProfiles/Apps-Profiles/ViewJobApplications';
 import ViewRoles from './Features/Roles/ViewRoles';
 import ChangeEmployeePermissions from './Features/Roles/ChangeEmployeePermissions';
+import ViewShifts from './Features/Attendance/Shifts/ViewShifts';
+import ViewBiometricDevices from './Features/Attendance/BiometricDevices/ViewBiometricDevices';
+import ViewTimeSheetLog from './Features/Attendance/TimeSheetLog/ViewTimeSheetLog';
 
 function App(props) {
 
@@ -25,7 +28,7 @@ function App(props) {
         theme={{
           token: {
             fontFamily: 'cairo',
-            colorPrimary: 'rgb(12, 62, 237);',
+            colorPrimary: '#0c3ded',
           },
           components: {
             Button: {
@@ -53,6 +56,9 @@ function App(props) {
             <Route path='/jobApplications' element={<ViewJobApplications />} />
             <Route path='/roles' element={<ViewRoles />} />
             <Route path='/changeEmployeePermissions' element={<ChangeEmployeePermissions />} />
+            <Route path='/shifts' element={<ViewShifts />} />
+            <Route path='/biometricDevices' element={<ViewBiometricDevices />} />
+            <Route path='/timeSheetLog' element={<ViewTimeSheetLog />} />
 
             <Route path='*' element={<Navigate to='/' />} />
 
