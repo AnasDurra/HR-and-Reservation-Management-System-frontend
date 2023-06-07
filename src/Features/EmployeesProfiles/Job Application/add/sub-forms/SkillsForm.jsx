@@ -285,7 +285,7 @@ const SkillsForm = (props) => {
           </Col>
         </Row>
         {props.isAdditionalLanguage && (
-          <Form.List name="languages" initialValue={""}>
+          <Form.List name="additionalLanguages" initialValue={""}>
             {(fields, { add, remove }) => {
               if (fields.length === 0) {
                 add();
@@ -309,7 +309,7 @@ const SkillsForm = (props) => {
                           <Form.Item
                             {...restField}
                             label="اللغة"
-                            name={[name, "name"]}
+                            name={[name, "language_name"]}
                             rules={languagesRules.languageName}
                           >
                             <Input />

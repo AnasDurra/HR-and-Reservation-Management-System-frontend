@@ -21,7 +21,7 @@ import {
 } from "@ant-design/icons/lib/icons";
 import {
   addressRules,
-  dependantsRules,
+  dependentsRules,
   imageAllowedTypes,
   jobDataRules,
   passportRules,
@@ -169,7 +169,7 @@ function GeneralInfoForm(props) {
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label="البريد"
+              label="رقم البريد"
               name={["address", "postal_code"]}
               rules={addressRules.postalCode}
             >
@@ -362,7 +362,7 @@ function GeneralInfoForm(props) {
           </Col>
         </Row>
         {props.isDependent && (
-          <Form.List name="dependants" initialValue={""}>
+          <Form.List name="dependents" initialValue={""}>
             {(fields, { add, remove }) => {
               if (fields.length === 0) {
                 add();
@@ -386,7 +386,7 @@ function GeneralInfoForm(props) {
                             {...restField}
                             label="الاسم"
                             name={[name, "name"]}
-                            rules={dependantsRules.name}
+                            rules={dependentsRules.name}
                           >
                             <Input />
                           </Form.Item>
@@ -396,7 +396,7 @@ function GeneralInfoForm(props) {
                             {...restField}
                             label="القرابة"
                             name={[name, "relationship"]}
-                            rules={dependantsRules.relationship}
+                            rules={dependentsRules.relationship}
                           >
                             <Input />
                           </Form.Item>
@@ -406,7 +406,7 @@ function GeneralInfoForm(props) {
                             {...restField}
                             label="العمر"
                             name={[name, "age"]}
-                            rules={dependantsRules.age}
+                            rules={dependentsRules.age}
                           >
                             <Input />
                           </Form.Item>
@@ -418,7 +418,7 @@ function GeneralInfoForm(props) {
                             {...restField}
                             label="العنوان"
                             name={[name, "address"]}
-                            rules={dependantsRules.address}
+                            rules={dependentsRules.address}
                           >
                             <Input />
                           </Form.Item>

@@ -64,7 +64,7 @@ const EmploymentForm = (props) => {
             layout="horizontal"
             onChange={debouncedValidateForm}
           >
-            <Form.List name="prevEmployments" initialValue={""}>
+            <Form.List name="previous_employment_record" initialValue={""}>
               {(fields, { add, remove }) => {
                 if (fields.length == 0) {
                   add();
@@ -105,7 +105,7 @@ const EmploymentForm = (props) => {
                             <Form.Item
                               {...restField}
                               label="الهاتف"
-                              name={[name, "phone"]}
+                              name={[name, "telephone"]}
                               rules={previousEmploymentRecordRules.telephone}
                             >
                               <Input />

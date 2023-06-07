@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Steps, Button, message, Form, FloatButton, Progress } from "antd";
+import { Steps, Button, message, Form, FloatButton } from "antd";
 import GeneralInfoForm from "./sub-forms/GeneralInfoForm";
 import EmploymentForm from "./sub-forms/EmploymentForm";
 import DrivingLicenseForm from "./sub-forms/DrivingLicenseForm";
@@ -13,7 +13,9 @@ import { useNavigate } from "react-router-dom";
 import "./style.css";
 
 const JobApplicationMultiStepForm = () => {
-  const jobApplicationsState = useSelector((state) => state.jobApplications);
+  const jobApplicationsSlice = useSelector(
+    (state) => state.jobApplicationsSlice
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isMountedRef = useRef(false);
@@ -56,8 +58,6 @@ const JobApplicationMultiStepForm = () => {
   };
 
   const handleSubmit = () => {
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
     var formData = Object.assign(
       {},
       generalInfoForm.getFieldsValue(),
@@ -67,7 +67,6 @@ const JobApplicationMultiStepForm = () => {
       skillsForm.getFieldsValue(),
       additionalForm.getFieldsValue()
     );
-    formData = formatRequestBeforeSend(formData);
 
     dispatch(createJobApplication(formData));
   };
@@ -136,7 +135,7 @@ const JobApplicationMultiStepForm = () => {
 
   useEffect(() => {
     if (isMountedRef.current) {
-      if (jobApplicationsState.loading) {
+      if (jobApplicationsSlice.loading) {
         message.open({
           type: "loading",
           content: "جار الحفظ  ",
@@ -147,7 +146,7 @@ const JobApplicationMultiStepForm = () => {
         });
       } else {
         message.destroy();
-        if (jobApplicationsState.error) {
+        if (jobApplicationsSlice.error) {
           message.open({
             type: "error",
             content: "فشل حفظ الطلب ، أعد المحاولة ",
@@ -169,7 +168,7 @@ const JobApplicationMultiStepForm = () => {
     } else {
       isMountedRef.current = true;
     }
-  }, [jobApplicationsState.loading]);
+  }, [jobApplicationsSlice.loading]);
 
   return (
     <>
@@ -300,7 +299,7 @@ const JobApplicationMultiStepForm = () => {
           />
           <Button
             disabled={
-              true &&
+              false &&
               (!generalInfoFormValidateState ||
                 !employmentFormValidateState ||
                 !drivingLicenseFormValidateState ||

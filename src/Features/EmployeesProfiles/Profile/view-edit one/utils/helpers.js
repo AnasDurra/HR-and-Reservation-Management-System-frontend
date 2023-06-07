@@ -10,6 +10,5 @@ export const downloadFile = (file) => {
       URL.revokeObjectURL(fileUrl); // Release the memory
     } else {
       console.error("Invalid file object");
-      console.log(file);
     }
   };

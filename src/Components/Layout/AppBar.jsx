@@ -6,7 +6,7 @@ function AppBar() {
     return (
         <div className="AppBar">
             <div className='AppBarItem'>
-                <LogoutOutlined onClick={() => console.log('hey')} />
+                <LogoutOutlined onClick={() =>{}} />
             </div>
         </div>
     );

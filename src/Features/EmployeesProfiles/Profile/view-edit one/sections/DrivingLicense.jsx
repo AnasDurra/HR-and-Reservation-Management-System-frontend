@@ -23,19 +23,21 @@ const DrivingLicense = (props) => {
           <Form layout="horizontal" form={props.form}>
             <Row gutter={16}>
               <Col span={2}>
-                <Popconfirm
-                  title={`حذف الشهادة`}
-                  description="هل أنت متأكد من رغبتك بحذف الشهادة ؟"
-                  onConfirm={() => {
-                    props.handleRemoveField("driving_license");
-                    forceUpdate();
-                  }}
-                  okText="نعم"
-                  cancelText="لا"
-                  placement="leftTop"
-                >
-                  <DeleteOutlined className="delete-icon" />
-                </Popconfirm>
+                {props.editMode && (
+                  <Popconfirm
+                    title={`حذف الشهادة`}
+                    description="هل أنت متأكد من رغبتك بحذف الشهادة ؟"
+                    onConfirm={() => {
+                      props.handleRemoveField("driving_license");
+                      forceUpdate();
+                    }}
+                    okText="نعم"
+                    cancelText="لا"
+                    placement="leftTop"
+                  >
+                    <DeleteOutlined className="delete-icon" />
+                  </Popconfirm>
+                )}
               </Col>
               <Col span={16}>
                 <Form.Item

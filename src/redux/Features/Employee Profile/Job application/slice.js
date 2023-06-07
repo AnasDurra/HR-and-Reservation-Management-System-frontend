@@ -1,11 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
+import {
+  formatRequestAfterReceive,
+  formatRequestBeforeSend,
+} from "../../../../Features/EmployeesProfiles/Job Application/utils/helpers";
 
 export const jobApplicationsSlice = createSlice({
   name: "jobApplications",
   initialState: {
-    jobApplications: null,
+    jobApplications: [],
+    pagination: null,
     jobApplication: null,
-    jobApplicationsSlice: null,
     loading: false,
     error: null,
   },
@@ -16,7 +20,7 @@ export const jobApplicationsSlice = createSlice({
     },
     createJobApplicationSuccess: (state, action) => {
       state.loading = false;
-      state.jobApplications.push(action.payload.jobApplications);
+      state.jobApplications.push(action.payload.jobApplication);
     },
     createJobApplicationFail: (state, action) => {
       state.loading = false;
@@ -30,6 +34,7 @@ export const jobApplicationsSlice = createSlice({
     getJobApplicationsSuccess: (state, action) => {
       state.loading = false;
       state.jobApplications = action.payload.jobApplications;
+      state.pagination = action.payload.pagination;
     },
     getJobApplicationsFail: (state, action) => {
       state.loading = false;
@@ -47,6 +52,35 @@ export const jobApplicationsSlice = createSlice({
       state.loading = false;
       state.error = action.payload.error;
     },
+    updateJobApplication: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    updateJobApplicationSuccess: (state, action) => {
+      state.loading = false;
+      state.jobApplication = action.payload.jobApplication;
+    },
+    updateJobApplicationFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+    destroyJobApplications: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    destroyJobApplicationsSuccess: (state, action) => {
+      state.loading = false;
+      state.jobApplications = state.jobApplications.filter(
+        (ja) =>
+          !action.payload.deletedJobApplications
+            .map((ja) => ja.id)
+            .includes(ja.id)
+      );
+    },
+    destroyJobApplicationsFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
   },
 });
 
@@ -60,6 +94,12 @@ export const {
   getJobApplication,
   getJobApplicationSuccess,
   getJobApplicationFail,
+  updateJobApplication,
+  updateJobApplicationSuccess,
+  updateJobApplicationFail,
+  destroyJobApplications,
+  destroyJobApplicationsSuccess,
+  destroyJobApplicationsFail,
 } = jobApplicationsSlice.actions;
 
 export default jobApplicationsSlice.reducer;

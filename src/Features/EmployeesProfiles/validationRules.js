@@ -162,7 +162,7 @@ export const drivingLicenseRules = {
   ],
 };
 
-export const dependantsRules = {
+export const dependentsRules = {
   name: [
     { max: 255, message: "لا يمكن تجاوز 255 حرفًا" },
     { required: true, message: "يرجى تعبئة حقل الاسم" },
@@ -266,6 +266,9 @@ export const educationRules = {
   ],
   educationLevelId: [
     { required: true, message: "يرجى تعبئة حقل مستوى التعليم" },
+  ],
+  duration: [
+    { required: true, message: "يرجى تعبئة حقل مدة الدراسة" },
   ],
 };
 

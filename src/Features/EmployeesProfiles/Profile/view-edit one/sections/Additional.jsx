@@ -2,19 +2,19 @@ import React from "react";
 import { Input, Button, Form, Divider, Row, Col, Select, Empty } from "antd";
 import { PlusOutlined } from "@ant-design/icons/lib/icons";
 import CustomCard from "../components/CustomCard";
-import {
-  convictionsRules,
-  referencesRules,
-} from "../../../validationRules";
+import { convictionsRules, referencesRules } from "../../../validationRules";
 import "../style.css";
 
 const Additional = (props) => {
   return (
     <div className={` ${props.show ? "" : "hidden"}`}>
+    
       <Divider className="divider">
         {" "}
         <span className="divider-text"> المحاكمات</span>
       </Divider>
+
+      <Form.Item name="deleted_convictions" style={{display:"none"}}/>
       <Form.List name="convictions" initialValue={""}>
         {(fields, { add, remove }) => {
           return (
@@ -39,7 +39,31 @@ const Additional = (props) => {
                     deleteTitle={`حذف المحاكمة رقم ${name + 1}`}
                     deleteDescription="هل أنت متأكد من رغبتك بحذف المحاكمة ؟"
                     editMode={props.editMode}
-                    onDelete={() => remove(name)}
+                    onDelete={() => {
+                      const deleted_conviction = props.form.getFieldValue([
+                        "convictions",
+                        name,
+                      ]);
+
+                      if (deleted_conviction.conviction_id) {
+                        var currentDeletedConvictions =
+                          props.form.getFieldValue("deleted_convictions");
+
+                        if (currentDeletedConvictions === undefined)
+                          currentDeletedConvictions = [];
+
+                        const newDeletedConvictions = [
+                          ...currentDeletedConvictions,
+                          deleted_conviction.conviction_id,
+                        ];
+
+                        props.form.setFieldValue(
+                          "deleted_convictions",
+                          newDeletedConvictions
+                        );
+                      }
+                      remove(name);
+                    }}
                   >
                     <Row gutter={1}>
                       <Col span={16}>

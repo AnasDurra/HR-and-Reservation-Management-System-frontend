@@ -364,6 +364,7 @@ const Education = (props) => {
         <span className="divider-text">الدورات التدريبية</span>
       </Divider>
 
+      <Form.Item name="deleted_training_courses" style={{ display: "none" }} />
       <Form.List name="training_courses" initialValue={""}>
         {(fields, { add, remove }) => {
           return (
@@ -390,7 +391,33 @@ const Education = (props) => {
                       title={`كورس رقم ${name + 1}`}
                       deleteTitle={`حذف كورس رقم ${name + 1}`}
                       deleteDescription={"هل انت متأكد من رغبتك بحذف الكورس ؟"}
-                      onDelete={() => remove(name)}
+                      onDelete={() => {
+                        const deletedTrainingCourse = props.form.getFieldValue([
+                          "training_courses",
+                          name,
+                        ]);
+
+                        if (deletedTrainingCourse.training_course_id) {
+                          var currentDeletedTrainingCourses =
+                            props.form.getFieldValue(
+                              "deleted_training_courses"
+                            );
+
+                          if (currentDeletedTrainingCourses === undefined)
+                            currentDeletedTrainingCourses = [];
+
+                          const newDeletedDependents = [
+                            ...currentDeletedTrainingCourses,
+                            deletedTrainingCourse.training_course_id,
+                          ];
+
+                          props.form.setFieldValue(
+                            "deleted_training_courses",
+                            newDeletedDependents
+                          );
+                        }
+                        remove(name);
+                      }}
                     >
                       <Row gutter={16}>
                         <Col span={7}>

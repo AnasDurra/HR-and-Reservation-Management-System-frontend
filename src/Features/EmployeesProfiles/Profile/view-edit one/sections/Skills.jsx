@@ -8,7 +8,10 @@ import "../style.css";
 const Skills = (props) => {
   return (
     <div className={`${props.show ? "" : "hidden"}`}>
-      <Divider className="divider"> مهارات الحاسوب</Divider>
+      <Divider>
+        {" "}
+        <span className="divider-text"> مهارات الحاسوب</span>
+      </Divider>
       <Row gutter={16}>
         <Col span={12}>
           <Form.Item
@@ -136,7 +139,10 @@ const Skills = (props) => {
         </Col>
       </Row>
       <Row gutter={16}></Row>
-      <Divider className="divider"> الّلغات </Divider>
+      <Divider>
+        {" "}
+        <span className="divider-text"> اللغات</span>
+      </Divider>
       <Row gutter={16}>
         <Col span={8}>
           <Form.Item
@@ -230,6 +236,7 @@ const Skills = (props) => {
         </Col>
       </Row>
 
+      <Form.Item name="deleted_languages" style={{ display: "none" }} />
       <Form.List name="languages" initialValue={""}>
         {(fields, { add, remove }) => {
           if (fields.length === 0) {
@@ -244,9 +251,27 @@ const Skills = (props) => {
                     <Col span={2}>
                       <MinusCircleOutlined
                         onClick={() => {
-                          if (slicedFields.length === 1) {
-                            {
-                            }
+                          const deleted_language = props.form.getFieldValue([
+                            "languages",
+                            name,
+                          ]);
+
+                          if (deleted_language.language_id) {
+                            var currentDeletedLanguages =
+                              props.form.getFieldValue("deleted_languages");
+
+                            if (currentDeletedLanguages === undefined)
+                              currentDeletedLanguages = [];
+
+                            const newDeletedLanguages = [
+                              ...currentDeletedLanguages,
+                              deleted_language.language_id,
+                            ];
+
+                            props.form.setFieldValue(
+                              "deleted_languages",
+                              newDeletedLanguages
+                            );
                           }
                           remove(name);
                         }}
@@ -256,7 +281,7 @@ const Skills = (props) => {
                       <Form.Item
                         {...restField}
                         label="اللغة"
-                        name={[name, "name"]}
+                        name={[name, "language_name"]}
                         rules={languagesRules.languageName}
                       >
                         <Input />
@@ -306,11 +331,13 @@ const Skills = (props) => {
               ))}
               <Row gutter={16}>
                 <Col span={12}>
-                  <Form.Item label={"َإضافة لغة أخرى"}>
-                    <Button type="dashed" onClick={() => add()}>
-                      اضافة
-                    </Button>
-                  </Form.Item>
+                  {props.editMode && (
+                    <Form.Item label={"َإضافة لغة أخرى"}>
+                      <Button type="dashed" onClick={() => add()}>
+                        اضافة
+                      </Button>
+                    </Form.Item>
+                  )}
                 </Col>
                 <Col span={12}>
                   <Form.Item label="مهارات اخرى" name="skills">

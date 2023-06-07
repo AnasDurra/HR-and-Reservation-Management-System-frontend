@@ -26,7 +26,7 @@ const ViewEmployeeProfile = (props) => {
       <div className="container">
         <div className="info-container">
           <ViewEditJobApplicationForm
-            editMode={true}
+            editMode={false}
             form={form}
             handleRemoveField={handleRemoveField}
           />

@@ -26,7 +26,6 @@ import useForceUpdate from "../../../Hooks/useForceUpdate";
 import { downloadFile } from "../utils/helpers";
 import "../style.css";
 
-
 const Certificates = (props) => {
   const forceUpdate = useForceUpdate();
 
@@ -59,16 +58,18 @@ const Certificates = (props) => {
                   </Divider>
                   <Row gutter={16}>
                     <Col span={2}>
-                      <Popconfirm
-                        title={`حذف الشهادة رقم ${name + 1}`}
-                        description="هل أنت متأكد من رغبتك بحذف الشهادة ؟"
-                        onConfirm={() => remove(name)}
-                        okText="نعم"
-                        cancelText="لا"
-                        placement="leftTop"
-                      >
-                        <DeleteOutlined className="delete-icon" />
-                      </Popconfirm>
+                      {props.editMode && (
+                        <Popconfirm
+                          title={`حذف الشهادة رقم ${name + 1}`}
+                          description="هل أنت متأكد من رغبتك بحذف الشهادة ؟"
+                          onConfirm={() => remove(name)}
+                          okText="نعم"
+                          cancelText="لا"
+                          placement="leftTop"
+                        >
+                          <DeleteOutlined className="delete-icon" />
+                        </Popconfirm>
+                      )}
                     </Col>
                     <Col span={14}>
                       <Form.Item

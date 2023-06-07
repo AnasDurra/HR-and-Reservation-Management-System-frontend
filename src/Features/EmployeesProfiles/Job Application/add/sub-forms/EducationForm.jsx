@@ -104,7 +104,7 @@ const EducationForm = (props) => {
             <Form.Item
               label="مدّة الدراسة"
               name={["education", 0, "date"]}
-              rules={[{ required: true }]}
+              rules={educationRules.duration}
             >
               <DatePicker.RangePicker onChange={debouncedValidateForm} />
             </Form.Item>
@@ -144,7 +144,8 @@ const EducationForm = (props) => {
             <Form.Item
               label="مدّة الدراسة"
               name={["education", 1, "date"]}
-              rules={[{ required: true }]}
+              rules={educationRules.duration}
+
             >
               <DatePicker.RangePicker  onChange={debouncedValidateForm} />
             </Form.Item>
@@ -193,7 +194,8 @@ const EducationForm = (props) => {
             <Form.Item
               label="مدّة الدراسة"
               name={["education", 2, "date"]}
-              rules={[{ required: true }]}
+              rules={educationRules.duration}
+
             >
               <DatePicker.RangePicker  onChange={debouncedValidateForm} />
             </Form.Item>
@@ -252,7 +254,8 @@ const EducationForm = (props) => {
             <Form.Item
               label="مدّة الدراسة"
               name={["education", 3, "date"]}
-              rules={[{ required: true }]}
+              rules={educationRules.duration}
+
             >
               <DatePicker.RangePicker   onChange={debouncedValidateForm} />
             </Form.Item>
@@ -310,7 +313,8 @@ const EducationForm = (props) => {
             <Form.Item
               label="مدّة الدراسة"
               name={["education", 4, "date"]}
-              rules={[{ required: true }]}
+              rules={educationRules.duration}
+
             >
               <DatePicker.RangePicker  onChange={debouncedValidateForm} />
             </Form.Item>
@@ -368,7 +372,8 @@ const EducationForm = (props) => {
             <Form.Item
               label="مدّة الدراسة"
               name={["education", 5, "date"]}
-              rules={[{ required: true }]}
+              rules={educationRules.duration}
+
             >
               <DatePicker.RangePicker  onChange={debouncedValidateForm} />
             </Form.Item>

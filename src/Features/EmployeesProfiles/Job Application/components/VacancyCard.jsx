@@ -11,12 +11,7 @@ const VacancyCard = ({
   onVacancyNameClick,
 }) => {
   return (
-    <div
-      style={{
-        width: "25%",
-        height: "20%",
-      }}
-    >
+    
       <Card
         style={{
           borderColor: "#0c3eed",
@@ -81,7 +76,7 @@ const VacancyCard = ({
           </Badge.Ribbon>
         </Space>
       </Card>
-    </div>
+   
   );
 };
 export default VacancyCard;

@@ -20,9 +20,11 @@ const Employment = (props) => {
   return (
     <div className={`${props.show ? "" : "hidden"}`}>
       <>
-        <Divider className="divider">
+      {/*   <Divider className="divider">
           <span className="divider-text">الأعمال السابقة</span>
-        </Divider>
+        </Divider> */}
+        <Form.Item name="deleted_previous_employment_record" style={{display:"none"}} />
+
         <Form.List name="previous_employment_record" initialValue={""}>
           {(fields, { add, remove }) => {
             return (
@@ -47,7 +49,36 @@ const Employment = (props) => {
                       deleteTitle={`حذف العمل رقم ${name + 1}`}
                       deleteDescription="هل أنت متأكد من رغبتك بحذف العمل ؟"
                       editMode={props.editMode}
-                      onDelete={() => remove(name)}
+                      onDelete={() => {
+                        const deleted_dependent = props.form.getFieldValue([
+                          "previous_employment_record",
+                          name,
+                        ]);
+
+                        if (deleted_dependent.prev_emp_record_id) {
+                          var currentDeletedPreviousEmploymentRecords =
+                            props.form.getFieldValue(
+                              "deleted_previous_employment_record"
+                            );
+
+                          if (
+                            currentDeletedPreviousEmploymentRecords ===
+                            undefined
+                          )
+                            currentDeletedPreviousEmploymentRecords = [];
+
+                          const newDeletedPreviousEmploymentRecords = [
+                            ...currentDeletedPreviousEmploymentRecords,
+                            deleted_dependent.prev_emp_record_id,
+                          ];
+
+                          props.form.setFieldValue(
+                            "deleted_previous_employment_record",
+                            newDeletedPreviousEmploymentRecords
+                          );
+                        }
+                        remove(name);
+                      }}
                     >
                       <>
                         <Row gutter={16}>
@@ -67,7 +98,7 @@ const Employment = (props) => {
                             <Form.Item
                               {...restField}
                               label="الهاتف"
-                              name={[name, "phone"]}
+                              name={[name, "telephone"]}
                               rules={previousEmploymentRecordRules.telephone}
                             >
                               <Input />

@@ -1,9 +1,12 @@
-import { Button, Table, Tag } from "antd";
+import { Button, Popconfirm, Table, Tag } from "antd";
 import Spinner from "../../../../Components/Spinner/Spinner";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getJobApplications } from "../../../../redux/Features/Employee Profile/Job application/slice";
+import {
+  destroyJobApplications,
+  getJobApplications,
+} from "../../../../redux/Features/Employee Profile/Job application/slice";
 import "./ViewJobApplications.css";
 const colorMapping = {
   1: "#FFA500",
@@ -11,14 +14,32 @@ const colorMapping = {
   3: "#FF0000",
   4: "#808080",
 };
+const statusMapping = {
+  1: "معلَق",
+  2: "مقبول",
+  3: "مرفوض",
+  4: "مؤرشف",
+};
 
 function ViewJobApplications(props) {
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const jobApplicationsSlice = useSelector(
     (state) => state.jobApplicationsSlice
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log(jobApplicationsSlice);
+
+  const handleRowSelection = (selectedRowKeys, selectedRows) => {
+    console.log(selectedRowKeys, selectedRows);
+    setSelectedRowKeys(selectedRowKeys);
+  };
+  const handleDelete = () => {
+    dispatch(destroyJobApplications(selectedRowKeys));
+  };
+  const handlePageChange = (page) => {
+    dispatch(getJobApplications(page));
+  };
+
   useEffect(() => {
     dispatch(getJobApplications());
   }, []);
@@ -49,13 +70,13 @@ function ViewJobApplications(props) {
       key: "status",
       dataIndex: "status",
       render: (_, { status }) => (
-        <Tag color={colorMapping[status]}>{status}</Tag>
+        <Tag color={colorMapping[status]}>{statusMapping[status]}</Tag>
       ),
     },
     {
       title: "العمليات",
       key: "actions",
-      render: (record) => {
+      /*   render: (record) => {
         return (
           <div id="actions">
             <Button
@@ -68,23 +89,20 @@ function ViewJobApplications(props) {
             </Button>
           </div>
         );
-      },
+      }, */
       width: "10%",
     },
   ];
-  const handlePageChange = (page) => {
-    dispatch(getJobApplications(page));
-  };
 
   return (
     <div className="table-container">
       <Spinner loading={jobApplicationsSlice.loading}>
         <Table
-          dataSource={jobApplicationsSlice?.jobApplications?.data}
+          dataSource={jobApplicationsSlice?.jobApplications}
           pagination={{
-            current: jobApplicationsSlice.jobApplications?.meta?.current_page,
-            pageSize: jobApplicationsSlice.jobApplications?.meta?.per_page,
-            total: jobApplicationsSlice.jobApplications?.meta?.total,
+            current: jobApplicationsSlice.pagination?.meta?.current_page,
+            pageSize: jobApplicationsSlice.pagination?.meta?.per_page,
+            total: jobApplicationsSlice.pagination?.meta?.total,
             onChange: handlePageChange,
             showQuickJumper: false,
             showSizeChanger: false,
@@ -101,7 +119,31 @@ function ViewJobApplications(props) {
           rowKey="id"
           size="small"
           columns={columns}
+          rowSelection={{
+            type: "checkbox",
+            selectedRowKeys,
+            onChange: handleRowSelection,
+          }}
+          onRow={(record, _) => {
+            return {
+              onClick: () => navigate(`jobApplication?id=${record.id}`),
+            };
+          }}
         />
+        <div
+          style={{
+            display: selectedRowKeys.length === 0 ? "none" : "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Popconfirm
+            title=" حذف طلبات التوظيف المختارة ؟"
+            onConfirm={handleDelete}
+          >
+            <Button type="primary">حذف</Button>
+          </Popconfirm>
+        </div>
       </Spinner>
 
       <Button

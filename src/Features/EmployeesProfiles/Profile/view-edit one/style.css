@@ -9,7 +9,7 @@
 
 .info-container {
   display: flex;
-  width: 70%;
+  width: 63%;
   flex-direction: column;
 }
 
@@ -20,7 +20,8 @@
   color: #0c3eed;
 }
 .card {
-  background: #f4f4f8;
+  background-color: #f2f5fa;
+
   margin: 1rem;
 }
 
@@ -28,19 +29,25 @@
   color: #f5222d;
   margin-top: 0.5rem;
 }
-
-.ant-form-item-control-input input:disabled {
-  background-color: #f5f5f5;
-  color: #bfbfbf;
-  border-color: #d9d9d9;
-  border-radius: 4px;
-  padding: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  box-shadow: none;
-  cursor: default;
+.ant-form-item-control-input textarea:disabled,
+.ant-form-item-control-input input:disabled,
+.ant-select-disabled .ant-select-selector,
+.ant-picker-disabled .ant-picker-input > input {
+  background-color: #f5f5f5 !important;
+  color: black !important;
+  border-color: #d9d9d9 !important;
+  border-radius: 4px !important;
+  padding: 8px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important ;
+  box-shadow: none !important;
+  padding: 1px 8px !important;
+  cursor: default !important;
 }
 
 .ant-form-item-control-input input:disabled::placeholder {
   color: #bfbfbf;
+}
+.ant-dropdown-menu-submenu-arrow {
+  transform: scaleX(-1);
 }
