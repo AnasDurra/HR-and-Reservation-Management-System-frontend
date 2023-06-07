@@ -9,21 +9,13 @@ import {
   getJobApplication,
   updateJobApplication,
 } from "../../../../redux/Features/Employee Profile/Job application/slice";
-import useForceUpdate from "../../Hooks/useForceUpdate";
 import Spinner from "../../../../Components/Spinner/Spinner";
 import {
-  DownOutlined,
-  DropboxOutlined,
-  EditFilled,
-  EditOutlined,
-  SettingFilled,
   SettingOutlined,
 } from "@ant-design/icons";
 import {
   Button,
   Dropdown,
-  FloatButton,
-  Menu,
   Modal,
   Select,
   Space,
