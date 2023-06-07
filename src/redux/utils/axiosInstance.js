@@ -3,10 +3,11 @@ import authUtil from './authUtil';
 
 const AxiosInstance = () => {
     const axiosInstance = axios.create({
-        baseURL: 'http://127.0.0.1:8000/api/',
+        baseURL: 'https://qiam.dolphin-ag.com/api/',
         headers: {
             //     'Access-Control-Allow-Origin': 'http://127.0.0.1:8000',
             //     'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
+          
         }
     })
 

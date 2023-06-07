@@ -8,7 +8,7 @@
     height: 50px;
     position: fixed;
     top: 0;
-    z-index: 1100;
+    z-index: 1;
     /* background-color: rgba(12, 61, 237, 0.527); */
     /* background-color: rgb(169, 169, 169); */
     /* background-color: #FAFAFA; */
@@ -30,7 +30,7 @@
     position: fixed;
     right: 0;
     top: 0;
-    z-index: 1200;
+    z-index: 2;
     color: rgb(169, 169, 169);
     display: flex;
     flex-direction: column;

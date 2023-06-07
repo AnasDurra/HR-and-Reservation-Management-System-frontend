@@ -1,4 +1,11 @@
 import { DashboardOutlined, ApartmentOutlined, LockOutlined, ClockCircleOutlined } from "@ant-design/icons";
+import {
+  DashboardOutlined,
+ 
+  ApartmentOutlined, LockOutlined,
+  FileDoneOutlined,
+  HistoryOutlined,
+} from "@ant-design/icons";
 
 export const items = [
     {
@@ -43,4 +50,19 @@ export const items = [
             },
         ]
     }
+    {
+      text: "طلبات التوظيف",
+      icon: <FileDoneOutlined />,
+      path: "/jobApplications",
+    },
+    {
+        text:"الموظّفين",
+        icon: <FileDoneOutlined />,
+        path: "/employees",
+      },
+      {
+        text:"سجل الأحداث",
+        icon: <HistoryOutlined />,
+        path: "/log",
+      },
 ];
