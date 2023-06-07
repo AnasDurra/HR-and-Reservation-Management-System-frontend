@@ -15,8 +15,8 @@ export default {
   jobVacanciesReducer: jobVacanciesReducer,
   rolesReducer: rolesReducer,
   jobApplicationsSlice: jobApplicationsReducer,
-    shiftsReducer: shiftsReducer,
-    biometricDevicesReducer: biometricDevicesReducer,
-    timeSheetReducer: timeSheetReducer,
-    holidaysReducer: holidaysReducer,
+  shiftsReducer: shiftsReducer,
+  biometricDevicesReducer: biometricDevicesReducer,
+  timeSheetReducer: timeSheetReducer,
+  holidaysReducer: holidaysReducer,
 };
