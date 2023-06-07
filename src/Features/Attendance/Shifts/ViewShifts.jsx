@@ -5,18 +5,23 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import DeleteModal from "../../../Components/DeleteModal/DeleteModal";
 import Spinner from "../../../Components/Spinner/Spinner";
 import { useSelector, useDispatch } from "react-redux";
-import { getShifts, createShift, deleteShift, updateShift } from "../../../redux/shifts/reducer";
+import { getShifts, createShift, deleteShift, updateShift, getWorkingDays, updateWorkingDays } from "../../../redux/shifts/reducer";
 import ShiftModal from "./ShiftModal";
 import dayjs from "dayjs";
+import WorkingDays from "./WorkingDays";
+import Holidays from "./Holidays/Holidays";
 
 function ViewShifts() {
 
     const shifts = useSelector(state => state.shiftsReducer.shifts);
+    const workingDays = useSelector(state => state.shiftsReducer.workingDays);
     const loading = useSelector(state => state.shiftsReducer.loading);
+
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(getShifts());
+        dispatch(getWorkingDays());
     }, [dispatch]);
 
     const [form] = Form.useForm();
@@ -24,7 +29,7 @@ function ViewShifts() {
     const [selectedShift, setSelectedShift] = useState(null);
 
     const [openShiftModal, setOpenShiftModal] = useState(false);
-
+    const [openHolidays, setOpenHolidays] = useState(false);
 
     const deleteShiftFunction = () => {
         console.log('deleted: ', selectedShift);
@@ -132,9 +137,23 @@ function ViewShifts() {
         },
     ];
 
+    const confirmUpdateWorkingDays = (data) => {
+        dispatch(updateWorkingDays(data));
+    }
+
     return (
         <Spinner loading={loading}>
             <div>
+                <WorkingDays
+                    workingDays={workingDays}
+                    confirmUpdateWorkingDays={confirmUpdateWorkingDays}
+                />
+
+                <Holidays
+                    open={openHolidays}
+                    setOpen={setOpenHolidays}
+                />
+
                 <Table
                     columns={columns}
                     dataSource={shifts}

@@ -1,33 +1,21 @@
 import { Button, DatePicker, Form, Modal, Select, TimePicker } from "antd";
 import dayjs from "dayjs";
 
-export default function TimeSheetModal({ open, onFinish, handleCancel, action, form }) {
-
-    const { Option } = Select;
-    const employees = [
-        {
-            id: 4,
-            name: 'hadi',
-        },
-        {
-            id: 2,
-            name: 'anas',
-        }
-    ];
+export default function MakeVacationRequestModal({ open, onFinish, handleCancel, action, form }) {
 
     return (
         <Modal
             // zIndex={1200}
             centered
             open={open}
-            title={action ? "تسجيل دخول" : "تسجيل مغادرة"}
+            title="تقديم طلب إجازة"
             onCancel={handleCancel}
             footer={null}
         >
             <Form
                 form={form}
                 size='middle'
-                name="timeSheetForm"
+                name="vacationForm"
                 onFinish={onFinish}
                 autoComplete="off"
             >
@@ -41,7 +29,7 @@ export default function TimeSheetModal({ open, onFinish, handleCancel, action, f
                         },
                     ]}
                 >
-                    <DatePicker placeholder='التاريخ' />
+                    <DatePicker.RangePicker placeholder='التاريخ' />
                 </Form.Item>
 
                 <Form.Item
@@ -75,7 +63,7 @@ export default function TimeSheetModal({ open, onFinish, handleCancel, action, f
                         },
                     ]}
                 >
-                    <TimePicker placeholder='الوقت' />
+                    <TimePicker defaultValue={dayjs().second(0)} placeholder='الوقت' />
                 </Form.Item>
 
 

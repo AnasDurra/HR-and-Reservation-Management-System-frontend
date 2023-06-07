@@ -1,6 +1,6 @@
 import { all, fork, takeEvery, call, put } from "redux-saga/effects";
 import AxiosInstance from "../utils/axiosInstance";
-import { getShiftsSuccess, getShiftsFailed, createShiftSuccess, createShiftFailed } from "./reducer";
+import { getShiftsSuccess, getShiftsFailed, createShiftSuccess, createShiftFailed, getWorkingDaysSucces, getWorkingDaysFailed, updateWorkingDaysSucces, updateWorkingDaysFailed } from "./reducer";
 import { deleteShiftSuccess, deleteShiftFailed } from "./reducer";
 import { updateShiftSuccess, updateShiftFailed } from "./reducer";
 
@@ -20,6 +20,13 @@ const updateShift = (payload) => {
     return AxiosInstance().put(`schedules/${payload.id}`, payload);
 }
 
+const getWorkingDays = (payload) => {
+    return AxiosInstance().get('working_days');
+}
+
+const updateWorkingDays = (payload) => {
+    return AxiosInstance().put(`working_days/${payload.id}`, payload);
+}
 
 function* getShiftsSaga({ payload }) {
     try {
@@ -61,6 +68,26 @@ function* updateShiftSaga({ payload }) {
     }
 }
 
+function* getWorkingDaysSaga({ payload }) {
+    try {
+        const response = yield call(getWorkingDays, payload);
+        yield put(getWorkingDaysSucces(response.data.data));
+    }
+    catch (error) {
+        yield put(getWorkingDaysFailed(error));
+    }
+}
+
+function* updateWorkingDaysSaga({ payload }) {
+    try {
+        const response = yield call(updateWorkingDays, payload);
+        yield put(updateWorkingDaysSucces(response.data.data));
+    }
+    catch (error) {
+        yield put(updateWorkingDaysFailed(error));
+    }
+}
+
 function* watchGetShifts() {
     yield takeEvery('shiftsReducer/getShifts', getShiftsSaga);
 }
@@ -77,6 +104,13 @@ function* watchUpdateShift() {
     yield takeEvery('shiftsReducer/updateShift', updateShiftSaga);
 }
 
+function* watchGetWorkingDays() {
+    yield takeEvery('shiftsReducer/getWorkingDays', getWorkingDaysSaga);
+}
+
+function* watchUpdateWorkingDays() {
+    yield takeEvery('shiftsReducer/updateWorkingDays', updateWorkingDaysSaga);
+}
 
 
 function* ShiftsSaga() {
@@ -85,6 +119,8 @@ function* ShiftsSaga() {
         fork(watchCreateShift),
         fork(watchDeleteShift),
         fork(watchUpdateShift),
+        fork(watchGetWorkingDays),
+        fork(watchUpdateWorkingDays),
     ]);
 }
 

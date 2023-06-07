@@ -4,6 +4,7 @@ export const shiftsReducer = createSlice({
     name: 'shiftsReducer',
     initialState: {
         shifts: [],
+        workingDays: [],
         loading: false,
         error: null,
     },
@@ -50,6 +51,7 @@ export const shiftsReducer = createSlice({
             state.error = action.payload;
         },
 
+
         updateShift: (state, action) => {
             state.loading = true;
             state.error = null;
@@ -61,6 +63,32 @@ export const shiftsReducer = createSlice({
         },
         updateShiftFailed: (state, action) => {
             state.loading = false;
+            state.error = action.payload;
+        },
+
+
+        getWorkingDays: (state, action) => {
+            state.loading = true;
+            state.error = null;
+        },
+        getWorkingDaysSucces: (state, action) => {
+            state.loading = false;
+            state.workingDays = action.payload;
+        },
+        getWorkingDaysFailed: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        updateWorkingDays: (state, action) => {
+            state.error = null;
+        },
+        updateWorkingDaysSucces: (state, action) => {
+            const daysAfterUpdate = state.workingDays.map(
+                (day) => day.working_day_id !== action.payload.working_day_id ? day : action.payload);
+            state.workingDays = daysAfterUpdate;
+        },
+        updateWorkingDaysFailed: (state, action) => {
             state.error = action.payload;
         },
     }
@@ -78,7 +106,13 @@ export const {
     deleteShiftFailed,
     updateShift,
     updateShiftSuccess,
-    updateShiftFailed
+    updateShiftFailed,
+    getWorkingDays,
+    getWorkingDaysSucces,
+    getWorkingDaysFailed,
+    updateWorkingDays,
+    updateWorkingDaysSucces,
+    updateWorkingDaysFailed,
 } = shiftsReducer.actions;
 
 export default shiftsReducer.reducer;

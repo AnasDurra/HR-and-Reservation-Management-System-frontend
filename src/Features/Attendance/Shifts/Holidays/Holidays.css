@@ -1,0 +1,12 @@
+.holidaysModal {
+    display: inline;
+}
+
+.switchRecurringContainer {
+    display: flex;
+    align-items: center;
+}
+
+.switchRecurringContainer > * {
+    margin-left: 20px;
+}

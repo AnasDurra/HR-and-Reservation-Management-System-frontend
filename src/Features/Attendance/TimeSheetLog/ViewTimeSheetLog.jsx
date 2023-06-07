@@ -152,6 +152,10 @@ function ViewTimeSheetLog() {
                 <div className="timeSheetLogActionButtons">
                     <Button
                         onClick={() => {
+                            form.setFieldsValue({
+                                attendance_date: dayjs(),
+                                attendance_time: dayjs().second(0),
+                            });
                             setAddAttendance(true);
                             setOpenTimeSheetModal(true);
                         }}
@@ -161,6 +165,10 @@ function ViewTimeSheetLog() {
 
                     <Button
                         onClick={() => {
+                            form.setFieldsValue({
+                                leave_date: dayjs(),
+                                leave_time: dayjs().second(0),
+                            });
                             setAddAttendance(false);
                             setOpenTimeSheetModal(true);
                         }}
