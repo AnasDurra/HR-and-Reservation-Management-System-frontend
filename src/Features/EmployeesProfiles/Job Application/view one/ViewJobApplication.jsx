@@ -11,8 +11,9 @@ import {
 } from "../../../../redux/Features/Employee Profile/Job application/slice";
 import Spinner from "../../../../Components/Spinner/Spinner";
 import { SettingOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Modal, Select, Space, Tag } from "antd";
+import { Button, Dropdown, Modal, Select, Space, Tag, message } from "antd";
 import CreateProfileDrawer from "../components/CreateProfileDrawer";
+import { getJobVacancies } from "../../../../redux/jobVacancies/reducer";
 
 const colorMapping = {
   1: "#FFA500",
@@ -28,19 +29,22 @@ const statusMapping = {
 };
 
 const ViewJobApplication = () => {
+  const dispatch = useDispatch();
+  const [searchParam, setSearchParam] = useSearchParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [selectedVacancy, setSelectedVacancy] = useState(null);
   const [form] = useForm();
-  const dispatch = useDispatch();
-  const [searchParam, setSearchParam] = useSearchParams();
   const jobApplication = useSelector(
     (state) => state.jobApplicationsSlice.jobApplication
   );
   const jobApplicationsSlice = useSelector(
     (state) => state.jobApplicationsSlice
   );
+  const jobVacanciesSlice = useSelector((state) => state.jobVacanciesReducer);
 
+  console.log(jobApplication);
   const toggleEditMode = () => {
     setIsEditMode(!isEditMode);
   };
@@ -59,16 +63,33 @@ const ViewJobApplication = () => {
       toggleEditMode();
     }
   };
+
   const showModal = () => {
+    dispatch(getJobVacancies());
     setIsModalOpen(true);
   };
-
   const handleModalOk = () => {
-    setIsModalOpen(false);
+    if (selectedVacancy === null) {
+      message.warning("الرجاء اختيار الشاغر الوظيفي");
+    } else {
+      dispatch(
+        updateJobApplication({
+          form: {
+            job_application: {
+              job_vacancy_id: selectedVacancy,
+            },
+          },
+          id: searchParam.get("id"),
+        })
+      );
+      setSelectedVacancy(null);
+      setIsModalOpen(false);
+    }
   };
   const handleModalCancel = () => {
     setIsModalOpen(false);
   };
+
   const openDrawer = () => {
     setIsDrawerOpen(true);
   };
@@ -101,16 +122,16 @@ const ViewJobApplication = () => {
   };
 
   useEffect(() => {
+    dispatch(getJobApplication(searchParam.get("id")));
+  }, []);
+
+  useEffect(() => {
     form.resetFields();
     form.setFieldsValue(jobApplication?.employee_data);
     /*  if (isEditMode) {
       toggleEditMode();
     } */
   }, [jobApplication]);
-
-  useEffect(() => {
-    dispatch(getJobApplication(searchParam.get("id")));
-  }, []);
 
   const items = [
     {
@@ -127,7 +148,7 @@ const ViewJobApplication = () => {
       children: [
         {
           key: "2-1",
-          disabled: jobApplication?.application_status?.id === 1,
+          disabled: jobApplication?.application_status?.app_status_id === 1,
           label: (
             <span
               onClick={() => {
@@ -141,7 +162,7 @@ const ViewJobApplication = () => {
         },
         {
           key: "2-2",
-          disabled: jobApplication?.application_status?.id === 2,
+          disabled: jobApplication?.application_status?.app_status_id === 2,
 
           label: (
             <span
@@ -156,7 +177,7 @@ const ViewJobApplication = () => {
         },
         {
           key: "2-3",
-          disabled: jobApplication?.application_status?.id === 3,
+          disabled: jobApplication?.application_status?.app_status_id === 3,
           label: (
             <span
               onClick={() => {
@@ -170,7 +191,7 @@ const ViewJobApplication = () => {
         },
         {
           key: "2-4",
-          disabled: jobApplication?.application_status?.id === 4,
+          disabled: jobApplication?.application_status?.app_status_id === 4,
           label: (
             <span
               onClick={() => {
@@ -187,7 +208,7 @@ const ViewJobApplication = () => {
     {
       label: <span onClick={openDrawer}>إنشاء حساب موظَف</span>,
       key: "3",
-      disabled: jobApplication?.application_status?.id !== 2,
+      disabled: jobApplication?.application_status?.app_status_id !== 2,
     },
     {
       label: <span onClick={deleteJobApplication}> حذف</span>,
@@ -244,9 +265,9 @@ const ViewJobApplication = () => {
                 <h5 style={{ marginTop: 0, padding: 0 }}>حالة الطلب: </h5>
                 <Tag
                   style={{ marginTop: "2%", padding: 0 }}
-                  color={colorMapping[jobApplication?.application_status?.id]}
+                  color={colorMapping[jobApplication?.application_status?.app_status_id]}
                 >
-                  {statusMapping[jobApplication?.application_status?.id]}
+                  {jobApplication?.application_status?.name}
                 </Tag>
               </div>
               <VacancyCard
@@ -288,18 +309,30 @@ const ViewJobApplication = () => {
         centered
         maskClosable
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            margin: "5%",
-          }}
-        >
-          <Select size="large" placeholder="انقر لاختيار الشاغر الجديد">
-            //TODO link the job vacancies
-          </Select>
-        </div>
+        <Spinner loading={jobVacanciesSlice.loading}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              margin: "5%",
+            }}
+          >
+            <Select
+              size="large"
+              placeholder="انقر لاختيار الشاغر الجديد"
+              options={jobVacanciesSlice.jobVacancies.map((jv) => ({
+                value: jv.id,
+                label: jv.name,
+              }))}
+              //TODO search queries on API
+              showSearch
+              onSelect={(selectedVacancy) =>
+                setSelectedVacancy(selectedVacancy)
+              }
+            />
+          </div>
+        </Spinner>
       </Modal>
       <CreateProfileDrawer
         employeeName={jobApplication?.employee_data?.personal_data?.full_name}

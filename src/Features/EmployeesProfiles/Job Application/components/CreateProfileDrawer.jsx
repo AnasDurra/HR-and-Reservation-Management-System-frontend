@@ -11,13 +11,20 @@ import {
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useEffect, useState } from "react";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
+import { getDepartments } from "../../../../redux/departments/slice";
 
 function CreateProfileDrawer({ onClose, open, employeeName }) {
   const [form] = useForm();
+  const dispatch = useDispatch();
+
   console.log(open);
 
   useEffect(() => {
     //TODO fetch departments & job titles & schedules
+    dispatch(getDepartments());
+    
   }, []);
 
   const createProfile = () => {};
@@ -49,12 +56,12 @@ function CreateProfileDrawer({ onClose, open, employeeName }) {
               validateStatus="error"
               help="قم بإدخال اسم مستخدم غير موجود مسبقاَ في النظام"
             >
-              <Input />
+              <Input prefix={<UserOutlined />} />
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item label="كلمة السر">
-              <Input />
+              <Input.Password prefix={<LockOutlined />} />
             </Form.Item>
           </Col>
         </Row>
