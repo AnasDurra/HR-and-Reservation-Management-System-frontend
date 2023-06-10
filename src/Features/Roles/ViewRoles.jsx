@@ -12,6 +12,7 @@ function ViewRoles(props) {
 
     useEffect(() => {
         props.getRoles();
+        props.getPermissions();
     }, []);
 
     const [form] = Form.useForm();
@@ -49,7 +50,6 @@ function ViewRoles(props) {
             delete data.permissions_ids;
         }
         if (Object.keys(data).length !== 0) {
-            console.log(data);
             data.id = selectedRole.job_title_id;
             props.updateRole(data);
         }
@@ -124,7 +124,6 @@ function ViewRoles(props) {
                             setOpenDeleteModal(true);
                         }} />
                         <EditOutlined onClick={() => {
-                            console.log(record);
                             setSelectedRole(record);
                             let permissionsIDS = [];
                             permissionsIDS = permissionsIDS.concat(record.permissions.map(p => p.perm_id));
@@ -142,7 +141,7 @@ function ViewRoles(props) {
     ];
 
     return (
-        <Spinner loading={false}>
+        <Spinner loading={props.loading}>
             <div>
                 <Table
                     columns={columns}

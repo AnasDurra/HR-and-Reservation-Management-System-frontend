@@ -1,76 +1,84 @@
-import { Button, Form, Input, Modal, Select } from "antd";
-import { useEffect } from "react";
+import { Button, DatePicker, Form, Modal, Select, TimePicker } from "antd";
 
-export default function RoleModal({ open, onFinish, handleCancel, role, form, permissions, getPermissions }) {
-
-    useEffect(() => {
-        // getPermissions();
-    }, []);
+export default function AddVacationModal({ form, onFinish, handleCancel, open }) {
 
     const { Option } = Select;
-
+    const employees = [
+        {
+            id: 4,
+            name: 'hadi',
+        },
+        {
+            id: 2,
+            name: 'anas',
+        }
+    ];
 
     return (
         <Modal
-            // zIndex={1500}
+            // zIndex={1200}
             centered
             open={open}
-            title={role ? "تعديل المسمى الوظيفي" : "إضافة مسمى وظيفي"}
+            title={"تسجيل إجازة"}
             onCancel={handleCancel}
             footer={null}
         >
             <Form
-                key={role}
                 form={form}
                 size='middle'
-                name="roleForm"
+                name="addVacationForm"
                 onFinish={onFinish}
                 autoComplete="off"
             >
+
                 <Form.Item
-                    name="name"
+                    name={"attendance_date"}
                     rules={[
                         {
                             required: true,
-                            message: 'الرجاء ادخال اسم المسمى الوظيفي',
+                            message: 'الرجاء ادخال التاريخ',
                         },
                     ]}
                 >
-                    <Input placeholder='اسم المسمى الوظيفي' />
+                    <DatePicker placeholder='التاريخ' />
                 </Form.Item>
 
                 <Form.Item
-                    name="permissions_ids"
+                    name="emp_id"
                     rules={[
                         {
                             required: true,
-                            message: 'الرجاء اختيار الصلاحيات',
+                            message: 'الرجاء اختيار الموظف',
                         },
                     ]}
                 >
                     <Select
-                        mode='multiple'
                         showSearch
-                        placeholder="اختيار الصلاحيات"
+                        placeholder="اختيار الموظف"
                         filterOption={(input, option) => {
                             return (option?.children ?? '').toLowerCase().includes(input.toLowerCase())
                         }
-
                         }
                     >
-                        {permissions.map((p) => <Option value={p.perm_id} key={p.perm_id}>{p.name}</Option>)}
+                        {employees.map((e) => <Option value={e.id} key={e.id}>{e.name}</Option>)}
                     </Select>
                 </Form.Item>
 
-
                 <Form.Item
-                    name="description"
+                    name={"attendance_time"}
+                    rules={[
+                        {
+                            required: true,
+                            message: 'الرجاء ادخال الوقت',
+                        },
+                    ]}
                 >
-                    <Input.TextArea placeholder='الوصف' />
+                    <TimePicker placeholder='الوقت' />
                 </Form.Item>
 
+
                 <Form.Item>
-                    <div className="roleModal">
+                    <div className="timeSheetModal">
                         <Button type="primary" htmlType="submit">
                             تأكيد
                         </Button>

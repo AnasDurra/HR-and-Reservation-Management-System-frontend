@@ -42,7 +42,6 @@ function ViewBiometricDevices() {
     const updateDeviceFunction = (data) => {
         console.log('updated: ', data);
 
-        console.log(data);
         if (data.name === selectedDevice.name) {
             delete data.name;
         }

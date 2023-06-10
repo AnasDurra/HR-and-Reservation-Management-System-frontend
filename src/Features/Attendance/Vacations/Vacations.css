@@ -1,0 +1,12 @@
+.timeSheetLogActionButtons > button {
+    margin: 0px 0px 20px 20px;
+}
+
+.timeSheetModal {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.timeSheetModal > button {
+    margin: 0px 8px 0px 0px;
+}

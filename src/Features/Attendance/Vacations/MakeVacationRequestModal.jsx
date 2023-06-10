@@ -1,7 +1,7 @@
 import { Button, DatePicker, Form, Modal, Select, TimePicker } from "antd";
 import dayjs from "dayjs";
 
-export default function MakeVacationRequestModal({ open, onFinish, handleCancel, action, form }) {
+export default function MakeVacationRequestModal({ open, onFinish, handleCancel, form }) {
 
     return (
         <Modal
@@ -21,7 +21,7 @@ export default function MakeVacationRequestModal({ open, onFinish, handleCancel,
             >
 
                 <Form.Item
-                    name={action ? "attendance_date" : "leave_date"}
+                    name={"attendance_date"}
                     rules={[
                         {
                             required: true,
@@ -33,29 +33,7 @@ export default function MakeVacationRequestModal({ open, onFinish, handleCancel,
                 </Form.Item>
 
                 <Form.Item
-                    name="emp_id"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'الرجاء اختيار الموظف',
-                        },
-                    ]}
-                >
-                    <Select
-                        showSearch
-                        placeholder="اختيار الموظف"
-                        filterOption={(input, option) => {
-                            console.log(option);
-                            return (option?.children ?? '').toLowerCase().includes(input.toLowerCase())
-                        }
-                        }
-                    >
-                        {employees.map((e) => <Option value={e.id} key={e.id}>{e.name}</Option>)}
-                    </Select>
-                </Form.Item>
-
-                <Form.Item
-                    name={action ? "attendance_time" : "leave_time"}
+                    name={"attendance_time"}
                     rules={[
                         {
                             required: true,

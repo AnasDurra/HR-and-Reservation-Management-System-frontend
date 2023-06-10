@@ -57,7 +57,6 @@ export default function TimeSheetModal({ open, onFinish, handleCancel, action, f
                         showSearch
                         placeholder="اختيار الموظف"
                         filterOption={(input, option) => {
-                            console.log(option);
                             return (option?.children ?? '').toLowerCase().includes(input.toLowerCase())
                         }
                         }

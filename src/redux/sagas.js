@@ -8,6 +8,7 @@ import BiometricDevicesSaga from './biometricDevices/saga';
 import TimeSheetSaga from './timeSheet/saga';
 import HolidaysSaga from './holidays/saga';
 import jobApplicationsSaga from './Features/Employee Profile/Job application/saga';
+import VacationsSaga from './vacations/saga';
 
 export default function* rootSaga() {
     yield all([
@@ -19,6 +20,7 @@ export default function* rootSaga() {
         BiometricDevicesSaga(),
         TimeSheetSaga(),
         HolidaysSaga(),
-        jobApplicationsSaga()
+        jobApplicationsSaga(),
+        VacationsSaga(),
     ]);
 }

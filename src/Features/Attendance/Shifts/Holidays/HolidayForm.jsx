@@ -50,7 +50,6 @@ export default function HolidayForm({ onFinish }) {
                     <Typography>متكررة :</Typography>
                     <Switch
                         onChange={(value) => {
-                            console.log(value);
                             form.setFieldsValue({
                                 is_recurring: value
                             });

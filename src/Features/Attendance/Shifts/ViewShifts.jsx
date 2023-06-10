@@ -54,12 +54,10 @@ function ViewShifts() {
         data.time_out = dayjs(data.time[1].$d).format('HH:mm:ss');
         delete data.time;
 
-        console.log(data);
         if (data.name === selectedShift.name) {
             delete data.name;
         }
         if (data.time_in === selectedShift.time_in) {
-            console.log('hey');
             delete data.time_in;
         }
         if (data.time_out === selectedShift.time_out) {
@@ -121,7 +119,6 @@ function ViewShifts() {
                         }} />
                         <EditOutlined onClick={() => {
                             setSelectedShift(record);
-                            console.log(record);
                             let time = [];
                             time = time.concat(dayjs(record.time_in, 'HH:mm:ss'), dayjs(record.time_out, 'HH:mm:ss'));
                             form.setFieldsValue({
