@@ -1,4 +1,4 @@
-import { Button, DatePicker, Form, Modal, Select, TimePicker } from "antd";
+import { Button, DatePicker, Form, Input, InputNumber, Modal, Select, TimePicker } from "antd";
 
 export default function AddVacationModal({ form, onFinish, handleCancel, open }) {
 
@@ -16,7 +16,6 @@ export default function AddVacationModal({ form, onFinish, handleCancel, open })
 
     return (
         <Modal
-            // zIndex={1200}
             centered
             open={open}
             title={"تسجيل إجازة"}
@@ -30,18 +29,6 @@ export default function AddVacationModal({ form, onFinish, handleCancel, open })
                 onFinish={onFinish}
                 autoComplete="off"
             >
-
-                <Form.Item
-                    name={"attendance_date"}
-                    rules={[
-                        {
-                            required: true,
-                            message: 'الرجاء ادخال التاريخ',
-                        },
-                    ]}
-                >
-                    <DatePicker placeholder='التاريخ' />
-                </Form.Item>
 
                 <Form.Item
                     name="emp_id"
@@ -65,20 +52,32 @@ export default function AddVacationModal({ form, onFinish, handleCancel, open })
                 </Form.Item>
 
                 <Form.Item
-                    name={"attendance_time"}
+                    name="start_date"
                     rules={[
                         {
                             required: true,
-                            message: 'الرجاء ادخال الوقت',
+                            message: 'الرجاء ادخال التاريخ',
                         },
                     ]}
                 >
-                    <TimePicker placeholder='الوقت' />
+                    <DatePicker placeholder='التاريخ' />
+                </Form.Item>
+
+                <Form.Item
+                    name="total_days"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'الرجاء ادخال المدة',
+                        },
+                    ]}
+                >
+                    <InputNumber min={1} placeholder='المدة' />
                 </Form.Item>
 
 
                 <Form.Item>
-                    <div className="timeSheetModal">
+                    <div className="employeesVacationsModal">
                         <Button type="primary" htmlType="submit">
                             تأكيد
                         </Button>

@@ -9,6 +9,7 @@ import biometricDevicesReducer from "./biometricDevices/reducer";
 import timeSheetReducer from "./timeSheet/reducer";
 import holidaysReducer from "./holidays/reducer";
 import vacationsReducer from "./vacations/reducer";
+import employeesAbsencesReducer from "./absences/reducer";
 
 export default {
   userReducer: userReducer,
@@ -21,4 +22,5 @@ export default {
   timeSheetReducer: timeSheetReducer,
   holidaysReducer: holidaysReducer,
   vacationsReducer: vacationsReducer,
+  employeesAbsencesReducer: employeesAbsencesReducer
 };

@@ -1,0 +1,7 @@
+.serverSideSearchFieldContainer {
+    display: flex;
+}
+
+.serverSideSearchFieldContainer > *{
+    margin: 10px;
+}

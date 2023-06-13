@@ -49,6 +49,18 @@ export const items = [
         text: "سجل الدوام",
         path: "/timeSheetLog",
       },
+      {
+        text: "طلبات الإجازات",
+        path: "/employees/vacations/requests",
+      },
+      {
+        text: "إجازات الموظفين",
+        path: "/employees/vacations",
+      },
+      {
+        text: "غيابات الموظفين",
+        path: "/employees/absences",
+      },
     ],
   },
   {

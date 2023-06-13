@@ -3,12 +3,16 @@ import './Layout.css';
 import { LogoutOutlined, MoreOutlined } from "@ant-design/icons";
 import { useState } from 'react';
 import MakeVacationRequestModal from '../../Features/Attendance/Vacations/MakeVacationRequestModal';
+import dayjs from 'dayjs';
+import { useDispatch } from 'react-redux';
+import { addVacationRequest } from '../../redux/vacations/reducer';
 
 
 function AppBar() {
 
     const [openVacationRequestModal, setOpenVacationRequestModal] = useState(false);
     const [vacationForm] = Form.useForm();
+    const dispatch = useDispatch();
 
     const handleCancelVacationRequest = () => {
         setOpenVacationRequestModal(false);
@@ -16,7 +20,12 @@ function AppBar() {
     }
 
     const onFinishVacationRequest = (data) => {
+        data.start_date = dayjs(data.start_date.$d).format('YYYY-MM-DD');
+        // it must be taken from the token
+        data.user_id = 1503;
         console.log(data);
+        dispatch(addVacationRequest(data));
+        setOpenVacationRequestModal(false);
     }
 
 

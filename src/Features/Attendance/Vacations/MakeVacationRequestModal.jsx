@@ -1,11 +1,10 @@
-import { Button, DatePicker, Form, Modal, Select, TimePicker } from "antd";
-import dayjs from "dayjs";
+import { Button, DatePicker, Form, InputNumber, Modal } from "antd";
+import TextArea from "antd/es/input/TextArea";
 
 export default function MakeVacationRequestModal({ open, onFinish, handleCancel, form }) {
 
     return (
         <Modal
-            // zIndex={1200}
             centered
             open={open}
             title="تقديم طلب إجازة"
@@ -21,7 +20,7 @@ export default function MakeVacationRequestModal({ open, onFinish, handleCancel,
             >
 
                 <Form.Item
-                    name={"attendance_date"}
+                    name="start_date"
                     rules={[
                         {
                             required: true,
@@ -29,19 +28,31 @@ export default function MakeVacationRequestModal({ open, onFinish, handleCancel,
                         },
                     ]}
                 >
-                    <DatePicker.RangePicker placeholder='التاريخ' />
+                    <DatePicker placeholder='التاريخ' />
                 </Form.Item>
 
                 <Form.Item
-                    name={"attendance_time"}
+                    name="duration"
                     rules={[
                         {
                             required: true,
-                            message: 'الرجاء ادخال الوقت',
+                            message: 'الرجاء ادخال المدة',
                         },
                     ]}
                 >
-                    <TimePicker defaultValue={dayjs().second(0)} placeholder='الوقت' />
+                    <InputNumber min={1} placeholder='المدة' />
+                </Form.Item>
+
+                <Form.Item
+                    name="description"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'الرجاء ادخال سبب الإجازة',
+                        },
+                    ]}
+                >
+                    <TextArea rows={4} placeholder='سبب الإجازة' />
                 </Form.Item>
 
 

@@ -22,6 +22,8 @@ import ViewEmployeeProfile from "./Features/EmployeesProfiles/Profile/view-edit 
 import ViewJobApplication from "./Features/EmployeesProfiles/Job Application/view one/ViewJobApplication";
 import Log from "./Features/Log/Log";
 import EmployeesVacations from "./Features/Attendance/Vacations/EmployeesVacations";
+import EmployeesAbsences from "./Features/Attendance/Absences/EmployeesAbsences";
+import EmployeesVacationRequests from "./Features/Attendance/Vacations/EmployeesVacationRequests";
 
 function App(props) {
   return (
@@ -58,7 +60,11 @@ function App(props) {
             <Route path="employees">
               <Route index element={<ViewEmployeesProfiles />} />
               <Route path="profile" element={<ViewEmployeeProfile />} />
-              <Route path="vacations" element={<EmployeesVacations />} />
+              <Route path="vacations">
+                <Route index element={<EmployeesVacations />} />
+                <Route path="requests" element={<EmployeesVacationRequests />} />
+              </Route>
+              <Route path="absences" element={<EmployeesAbsences />} />
             </Route>
             <Route path="jobApplications">
               <Route index element={<ViewJobApplications />} />

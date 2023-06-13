@@ -77,7 +77,7 @@ function ViewJobVacancies() {
             title: 'الوصف',
             dataIndex: 'description',
             key: 'description',
-            width: '40%'
+            width: '30%'
         },
         {
             title: 'عدد الموظفين',

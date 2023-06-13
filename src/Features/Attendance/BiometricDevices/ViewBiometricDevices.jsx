@@ -122,6 +122,7 @@ function ViewBiometricDevices() {
                     columns={columns}
                     dataSource={devices}
                     rowKey='id'
+                    scroll={{ x: 'max-content' }}
                 />
                 <Button
                     className="bioButton"
@@ -135,7 +136,7 @@ function ViewBiometricDevices() {
                     handleCancel={closeDeleteModal}
                 />
 
-                <BioMetricDeviceModal 
+                <BioMetricDeviceModal
                     open={openDeviceModal}
                     handleCancel={closeDeviceModal}
                     device={selectedDevice}

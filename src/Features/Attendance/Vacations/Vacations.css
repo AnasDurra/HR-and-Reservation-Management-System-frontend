@@ -1,12 +1,12 @@
-.timeSheetLogActionButtons > button {
+.employeesVacationsActionButtons > button {
     margin: 0px 0px 20px 20px;
 }
 
-.timeSheetModal {
+.employeesVacationsModal {
     display: flex;
     flex-direction: row-reverse;
 }
 
-.timeSheetModal > button {
+.employeesVacationsModal > button {
     margin: 0px 8px 0px 0px;
 }

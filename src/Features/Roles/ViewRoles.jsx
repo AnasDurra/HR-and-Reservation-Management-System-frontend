@@ -147,6 +147,7 @@ function ViewRoles(props) {
                     columns={columns}
                     dataSource={props.roles}
                     rowKey='job_title_id'
+                    scroll={{ x: 'max-content' }}
                 />
                 <Button
                     className="roleButton"

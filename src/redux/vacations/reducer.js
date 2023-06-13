@@ -16,7 +16,7 @@ export const vacationsReducer = createSlice({
         getAllVacationsSuccess: (state, action) => {
             state.allVacations = action.payload.data;
             delete action.payload.data;
-            state.metaData = action.payload.meta;
+            state.metaData = action.payload.pagination;
             state.loading = false;
         },
         getAllVacationsFailed: (state, action) => {
@@ -25,54 +25,64 @@ export const vacationsReducer = createSlice({
         },
 
 
-        // addJobVacancy: (state) => {
-        //     state.loading = true;
-        //     state.error = null;
-        // },
-        // addJobVacancySuccess: (state, action) => {
-        //     const jobVacanciesAfterCreate = state.jobVacancies.concat(action.payload);
-        //     state.loading = false;
-        //     state.jobVacancies = jobVacanciesAfterCreate;
-        // },
-        // addJobVacancyFailed: (state, action) => {
-        //     state.loading = false;
-        //     state.error = action.payload;
-        // },
+        addVacation: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        addVacationSuccess: (state, action) => {
+            console.log(action.payload);
+            let newVacations = state.allVacations;
+            newVacations.unshift(action.payload);
+            state.allVacations = newVacations;
+            state.loading = false;
+        },
+        addVacationFailed: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
 
-        // deleteJobVacancy: (state) => {
-        //     state.loading = true;
-        //     state.error = null;
-        // },
-        // deleteJobVacancySuccess: (state, action) => {
-        //     const jobVacanciesAfterDelete = state.jobVacancies.filter((job) => job.id !== action.payload.id);
-        //     state.jobVacancies = jobVacanciesAfterDelete;
-        //     state.loading = false;
-        // },
-        // deleteJobVacancyFailed: (state, action) => {
-        //     state.loading = false;
-        //     state.error = action.payload;
-        // },
+        deleteVacation: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        deleteVacationSuccess: (state, action) => {
+            const newVacations = state.allVacations.filter((v) => v.employee_vacation_id !== action.payload.employee_vacation_id);
+            state.allVacations = newVacations;
+            state.loading = false;
+        },
+        deleteVacationFailed: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
 
-        // updateJobVacancy: (state) => {
-        //     state.loading = true;
-        //     state.error = null;
-        // },
-        // updateJobVacancySuccess: (state, action) => {
-        //     const jobVacanciesAfterUpdate = state.jobVacancies.map((job) => job.id !== action.payload.id ? job : action.payload);
-        //     state.jobVacancies = jobVacanciesAfterUpdate;
-        //     state.loading = false;
-        // },
-        // updateJobVacancyFailed: (state, action) => {
-        //     state.loading = false;
-        //     state.error = action.payload;
-        // },
+
+        addVacationRequest: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        addVacationRequestSuccess: (state, action) => {
+            state.loading = false;
+        },
+        addVacationRequestFailed: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
     }
 });
 
 export const {
     getAllVacations,
     getAllVacationsSuccess,
-    getAllVacationsFailed
+    getAllVacationsFailed,
+    addVacation,
+    addVacationSuccess,
+    addVacationFailed,
+    deleteVacation,
+    deleteVacationSuccess,
+    deleteVacationFailed,
+    addVacationRequest,
+    addVacationRequestSuccess,
+    addVacationRequestFailed
 } = vacationsReducer.actions;
 
 export default vacationsReducer.reducer;

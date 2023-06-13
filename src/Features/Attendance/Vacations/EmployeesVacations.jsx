@@ -1,11 +1,13 @@
-import { Button, Form, Table, Tag, Typography } from "antd";
+import { Button, Form, Table, Tag } from "antd";
 import Spinner from "../../../Components/Spinner/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { DeleteOutlined } from "@ant-design/icons";
 import './Vacations.css';
 import dayjs from "dayjs";
 import AddVacationModal from "./AddVacationModal";
-import { getAllVacations } from "../../../redux/vacations/reducer";
+import { getAllVacations, addVacation, deleteVacation } from "../../../redux/vacations/reducer";
+import DeleteModal from "../../../Components/DeleteModal/DeleteModal";
 
 function EmployeesVacations() {
 
@@ -17,54 +19,44 @@ function EmployeesVacations() {
 
     const [form] = Form.useForm();
     const [openAddVacationModalModal, setOpenAddVacationModalModal] = useState(false);
+    const [selectedVacation, setSelectedVacation] = useState(null);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
     useEffect(() => {
         dispatch(getAllVacations());
     }, []);
-
-    console.log(allVacations);
 
     const closeAddVacationModal = () => {
         setOpenAddVacationModalModal(false);
         form.resetFields();
     }
 
-    const addVacationFunction = (data) => {
-        // data.state = true;
-        // data = formatTime(data);
-        // dispatch(addAttendanceRecord(data));
-    };
-
-    // const formatTime = (data) => {
-    //     if (data.attendance_date) {
-    //         const date = dayjs(data.attendance_date.$d).format('YYYY-MM-DD');
-    //         const time = dayjs(data.attendance_time.$d).format('HH:mm:ss');
-
-    //         data.attendance_date = date;
-    //         data.attendance_time = time;
-    //     } else {
-    //         const date = dayjs(data.leave_date.$d).format('YYYY-MM-DD');
-    //         const time = dayjs(data.leave_time.$d).format('HH:mm:ss');
-
-    //         data.leave_date = date;
-    //         data.leave_time = time;
-    //     }
-
-    //     return data;
-    // }
-
     const onFinish = (data) => {
+        data.start_date = dayjs(data.start_date.$d).format('YYYY-MM-DD');
         console.log(data);
-        // if (addAttendance) {
-        //     addVacationFunction(data);
-        // } else {
-        //     createLeaveRecordFunction(data);
-        // }
-        // closeAddVacationModal();
+
+        dispatch(addVacation(data));
+        closeAddVacationModal();
     }
 
     const handlePageChange = (page) => {
-        // dispatch(getTimeSheetLog(page));
+        dispatch(getAllVacations({
+            page: page,
+        }));
+    }
+
+    const handleDeleteCancel = () => {
+        setOpenDeleteModal(false);
+        setSelectedVacation(null);
+    }
+
+    const deleteVacationFunction = () => {
+        console.log(selectedVacation.employee_vacation_id);
+        dispatch(deleteVacation({
+            id: selectedVacation.employee_vacation_id
+        }));
+        setOpenDeleteModal(false);
+        setSelectedVacation(null);
     }
 
     const columns = [
@@ -87,6 +79,13 @@ function EmployeesVacations() {
             title: 'مدة الإجازة',
             dataIndex: 'total_days',
             key: 'total_days',
+            render: (days) => {
+                return (
+                    <Tag>
+                        {days}
+                    </Tag>
+                );
+            }
         },
         {
             title: 'الأيام المتبقية',
@@ -100,12 +99,29 @@ function EmployeesVacations() {
                 );
             }
         },
+        {
+            title: 'حذف',
+            key: 'actions',
+            render: (record) => {
+                return (
+                    <div id="actions">
+                        {record.remaining_days === record.total_days ?
+                            <DeleteOutlined onClick={() => {
+                                setSelectedVacation(record);
+                                setOpenDeleteModal(true);
+                            }} />
+                            : <Tag color="red">لا يمكن الحذف</Tag>}
+                    </div>
+                );
+            },
+            width: '10%'
+        },
     ];
 
     return (
         <Spinner loading={loading}>
             <div>
-                <div className="timeSheetLogActionButtons">
+                <div className="employeesVacationsActionButtons">
                     <Button
                         onClick={() => {
                             form.setFieldsValue({
@@ -131,12 +147,17 @@ function EmployeesVacations() {
                     scroll={{ x: 'max-content' }}
                 />
 
-
                 <AddVacationModal
                     form={form}
                     handleCancel={closeAddVacationModal}
                     open={openAddVacationModalModal}
                     onFinish={onFinish}
+                />
+
+                <DeleteModal
+                    open={openDeleteModal}
+                    handleCancel={handleDeleteCancel}
+                    handleOk={deleteVacationFunction}
                 />
 
             </div>
