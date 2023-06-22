@@ -102,12 +102,12 @@ function ViewTimeShiftRequests() {
                 return <Tag color={color}>{status}</Tag>
             },
         },
-        // {
-        //     title: 'سبب الطلب',
-        //     dataIndex: 'description',
-        //     key: 'description',
-        //     width: '600px'
-        // },
+        {
+            title: 'سبب الطلب',
+            dataIndex: 'description',
+            key: 'description',
+            width: '600px'
+        },
         {
             title: 'العمليات',
             key: 'actions',
