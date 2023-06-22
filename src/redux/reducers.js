@@ -10,6 +10,7 @@ import timeSheetReducer from "./timeSheet/reducer";
 import holidaysReducer from "./holidays/reducer";
 import vacationsReducer from "./vacations/reducer";
 import employeesAbsencesReducer from "./absences/reducer";
+import timeShiftsReducer from "./timeShifts/reducer";
 
 export default {
   userReducer: userReducer,
@@ -22,5 +23,6 @@ export default {
   timeSheetReducer: timeSheetReducer,
   holidaysReducer: holidaysReducer,
   vacationsReducer: vacationsReducer,
-  employeesAbsencesReducer: employeesAbsencesReducer
+  employeesAbsencesReducer: employeesAbsencesReducer,
+  timeShiftsReducer: timeShiftsReducer,
 };

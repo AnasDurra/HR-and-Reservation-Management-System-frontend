@@ -50,12 +50,16 @@ export const items = [
         path: "/timeSheetLog",
       },
       {
-        text: "طلبات الإجازات",
+        text: "طلبات الإجازة",
         path: "/employees/vacations/requests",
       },
       {
         text: "إجازات الموظفين",
         path: "/employees/vacations",
+      },
+      {
+        text: "طلبات إزاحة الدوام",
+        path: "/employees/timeShiftRequests",
       },
       {
         text: "غيابات الموظفين",

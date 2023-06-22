@@ -10,6 +10,7 @@ import HolidaysSaga from './holidays/saga';
 import jobApplicationsSaga from './Features/Employee Profile/Job application/saga';
 import VacationsSaga from './vacations/saga';
 import EmployeesAbsencesSaga from './absences/saga';
+import TimeShiftsSaga from './timeShifts/saga';
 
 export default function* rootSaga() {
     yield all([
@@ -24,5 +25,6 @@ export default function* rootSaga() {
         jobApplicationsSaga(),
         VacationsSaga(),
         EmployeesAbsencesSaga(),
+        TimeShiftsSaga(),
     ]);
 }

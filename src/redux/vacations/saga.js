@@ -4,7 +4,10 @@ import { getAllVacationsSuccess, getAllVacationsFailed } from "./reducer";
 import { addVacationSuccess, addVacationFailed } from "./reducer";
 import { deleteVacationSuccess, deleteVacationFailed } from "./reducer";
 import { addVacationRequestSuccess, addVacationRequestFailed } from "./reducer";
-import { handleError } from "../utils/helpers";
+import { getVacationRequestsSuccess, getVacationRequestsFailed } from "./reducer";
+import { acceptVacationRequestSuccess, acceptVacationRequestFailed } from "./reducer";
+import { rejectVacationRequestSuccess, rejectVacationRequestFailed } from "./reducer";
+import { handleError, handleResponse } from "../utils/helpers";
 
 const getAllVacations = (payload) => {
     return AxiosInstance().get(`employees-vacations${payload ? `?page=${payload.page}` : ""}`);
@@ -20,6 +23,18 @@ const deleteVacation = (payload) => {
 
 const addVacationRequest = (payload) => {
     return AxiosInstance().post(`vacation-request`, payload);
+}
+
+const getVacationRequests = (payload) => {
+    return AxiosInstance().get(`vacation-request${payload ? `?page=${payload.page}` : ""}`);
+}
+
+const acceptVacationRequest = (payload) => {
+    return AxiosInstance().post(`vacation-request/accept/${payload.id}`);
+}
+
+const rejectVacationRequest = (payload) => {
+    return AxiosInstance().post(`vacation-request/reject/${payload.id}`);
 }
 
 function* getAllVacationsSaga({ payload }) {
@@ -59,10 +74,41 @@ function* deleteVacationSaga({ payload }) {
 function* addVacationRequestSaga({ payload }) {
     try {
         const response = yield call(addVacationRequest, payload);
+        handleResponse("تم إرسال الطلب بنجاح");
         yield put(addVacationRequestSuccess(response.data.data));
     }
     catch (error) {
         yield put(addVacationRequestFailed(error));
+    }
+}
+
+function* getVacationRequestsSaga({ payload }) {
+    try {
+        const response = yield call(getVacationRequests, payload);
+        yield put(getVacationRequestsSuccess(response.data));
+    }
+    catch (error) {
+        yield put(getVacationRequestsFailed(error));
+    }
+}
+
+function* acceptVacationRequestSaga({ payload }) {
+    try {
+        const response = yield call(acceptVacationRequest, payload);
+        yield put(acceptVacationRequestSuccess(response.data.data));
+    }
+    catch (error) {
+        yield put(acceptVacationRequestFailed(error));
+    }
+}
+
+function* rejectVacationRequestSaga({ payload }) {
+    try {
+        const response = yield call(rejectVacationRequest, payload);
+        yield put(rejectVacationRequestSuccess(response.data.data));
+    }
+    catch (error) {
+        yield put(rejectVacationRequestFailed(error));
     }
 }
 
@@ -82,6 +128,18 @@ function* watchAddVacationRequest() {
     yield takeEvery('vacationsReducer/addVacationRequest', addVacationRequestSaga);
 }
 
+function* watchGetVacationRequests() {
+    yield takeEvery('vacationsReducer/getVacationRequests', getVacationRequestsSaga);
+}
+
+function* watchAcceptVacationRequest() {
+    yield takeEvery('vacationsReducer/acceptVacationRequest', acceptVacationRequestSaga);
+}
+
+function* watchRejectVacationRequest() {
+    yield takeEvery('vacationsReducer/rejectVacationRequest', rejectVacationRequestSaga);
+}
+
 
 
 function* VacationsSaga() {
@@ -90,6 +148,9 @@ function* VacationsSaga() {
         fork(watchAddVacation),
         fork(watchDeleteVacation),
         fork(watchAddVacationRequest),
+        fork(watchGetVacationRequests),
+        fork(watchAcceptVacationRequest),
+        fork(watchRejectVacationRequest),
     ]);
 }
 

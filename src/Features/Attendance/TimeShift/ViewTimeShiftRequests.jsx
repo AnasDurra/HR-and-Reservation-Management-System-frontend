@@ -2,26 +2,27 @@ import { Table, Tag, Typography } from "antd";
 import Spinner from "../../../Components/Spinner/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import './Vacations.css';
-import { getVacationRequests, acceptVacationRequest, rejectVacationRequest } from "../../../redux/vacations/reducer";
+import { getTimeShiftRequests, acceptTimeShiftRequest, rejectTimeShiftRequest } from "../../../redux/timeShifts/reducer";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 
-function ViewVacationRequests() {
+function ViewTimeShiftRequests() {
 
     const dispatch = useDispatch();
-    const vacationsRequests = useSelector(state => state.vacationsReducer.vacationRequests);
-    const metaData = useSelector(state => state.vacationsReducer.metaData);
-    const loading = useSelector(state => state.vacationsReducer.loading);
-    const error = useSelector(state => state.vacationsReducer.error);
+    const timeShiftRequests = useSelector(state => state.timeShiftsReducer.shiftRequests);
+    const metaData = useSelector(state => state.timeShiftsReducer.metaData);
+    const loading = useSelector(state => state.timeShiftsReducer.loading);
+    const error = useSelector(state => state.timeShiftsReducer.error);
 
     useEffect(() => {
-        dispatch(getVacationRequests());
+        dispatch(getTimeShiftRequests());
     }, []);
 
 
     const handlePageChange = (page) => {
-        dispatch(getVacationRequests({ page: page }));
+        dispatch(getTimeShiftRequests({ page: page }));
     }
+
+    console.log(timeShiftRequests);
 
     const filterValues = [
         {
@@ -62,10 +63,22 @@ function ViewVacationRequests() {
             key: 'start_date',
         },
         {
-            title: 'مدة الإجازة',
+            title: 'المدة',
             dataIndex: 'duration',
             key: 'duration',
             render: (len) => <Tag>{len}</Tag>
+        },
+        {
+            title: 'وقت الدخول',
+            dataIndex: 'new_time_in',
+            key: 'new_time_in',
+            render: (len) => <Tag color="green-inverse">{len}</Tag>
+        },
+        {
+            title: 'وقت الخروج',
+            dataIndex: 'new_time_out',
+            key: 'new_time_out',
+            render: (len) => <Tag color="red-inverse">{len}</Tag>
         },
         {
             title: 'حالة الطلب',
@@ -89,12 +102,12 @@ function ViewVacationRequests() {
                 return <Tag color={color}>{status}</Tag>
             },
         },
-        {
-            title: 'سبب الإجازة',
-            dataIndex: 'description',
-            key: 'description',
-            width: '600px'
-        },
+        // {
+        //     title: 'سبب الطلب',
+        //     dataIndex: 'description',
+        //     key: 'description',
+        //     width: '600px'
+        // },
         {
             title: 'العمليات',
             key: 'actions',
@@ -105,7 +118,7 @@ function ViewVacationRequests() {
                             <CheckOutlined
                                 style={{ color: "green" }}
                                 onClick={() => {
-                                    dispatch(acceptVacationRequest({ id: record.vacation_req_id }));
+                                    dispatch(acceptTimeShiftRequest({ id: record.shift_req_id }));
                                 }}
                             >
                                 قبول
@@ -114,7 +127,7 @@ function ViewVacationRequests() {
                             <CloseOutlined
                                 style={{ color: "red" }}
                                 onClick={() => {
-                                    dispatch(rejectVacationRequest({ id: record.vacation_req_id }));
+                                    dispatch(rejectTimeShiftRequest({ id: record.shift_req_id }));
                                 }}
                             >
                                 رفض
@@ -136,8 +149,8 @@ function ViewVacationRequests() {
             <div>
                 <Table
                     columns={columns}
-                    dataSource={vacationsRequests}
-                    rowKey='vacation_req_id'
+                    dataSource={timeShiftRequests}
+                    rowKey='shift_req_id'
                     pagination={{
                         current: metaData?.current_page,
                         pageSize: metaData?.per_page,
@@ -151,4 +164,4 @@ function ViewVacationRequests() {
     );
 }
 
-export default ViewVacationRequests;
+export default ViewTimeShiftRequests;

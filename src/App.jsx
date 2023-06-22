@@ -24,6 +24,8 @@ import Log from "./Features/Log/Log";
 import EmployeesVacations from "./Features/Attendance/Vacations/EmployeesVacations";
 import EmployeesAbsences from "./Features/Attendance/Absences/EmployeesAbsences";
 import EmployeesVacationRequests from "./Features/Attendance/Vacations/EmployeesVacationRequests";
+import ViewVacationRequests from "./Features/Attendance/Vacations/ViewVacationRequests";
+import ViewTimeShiftRequests from "./Features/Attendance/TimeShift/ViewTimeShiftRequests";
 
 function App(props) {
   return (
@@ -62,8 +64,9 @@ function App(props) {
               <Route path="profile" element={<ViewEmployeeProfile />} />
               <Route path="vacations">
                 <Route index element={<EmployeesVacations />} />
-                <Route path="requests" element={<EmployeesVacationRequests />} />
+                <Route path="requests" element={<ViewVacationRequests />} />
               </Route>
+              <Route path="timeShiftRequests" element={<ViewTimeShiftRequests />} />
               <Route path="absences" element={<EmployeesAbsences />} />
             </Route>
             <Route path="jobApplications">
