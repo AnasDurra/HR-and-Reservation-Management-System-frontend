@@ -1,4 +1,4 @@
-import { Button, Checkbox, Dropdown } from "antd";
+import { Button, Dropdown } from "antd";
 import { useEffect, useState } from "react";
 import DayComponent from "./DayComponent";
 
@@ -6,11 +6,6 @@ export default function WorkingDays({ workingDays, confirmUpdateWorkingDays }) {
 
     const [openDropDown, setOpenDropDown] = useState(false);
     const [items, setItems] = useState([]);
-    const [newDays, setNewDays] = useState([]);
-
-    useEffect(() => {
-        console.log(newDays);
-    }, [newDays]);
 
     const handleDayUpdate = (data) => {
         confirmUpdateWorkingDays(data);
@@ -35,9 +30,6 @@ export default function WorkingDays({ workingDays, confirmUpdateWorkingDays }) {
             key: 99,
             label: (
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    {/* <Button onClick={() => confirmUpdateWorkingDays(newDays)} style={{ margin: '0 10px' }} type="primary" size="small">
-                        تأكيد
-                    </Button> */}
                     <Button onClick={() => setOpenDropDown(false)} size="small">
                         إغلاق
                     </Button>

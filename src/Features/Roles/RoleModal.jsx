@@ -4,7 +4,7 @@ import { useEffect } from "react";
 export default function RoleModal({ open, onFinish, handleCancel, role, form, permissions, getPermissions }) {
 
     useEffect(() => {
-        getPermissions();
+        // getPermissions();
     }, []);
 
     const { Option } = Select;
@@ -53,7 +53,6 @@ export default function RoleModal({ open, onFinish, handleCancel, role, form, pe
                         showSearch
                         placeholder="اختيار الصلاحيات"
                         filterOption={(input, option) => {
-                            console.log(option);
                             return (option?.children ?? '').toLowerCase().includes(input.toLowerCase())
                         }
 

@@ -19,7 +19,6 @@ function ViewTimeSheetLog() {
     const [openTimeSheetModal, setOpenTimeSheetModal] = useState(false);
     const [addAttendance, setAddAttendance] = useState(false);
 
-    console.log(timeSheetLog);
     useEffect(() => {
         dispatch(getTimeSheetLog());
     }, []);

@@ -128,6 +128,7 @@ function ViewDepartments(props) {
           columns={columns}
           dataSource={departmentsSlice?.departments}
           rowKey="dep_id"
+          scroll={{ x: 'max-content' }}
         />
         <Button
           className="departmentButton"

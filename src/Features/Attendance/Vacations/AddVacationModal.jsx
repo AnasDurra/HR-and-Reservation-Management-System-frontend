@@ -1,7 +1,6 @@
-import { Button, DatePicker, Form, Modal, Select, TimePicker } from "antd";
-import dayjs from "dayjs";
+import { Button, DatePicker, Form, Input, InputNumber, Modal, Select, TimePicker } from "antd";
 
-export default function TimeSheetModal({ open, onFinish, handleCancel, action, form }) {
+export default function AddVacationModal({ form, onFinish, handleCancel, open }) {
 
     const { Option } = Select;
     const employees = [
@@ -17,32 +16,19 @@ export default function TimeSheetModal({ open, onFinish, handleCancel, action, f
 
     return (
         <Modal
-            // zIndex={1200}
             centered
             open={open}
-            title={action ? "تسجيل دخول" : "تسجيل مغادرة"}
+            title={"تسجيل إجازة"}
             onCancel={handleCancel}
             footer={null}
         >
             <Form
                 form={form}
                 size='middle'
-                name="timeSheetForm"
+                name="addVacationForm"
                 onFinish={onFinish}
                 autoComplete="off"
             >
-
-                <Form.Item
-                    name={action ? "attendance_date" : "leave_date"}
-                    rules={[
-                        {
-                            required: true,
-                            message: 'الرجاء ادخال التاريخ',
-                        },
-                    ]}
-                >
-                    <DatePicker placeholder='التاريخ' />
-                </Form.Item>
 
                 <Form.Item
                     name="emp_id"
@@ -66,20 +52,32 @@ export default function TimeSheetModal({ open, onFinish, handleCancel, action, f
                 </Form.Item>
 
                 <Form.Item
-                    name={action ? "attendance_time" : "leave_time"}
+                    name="start_date"
                     rules={[
                         {
                             required: true,
-                            message: 'الرجاء ادخال الوقت',
+                            message: 'الرجاء ادخال التاريخ',
                         },
                     ]}
                 >
-                    <TimePicker placeholder='الوقت' />
+                    <DatePicker placeholder='التاريخ' />
+                </Form.Item>
+
+                <Form.Item
+                    name="total_days"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'الرجاء ادخال المدة',
+                        },
+                    ]}
+                >
+                    <InputNumber min={1} placeholder='المدة' />
                 </Form.Item>
 
 
                 <Form.Item>
-                    <div className="timeSheetModal">
+                    <div className="employeesVacationsModal">
                         <Button type="primary" htmlType="submit">
                             تأكيد
                         </Button>

@@ -42,7 +42,6 @@ function ViewBiometricDevices() {
     const updateDeviceFunction = (data) => {
         console.log('updated: ', data);
 
-        console.log(data);
         if (data.name === selectedDevice.name) {
             delete data.name;
         }
@@ -123,6 +122,7 @@ function ViewBiometricDevices() {
                     columns={columns}
                     dataSource={devices}
                     rowKey='id'
+                    scroll={{ x: 'max-content' }}
                 />
                 <Button
                     className="bioButton"
@@ -136,7 +136,7 @@ function ViewBiometricDevices() {
                     handleCancel={closeDeleteModal}
                 />
 
-                <BioMetricDeviceModal 
+                <BioMetricDeviceModal
                     open={openDeviceModal}
                     handleCancel={closeDeviceModal}
                     device={selectedDevice}

@@ -1,39 +1,26 @@
-import { Button, DatePicker, Form, Modal, Select, TimePicker } from "antd";
-import dayjs from "dayjs";
+import { Button, DatePicker, Form, InputNumber, Modal, TimePicker } from "antd";
+import TextArea from "antd/es/input/TextArea";
 
-export default function TimeSheetModal({ open, onFinish, handleCancel, action, form }) {
-
-    const { Option } = Select;
-    const employees = [
-        {
-            id: 4,
-            name: 'hadi',
-        },
-        {
-            id: 2,
-            name: 'anas',
-        }
-    ];
+export default function MakeTimeShiftRequestModal({ open, onFinish, handleCancel, form }) {
 
     return (
         <Modal
-            // zIndex={1200}
             centered
             open={open}
-            title={action ? "تسجيل دخول" : "تسجيل مغادرة"}
+            title="تقديم طلب إزاحة دوام"
             onCancel={handleCancel}
             footer={null}
         >
             <Form
                 form={form}
                 size='middle'
-                name="timeSheetForm"
+                name="timeShiftForm"
                 onFinish={onFinish}
                 autoComplete="off"
             >
 
                 <Form.Item
-                    name={action ? "attendance_date" : "leave_date"}
+                    name="start_date"
                     rules={[
                         {
                             required: true,
@@ -45,28 +32,19 @@ export default function TimeSheetModal({ open, onFinish, handleCancel, action, f
                 </Form.Item>
 
                 <Form.Item
-                    name="emp_id"
+                    name="duration"
                     rules={[
                         {
                             required: true,
-                            message: 'الرجاء اختيار الموظف',
+                            message: 'الرجاء ادخال المدة',
                         },
                     ]}
                 >
-                    <Select
-                        showSearch
-                        placeholder="اختيار الموظف"
-                        filterOption={(input, option) => {
-                            return (option?.children ?? '').toLowerCase().includes(input.toLowerCase())
-                        }
-                        }
-                    >
-                        {employees.map((e) => <Option value={e.id} key={e.id}>{e.name}</Option>)}
-                    </Select>
+                    <InputNumber min={1} placeholder='المدة' />
                 </Form.Item>
 
                 <Form.Item
-                    name={action ? "attendance_time" : "leave_time"}
+                    name="time"
                     rules={[
                         {
                             required: true,
@@ -74,7 +52,19 @@ export default function TimeSheetModal({ open, onFinish, handleCancel, action, f
                         },
                     ]}
                 >
-                    <TimePicker placeholder='الوقت' />
+                    <TimePicker.RangePicker placeholder={['وقت الدخول', 'وقت الخروج']} />
+                </Form.Item>
+
+                <Form.Item
+                    name="description"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'الرجاء ادخال سبب طلب الإزاحة',
+                        },
+                    ]}
+                >
+                    <TextArea rows={4} placeholder='سبب طلب الإزاحة' />
                 </Form.Item>
 
 

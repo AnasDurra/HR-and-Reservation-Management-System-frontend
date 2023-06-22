@@ -1,11 +1,10 @@
-import { Button, DatePicker, Form, Modal, Select, TimePicker } from "antd";
-import dayjs from "dayjs";
+import { Button, DatePicker, Form, InputNumber, Modal } from "antd";
+import TextArea from "antd/es/input/TextArea";
 
-export default function MakeVacationRequestModal({ open, onFinish, handleCancel, action, form }) {
+export default function MakeVacationRequestModal({ open, onFinish, handleCancel, form }) {
 
     return (
         <Modal
-            // zIndex={1200}
             centered
             open={open}
             title="تقديم طلب إجازة"
@@ -21,7 +20,7 @@ export default function MakeVacationRequestModal({ open, onFinish, handleCancel,
             >
 
                 <Form.Item
-                    name={action ? "attendance_date" : "leave_date"}
+                    name="start_date"
                     rules={[
                         {
                             required: true,
@@ -29,41 +28,31 @@ export default function MakeVacationRequestModal({ open, onFinish, handleCancel,
                         },
                     ]}
                 >
-                    <DatePicker.RangePicker placeholder='التاريخ' />
+                    <DatePicker placeholder='التاريخ' />
                 </Form.Item>
 
                 <Form.Item
-                    name="emp_id"
+                    name="duration"
                     rules={[
                         {
                             required: true,
-                            message: 'الرجاء اختيار الموظف',
+                            message: 'الرجاء ادخال المدة',
                         },
                     ]}
                 >
-                    <Select
-                        showSearch
-                        placeholder="اختيار الموظف"
-                        filterOption={(input, option) => {
-                            console.log(option);
-                            return (option?.children ?? '').toLowerCase().includes(input.toLowerCase())
-                        }
-                        }
-                    >
-                        {employees.map((e) => <Option value={e.id} key={e.id}>{e.name}</Option>)}
-                    </Select>
+                    <InputNumber min={1} placeholder='المدة' />
                 </Form.Item>
 
                 <Form.Item
-                    name={action ? "attendance_time" : "leave_time"}
+                    name="description"
                     rules={[
                         {
                             required: true,
-                            message: 'الرجاء ادخال الوقت',
+                            message: 'الرجاء ادخال سبب الإجازة',
                         },
                     ]}
                 >
-                    <TimePicker defaultValue={dayjs().second(0)} placeholder='الوقت' />
+                    <TextArea rows={4} placeholder='سبب الإجازة' />
                 </Form.Item>
 
 
