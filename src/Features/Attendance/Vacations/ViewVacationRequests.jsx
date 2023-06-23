@@ -1,7 +1,7 @@
 import { Table, Tag, Typography } from "antd";
 import Spinner from "../../../Components/Spinner/Spinner";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import './Vacations.css';
 import { getVacationRequests, acceptVacationRequest, rejectVacationRequest } from "../../../redux/vacations/reducer";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
@@ -14,14 +14,21 @@ function ViewVacationRequests() {
     const loading = useSelector(state => state.vacationsReducer.loading);
     const error = useSelector(state => state.vacationsReducer.error);
 
+    const [filterValue, setFilterValue] = useState([]);
+
     useEffect(() => {
         dispatch(getVacationRequests());
     }, []);
 
+    useEffect(() => {
+        dispatch(getVacationRequests({ req_stat: Number(filterValue[0]) }));
+    }, [filterValue]);
+
 
     const handlePageChange = (page) => {
-        dispatch(getVacationRequests({ page: page }));
+        dispatch(getVacationRequests({ page: page, req_stat: Number(filterValue[0]) }));
     }
+
 
     const filterValues = [
         {
@@ -67,6 +74,12 @@ function ViewVacationRequests() {
             key: 'duration',
             render: (len) => <Tag>{len}</Tag>
         },
+        // {
+        //     title: 'سبب الإجازة',
+        //     dataIndex: 'description',
+        //     key: 'description',
+        //     width: '600px'
+        // },
         {
             title: 'حالة الطلب',
             dataIndex: 'req_stat',
@@ -88,12 +101,9 @@ function ViewVacationRequests() {
 
                 return <Tag color={color}>{status}</Tag>
             },
-        },
-        {
-            title: 'سبب الإجازة',
-            dataIndex: 'description',
-            key: 'description',
-            width: '600px'
+            filters: filterValues,
+            defaultFilteredValue: filterValue,
+            filterMultiple: false,
         },
         {
             title: 'العمليات',
@@ -127,9 +137,14 @@ function ViewVacationRequests() {
         },
     ];
 
-    const apply = (a) => {
-        console.log(a);
-    }
+    const handleChange = (pagination, filters, sorter) => {
+        if (!filters.req_stat) {
+            setFilterValue([]);
+        } else if (String(filters.req_stat[0]) !== filterValue[0]) {
+            setFilterValue([String(filters.req_stat[0])]);
+        }
+    };
+
 
     return (
         <Spinner loading={loading}>
@@ -145,6 +160,7 @@ function ViewVacationRequests() {
                         onChange: handlePageChange,
                     }}
                     scroll={{ x: 'max-content' }}
+                    onChange={handleChange}
                 />
             </div>
         </Spinner>

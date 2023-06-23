@@ -1,7 +1,7 @@
 import { Table, Tag, Typography } from "antd";
 import Spinner from "../../../Components/Spinner/Spinner";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getTimeShiftRequests, acceptTimeShiftRequest, rejectTimeShiftRequest } from "../../../redux/timeShifts/reducer";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 
@@ -13,16 +13,20 @@ function ViewTimeShiftRequests() {
     const loading = useSelector(state => state.timeShiftsReducer.loading);
     const error = useSelector(state => state.timeShiftsReducer.error);
 
+    const [filterValue, setFilterValue] = useState([]);
+
     useEffect(() => {
         dispatch(getTimeShiftRequests());
     }, []);
 
+    useEffect(() => {
+        dispatch(getTimeShiftRequests({ req_stat: Number(filterValue[0]) }));
+    }, [filterValue]);
+
 
     const handlePageChange = (page) => {
-        dispatch(getTimeShiftRequests({ page: page }));
+        dispatch(getTimeShiftRequests({ page: page, req_stat: Number(filterValue[0]) }));
     }
-
-    console.log(timeShiftRequests);
 
     const filterValues = [
         {
@@ -81,6 +85,12 @@ function ViewTimeShiftRequests() {
             render: (len) => <Tag color="red-inverse">{len}</Tag>
         },
         {
+            title: 'سبب الطلب',
+            dataIndex: 'description',
+            key: 'description',
+            width: '600px'
+        },
+        {
             title: 'حالة الطلب',
             dataIndex: 'req_stat',
             key: 'req_stat',
@@ -101,12 +111,9 @@ function ViewTimeShiftRequests() {
 
                 return <Tag color={color}>{status}</Tag>
             },
-        },
-        {
-            title: 'سبب الطلب',
-            dataIndex: 'description',
-            key: 'description',
-            width: '600px'
+            filters: filterValues,
+            defaultFilteredValue: filterValue,
+            filterMultiple: false,
         },
         {
             title: 'العمليات',
@@ -140,9 +147,13 @@ function ViewTimeShiftRequests() {
         },
     ];
 
-    const apply = (a) => {
-        console.log(a);
-    }
+    const handleChange = (pagination, filters, sorter) => {
+        if (!filters.req_stat) {
+            setFilterValue([]);
+        } else if (String(filters.req_stat[0]) !== filterValue[0]) {
+            setFilterValue([String(filters.req_stat[0])]);
+        }
+    };
 
     return (
         <Spinner loading={loading}>
@@ -151,6 +162,7 @@ function ViewTimeShiftRequests() {
                     columns={columns}
                     dataSource={timeShiftRequests}
                     rowKey='shift_req_id'
+                    onChange={handleChange}
                     pagination={{
                         current: metaData?.current_page,
                         pageSize: metaData?.per_page,

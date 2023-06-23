@@ -11,7 +11,12 @@ const addTimeShiftRequest = (payload) => {
 }
 
 const getTimeShiftRequests = (payload) => {
-    return AxiosInstance().get(`shift-request${payload ? `?page=${payload.page}` : ""}`);
+    
+    const queryParams = new URLSearchParams();
+    queryParams.append('req_stat', payload?.req_stat ? payload.req_stat : '');
+    queryParams.append('page', payload?.page ? payload.page : '');
+
+    return AxiosInstance().get(`shift-request?${queryParams.toString()}`);
 }
 
 const acceptTimeShiftRequest = (payload) => {

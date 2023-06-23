@@ -26,7 +26,10 @@ const addVacationRequest = (payload) => {
 }
 
 const getVacationRequests = (payload) => {
-    return AxiosInstance().get(`vacation-request${payload ? `?page=${payload.page}` : ""}`);
+    const queryParams = new URLSearchParams();
+    queryParams.append('req_stat', payload?.req_stat ? payload.req_stat : '');
+    queryParams.append('page', payload?.page ? payload.page : '');
+    return AxiosInstance().get(`vacation-request?${queryParams.toString()}`);
 }
 
 const acceptVacationRequest = (payload) => {
