@@ -4,7 +4,17 @@ import { getEmployeesAbsencesSuccess, getEmployeesAbsencesFailed } from "./reduc
 import { updateEmployeeAbsenceStatusSuccess, updateEmployeeAbsenceStatusFailed } from "./reducer";
 
 const getEmployeesAbsences = (payload) => {
-    return AxiosInstance().get(`absences${payload ? `?page=${payload.page}` : ""}`);
+    const params = new URLSearchParams();
+
+    if(payload?.page) {
+        params.append('page', payload.page);
+    }
+    
+    if(payload?.name) {
+        params.append('name', payload.name);
+    }
+
+    return AxiosInstance().get(`absences?${params.toString()}`);
 }
 
 const updateEmployeeAbsenceStatus = (payload) => {

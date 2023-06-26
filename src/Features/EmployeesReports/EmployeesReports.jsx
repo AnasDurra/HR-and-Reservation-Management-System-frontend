@@ -40,8 +40,24 @@ function EmployeesReports() {
         if (selectedEmployee) {
             const params = new URLSearchParams();
 
+            params.append('emp_id', 1);
 
-            AxiosInstance().get(`/reports${params}`).then((response) => {
+            if(checkedAbsenceReport) {
+                params.append('absence_report', true);
+
+                if(absenceStartDate) {
+                    params.append('absence_start_date', absenceStartDate);
+                }
+
+                if(absenceEndDate) {
+                    params.append('absence_end_date', absenceEndDate);
+                }
+
+            }
+
+            console.log(params.toString());
+
+            AxiosInstance().post(`pdf?${params.toString()}`).then((response) => {
                 handleResponse('تم تجهيز التقرير بنجاح');
             });
         } else {

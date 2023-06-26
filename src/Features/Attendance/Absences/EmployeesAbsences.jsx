@@ -1,7 +1,7 @@
 import { Table, Tag, Typography } from "antd";
 import Spinner from "../../../Components/Spinner/Spinner";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SwapOutlined } from "@ant-design/icons";
 import { getEmployeesAbsences, updateEmployeeAbsenceStatus } from "../../../redux/absences/reducer";
 import ServerSideSearchField from "../../../Components/ServerSideSearchField/ServerSideSearchField";
@@ -14,6 +14,8 @@ function EmployeesAbsences() {
     const loading = useSelector(state => state.employeesAbsencesReducer.loading);
     const error = useSelector(state => state.employeesAbsencesReducer.error);
 
+    const [searchValue, setSearchValue] = useState("");
+
     useEffect(() => {
         dispatch(getEmployeesAbsences());
     }, []);
@@ -21,10 +23,9 @@ function EmployeesAbsences() {
     const handlePageChange = (page) => {
         dispatch(getEmployeesAbsences({
             page: page,
+            name: searchValue
         }));
     }
-
-    console.log(absences);
 
     const columns = [
         {
@@ -73,10 +74,27 @@ function EmployeesAbsences() {
         },
     ];
 
+    const handleSearch = () => {
+        dispatch(getEmployeesAbsences({ name: searchValue }));
+    }
+
+    const handleReset = () => {
+        setSearchValue("");
+        dispatch(getEmployeesAbsences());
+    }
+
     return (
         <Spinner loading={loading}>
             <div>
-                <ServerSideSearchField placeholder='البحث عن غيابات موظف' searchBtnText='البحث' resetBtnText='إعادة' />
+                <ServerSideSearchField
+                    placeholder='البحث عن غيابات موظف'
+                    searchBtnText='البحث'
+                    resetBtnText='إعادة'
+                    searchValue={searchValue}
+                    setSearchValue={setSearchValue}
+                    handleReset={handleReset}
+                    handleSearch={handleSearch}
+                />
                 <Table
                     columns={columns}
                     dataSource={absences}
