@@ -145,6 +145,8 @@ function ViewTimeSheetLog() {
         },
     ];
 
+    console.log(timeSheetLog);
+
     return (
         <Spinner loading={loading}>
             <div>
