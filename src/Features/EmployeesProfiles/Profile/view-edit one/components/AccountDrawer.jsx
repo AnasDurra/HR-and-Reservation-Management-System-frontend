@@ -52,7 +52,7 @@ function CreateProfileDrawer({ onClose, open, employeeName, job_app_id }) {
   };
   return (
     <Drawer
-      title={`إنشاء حساب موظّف ( ${employeeName} )`}
+      title={` حساب الموظَف ( ${employeeName} )`}
       placement="top"
       onClose={onClose}
       open={open}

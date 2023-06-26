@@ -13,6 +13,7 @@ const ViewEditJobApplicationForm = ({
   editMode,
   initialValue,
   handleRemoveField,
+  hidePersonalImg
 }) => {
   const [segmentValue, setSegmentValue] = useState(1);
   return (
@@ -64,6 +65,7 @@ const ViewEditJobApplicationForm = ({
           show={segmentValue === 1}
           editMode={editMode}
           form={form}
+          hidePersonalImg={hidePersonalImg}
         />
         <DrivingLicense
           show={segmentValue === 2}

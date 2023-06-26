@@ -1,0 +1,16 @@
+.actions-list::-webkit-scrollbar {
+  width: 5px;
+}
+.actions-list::-webkit-scrollbar-track {
+  background-color: #f5f5f5;
+}
+.actions-list::-webkit-scrollbar-thumb {
+  background-color: #1d39c4;
+}
+
+.actions-list {
+  height: 200px;
+  overflow-y: scroll;
+  direction: ltr;
+  width: 100%;
+}

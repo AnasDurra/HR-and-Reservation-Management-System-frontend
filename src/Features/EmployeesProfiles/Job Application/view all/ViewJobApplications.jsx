@@ -1,17 +1,17 @@
-import { Button, Popconfirm, Table, Tag } from "antd";
+import { Button, Input, Popconfirm, Table, Tag } from "antd";
 import Spinner from "../../../../Components/Spinner/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   destroyJobApplications,
-  getJobApplication,
   getJobApplications,
 } from "../../../../redux/Features/Employee Profile/Job application/slice";
 import "./ViewJobApplications.css";
 import CreateProfileDrawer from "../components/CreateProfileDrawer";
 import { getDepartments } from "../../../../redux/departments/slice";
 import { getJobVacancies } from "../../../../redux/jobVacancies/reducer";
+import Search from "antd/es/input/Search";
 const colorMapping = {
   1: "#FFA500",
   2: "#008000",
@@ -19,7 +19,7 @@ const colorMapping = {
   4: "#808080",
 };
 const statusMapping = {
-  1: "معلَق",
+  1: "بانتظار المراجعة",
   2: "مقبول",
   3: "مرفوض",
   4: "مؤرشف",
@@ -38,6 +38,12 @@ function ViewJobApplications(props) {
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [filters, setFilters] = useState({
+    job_name: [],
+    department_name: [],
+    status: [],
+    employee_name: [],
+  });
 
   const handleRowSelection = (selectedRowKeys, selectedRows) => {
     console.log(selectedRowKeys, selectedRows);
@@ -52,15 +58,19 @@ function ViewJobApplications(props) {
 
   const onTableChange = (pagination, filters, sorter) => {
     console.log(filters);
-    console.log(pagination);
     dispatch(
       getJobApplications({
         dep: filters.department_name,
         status: filters.status,
         vacancy: filters.job_name,
         page: pagination.current,
+        name:
+          filters.employee_name?.length > 0
+            ? filters.employee_name[0]
+            : undefined,
       })
     );
+    setFilters(filters);
   };
 
   useEffect(() => {
@@ -79,6 +89,26 @@ function ViewJobApplications(props) {
       title: "الاسم",
       dataIndex: "employee_name",
       key: "employee_name",
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => (
+        <div style={{ padding: 8 }}>
+          <Input.Search
+            placeholder="اسم الموظَف"
+            value={selectedKeys[0]}
+            onChange={(e) =>
+              setSelectedKeys(e.target.value ? [e.target.value] : [])
+            }
+            onPressEnter={confirm}
+            onSearch={confirm}
+            style={{ width: 188, marginBottom: 8, display: "block" }}
+          />
+        </div>
+      ),
+      filteredValue: filters.employee_name,
     },
     {
       title: "الشاغر الوظيفي",
@@ -88,6 +118,7 @@ function ViewJobApplications(props) {
         text: jv.name,
         value: jv.id,
       })),
+      filteredValue: filters.job_name,
     },
     {
       title: "القسم",
@@ -97,7 +128,7 @@ function ViewJobApplications(props) {
         text: dep.name,
         value: dep.dep_id,
       })),
-      filteredValue: [1],
+      filteredValue: filters.department_name,
     },
     {
       title: "الحالة",
@@ -110,6 +141,7 @@ function ViewJobApplications(props) {
       render: (_, { status }) => (
         <Tag color={colorMapping[status.app_status_id]}>{status.name}</Tag>
       ),
+      filteredValue: filters.status,
     },
   ];
 
@@ -123,7 +155,6 @@ function ViewJobApplications(props) {
             current: jobApplicationsSlice.pagination?.meta?.current_page,
             pageSize: jobApplicationsSlice.pagination?.meta?.per_page,
             total: jobApplicationsSlice.pagination?.meta?.total,
-            //onChange: handlePageChange,
             showQuickJumper: false,
             showSizeChanger: false,
           }}

@@ -2,17 +2,22 @@ import { useEffect } from "react";
 import { Button, Table } from "antd";
 import Spinner from "../../../../Components/Spinner/Spinner";
 import { Navigate, useNavigate } from "react-router-dom";
+import { getEmployee } from "../../../../redux/Features/Employee Profile/Employee/slice";
 import {
   DeleteOutlined,
   EyeFilled,
   EyeInvisibleOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
 
 function ViewEmployeesProfiles(props) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   useEffect(() => {
     // props.getJobVacancies();
+  //  dispatch(getEmployee());
   }, []);
 
   const columns = [

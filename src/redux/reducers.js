@@ -8,6 +8,7 @@ import shiftsReducer from "./shifts/reducer";
 import biometricDevicesReducer from "./biometricDevices/reducer";
 import timeSheetReducer from "./timeSheet/reducer";
 import holidaysReducer from "./holidays/reducer";
+import employeesSlice from "./Features/Employee Profile/Employee/slice";
 
 export default {
   userReducer: userReducer,
@@ -19,4 +20,5 @@ export default {
   biometricDevicesReducer: biometricDevicesReducer,
   timeSheetReducer: timeSheetReducer,
   holidaysReducer: holidaysReducer,
+  employeesSlice: employeesSlice,
 };
