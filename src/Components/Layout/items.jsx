@@ -1,11 +1,12 @@
 import {
-  DashboardOutlined,
   ApartmentOutlined,
   LockOutlined,
   ClockCircleOutlined,
   FileDoneOutlined,
   HistoryOutlined,
   ProfileOutlined,
+  ContainerOutlined,
+  ReconciliationOutlined,
 } from "@ant-design/icons";
 
 export const items = [
@@ -16,22 +17,13 @@ export const items = [
   },
   {
     text: "الشواغر الوظيفية",
-    icon: <DashboardOutlined />,
+    icon: <ReconciliationOutlined />,
     path: "/jobVacancies",
   },
   {
     text: "المسميات الوظيفية",
     icon: <LockOutlined />,
-    items: [
-      {
-        text: "المسميات الوظيفية",
-        path: "/roles",
-      },
-      {
-        text: "تعديل صلاحيات موظف",
-        path: "/changeEmployeePermissions",
-      },
-    ],
+    path: "/roles",
   },
   {
     text: "إدارة الدوام",
@@ -81,5 +73,15 @@ export const items = [
     text: "سجل الأحداث",
     icon: <HistoryOutlined />,
     path: "/log",
+  },
+  {
+    text: "التقارير",
+    icon: <ContainerOutlined />,
+    items: [
+      {
+        text: "تقارير الموظفين",
+        path: "/employees/reports",
+      },
+    ],
   },
 ];

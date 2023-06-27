@@ -7,8 +7,16 @@ import { handleError } from "../utils/helpers";
 
 
 const getTimeSheetLog = (payload) => {
-    console.log(payload);
-    return AxiosInstance().get(`attendance${payload ? `?page=${payload}` : ""}`);
+    const params = new URLSearchParams();
+
+    if (payload?.page) {
+        params.append('page', payload.page);
+    }
+
+    if (payload?.name) {
+        params.append('name', payload.name);
+    }
+    return AxiosInstance().get(`attendance?${params.toString()}`);
 }
 
 const addAttendanceRecord = (payload) => {

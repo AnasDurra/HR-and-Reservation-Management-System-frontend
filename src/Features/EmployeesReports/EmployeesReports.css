@@ -1,0 +1,23 @@
+.employeesReportsContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.employeesReportsContainer > * {
+    margin-top: 20px;
+}
+
+.employeesReportsContainer > button {
+    width: fit-content;
+    margin-top: 50px;
+}
+
+.reportElement {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+}
+
+.reportElement>.ant-picker {
+    margin: 15px;
+}

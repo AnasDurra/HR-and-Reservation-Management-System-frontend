@@ -26,6 +26,7 @@ import EmployeesAbsences from "./Features/Attendance/Absences/EmployeesAbsences"
 import EmployeesVacationRequests from "./Features/Attendance/Vacations/EmployeesVacationRequests";
 import ViewVacationRequests from "./Features/Attendance/Vacations/ViewVacationRequests";
 import ViewTimeShiftRequests from "./Features/Attendance/TimeShift/ViewTimeShiftRequests";
+import EmployeesReports from "./Features/EmployeesReports/EmployeesReports";
 
 function App(props) {
   return (
@@ -59,6 +60,7 @@ function App(props) {
 
             <Route path="/departments" element={<ViewDepartments />} />
             <Route path="/jobVacancies" element={<ViewJobVacancies />} />
+
             <Route path="employees">
               <Route index element={<ViewEmployeesProfiles />} />
               <Route path="profile" element={<ViewEmployeeProfile />} />
@@ -68,7 +70,10 @@ function App(props) {
               </Route>
               <Route path="timeShiftRequests" element={<ViewTimeShiftRequests />} />
               <Route path="absences" element={<EmployeesAbsences />} />
+
+              <Route path="reports" element={<EmployeesReports />} />
             </Route>
+
             <Route path="jobApplications">
               <Route index element={<ViewJobApplications />} />
               <Route path="add" element={<JobApplicationMultiStepForm />} />
