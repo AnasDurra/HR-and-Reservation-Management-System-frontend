@@ -12,6 +12,7 @@ import {
   getRoles,
   updateRole,
 } from "../../redux/roles/slice";
+import { useSelector } from "react-redux";
 
 function ViewRoles(props) {
   const [form] = Form.useForm();
@@ -19,7 +20,8 @@ function ViewRoles(props) {
   const [selectedRole, setSelectedRole] = useState(null);
 
   const [openRoleModal, setOpenRoleModal] = useState(false);
-
+  const rolesSlice = useSelector((state) => state.rolesSlice);
+  
   const deleteRole = () => {
     console.log("deleted: ", selectedRole);
     dispatch(
@@ -92,57 +94,65 @@ function ViewRoles(props) {
     closeRoleModal();
   };
 
-    const columns = [
-        {
-            title: 'الاسم',
-            dataIndex: 'name',
-            key: 'name',
-            width: '15%'
-        },
-        {
-            title: 'الوصف',
-            dataIndex: 'description',
-            key: 'description',
-        },
-        {
-            title: 'الموظفين',
-            dataIndex: 'employees_count',
-            key: 'count',
-        },
-        {
-            title: 'الصلاحيات',
-            key: 'pres',
-            render: (record) => {
-                return record.permissions.map(permission => <Tag key={permission.perm_id}>{permission.name}</Tag>);
-            }
-        },
-        {
-            title: 'العمليات',
-            key: 'actions',
-            render: (record) => {
-                return (
-                    <div id="actions">
-                        <DeleteOutlined onClick={() => {
-                            setSelectedRole(record);
-                            setOpenDeleteModal(true);
-                        }} />
-                        <EditOutlined onClick={() => {
-                            console.log(record);
-                            setSelectedRole(record);
-                            let permissionsIDS = [];
-                            permissionsIDS = permissionsIDS.concat(record.permissions.map(p => p.perm_id));
-                            form.setFieldsValue({
-                                name: record.name,
-                                description: record.description,
-                                permissions_ids: permissionsIDS,
-                            })
-                            setOpenRoleModal(true);
-                        }} />
-                    </div>
+  const columns = [
+    {
+      title: "الاسم",
+      dataIndex: "name",
+      key: "name",
+      width: "15%",
+    },
+    {
+      title: "الوصف",
+      dataIndex: "description",
+      key: "description",
+    },
+    {
+      title: "الموظفين",
+      dataIndex: "employees_count",
+      key: "count",
+    },
+    {
+      title: "الصلاحيات",
+      key: "pres",
+      render: (record) => {
+        return record.permissions.map((permission) => (
+          <Tag key={permission.perm_id}>{permission.name}</Tag>
+        ));
+      },
+    },
+    {
+      title: "العمليات",
+      key: "actions",
+      render: (record) => {
+        return (
+          <div id="actions">
+            <DeleteOutlined
+              onClick={() => {
+                setSelectedRole(record);
+                setOpenDeleteModal(true);
+              }}
+            />
+            <EditOutlined
+              onClick={() => {
+                console.log(record);
+                setSelectedRole(record);
+                let permissionsIDS = [];
+                permissionsIDS = permissionsIDS.concat(
+                  record.permissions.map((p) => p.perm_id)
                 );
-            },
-        },
-    ];
+                form.setFieldsValue({
+                  name: record.name,
+                  description: record.description,
+                  permissions_ids: permissionsIDS,
+                });
+                setOpenRoleModal(true);
+              }}
+            />
+          </div>
+        );
+      },
+    },
+  ];
 
   return (
     <Spinner loading={false}>
