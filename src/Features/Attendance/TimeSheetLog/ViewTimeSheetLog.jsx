@@ -130,10 +130,12 @@ function ViewTimeSheetLog() {
                         <Tag color="blue">
                             {record.check_out_time ? record.check_out_time : 'غير مسجّل'}
                         </Tag>
+                        
                         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            <Tag color={record['leaveBefore'] ? 'red' : 'green'} style={{ marginBottom: '3px' }}>
-                                {record['leaveBefore'] ? 'غادر مبكرا' : 'على الوقت'}
-                            </Tag>
+                            {record.check_out_time && record['leaveBefore'] ? 
+                            <Tag color='red' style={{ marginBottom: '3px' }}>
+                                {'غادر مبكرا'}
+                            </Tag> : null}
                             {record['leaveBefore'] ?
                                 <Tag color="red">
                                     {record['leaveBefore']}
@@ -144,8 +146,6 @@ function ViewTimeSheetLog() {
             }
         },
     ];
-
-    console.log(timeSheetLog);
 
     return (
         <Spinner loading={loading}>

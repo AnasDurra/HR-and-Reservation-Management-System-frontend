@@ -59,7 +59,11 @@ function EmployeesAbsences() {
             render: (record) => {
                 return (
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
-                        <Typography>{record.absence_status === 1 ? 'مبرر' : 'غير مبرر'}</Typography>
+                        <Tag
+                            color={record.absence_status === 1 ? "green" : "red"}
+                        >
+                            {record.absence_status === 1 ? 'مبرر' : 'غير مبرر'}
+                        </Tag>
                         <SwapOutlined
                             onClick={() => {
                                 dispatch(updateEmployeeAbsenceStatus({

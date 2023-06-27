@@ -45,9 +45,19 @@ export const timeSheetReducer = createSlice({
         },
         addLeaveRecordSuccess: (state, action) => {
             state.loading = false;
-            // let log = state.timeSheetLog.filter(t => t.id !== action.payload.id);
-            // log.unshift(action.payload);
-            // state.timeSheetLog = log;
+            let record = state.timeSheetLog.find(
+                t => t.emp_id === action.payload.leave_emp_id &&
+                    t.attendance_date === action.payload.leave_date);
+
+            let log = state.timeSheetLog.filter(t => t.attendance_id !== record.attendance_id);
+
+            record.leaveBefore = action.payload?.leaveBefore;
+            record['check_out.state'] = action.payload.leave_state;
+            record['check_out.status'] = action.payload.leave_status;
+            record['check_out_time'] = action.payload.leave_time;
+
+            log.unshift(record);
+            state.timeSheetLog = log;
         },
         addLeaveRecordFailed: (state, action) => {
             state.loading = false;

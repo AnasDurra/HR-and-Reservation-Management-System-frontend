@@ -40,7 +40,7 @@ function EmployeesReports() {
         if (selectedEmployee) {
             const params = new URLSearchParams();
 
-            params.append('emp_id', 1);
+            params.append('emp_id', 534);
 
             if(checkedAbsenceReport) {
                 params.append('absence_report', true);
@@ -52,10 +52,19 @@ function EmployeesReports() {
                 if(absenceEndDate) {
                     params.append('absence_end_date', absenceEndDate);
                 }
-
             }
 
-            console.log(params.toString());
+            if(checkedAttendanceReport) {
+                params.append('attendance_report', true);
+
+                if(attendanceStartDate) {
+                    params.append('attendance_start_date', attendanceStartDate);
+                }
+
+                if(attendanceEndDate) {
+                    params.append('attendance_end_date', attendanceEndDate);
+                }
+            }
 
             AxiosInstance().post(`pdf?${params.toString()}`).then((response) => {
                 handleResponse('تم تجهيز التقرير بنجاح');
