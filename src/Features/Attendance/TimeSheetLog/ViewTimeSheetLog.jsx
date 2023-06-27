@@ -1,4 +1,4 @@
-import { Button, Form, Table, Tag, Typography } from "antd";
+import { Button, Form, Table, Tag } from "antd";
 import Spinner from "../../../Components/Spinner/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -6,6 +6,7 @@ import { getTimeSheetLog, addAttendanceRecord, addLeaveRecord } from "../../../r
 import './ViewTimeSheetLog.css';
 import TimeSheetModal from "./TimeSheetModal";
 import dayjs from "dayjs";
+import ServerSideSearchField from "../../../Components/ServerSideSearchField/ServerSideSearchField";
 
 function ViewTimeSheetLog() {
 
@@ -14,6 +15,8 @@ function ViewTimeSheetLog() {
     const metaData = useSelector(state => state.timeSheetReducer.metaData);
     const loading = useSelector(state => state.timeSheetReducer.loading);
     const error = useSelector(state => state.timeSheetReducer.error);
+
+    const [searchValue, setSearchValue] = useState("");
 
     const [form] = Form.useForm();
     const [openTimeSheetModal, setOpenTimeSheetModal] = useState(false);
@@ -68,7 +71,7 @@ function ViewTimeSheetLog() {
     }
 
     const handlePageChange = (page) => {
-        dispatch(getTimeSheetLog(page));
+        dispatch(getTimeSheetLog({ page: page, name: searchValue }));
     }
 
     const columns = [
@@ -130,12 +133,12 @@ function ViewTimeSheetLog() {
                         <Tag color="blue">
                             {record.check_out_time ? record.check_out_time : 'غير مسجّل'}
                         </Tag>
-                        
+
                         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            {record.check_out_time && record['leaveBefore'] ? 
-                            <Tag color='red' style={{ marginBottom: '3px' }}>
-                                {'غادر مبكرا'}
-                            </Tag> : null}
+                            {record.check_out_time && record['leaveBefore'] ?
+                                <Tag color='red' style={{ marginBottom: '3px' }}>
+                                    {'غادر مبكرا'}
+                                </Tag> : null}
                             {record['leaveBefore'] ?
                                 <Tag color="red">
                                     {record['leaveBefore']}
@@ -146,6 +149,15 @@ function ViewTimeSheetLog() {
             }
         },
     ];
+
+    const handleSearch = () => {
+        dispatch(getTimeSheetLog({ name: searchValue }));
+    }
+
+    const handleReset = () => {
+        setSearchValue("");
+        dispatch(getTimeSheetLog());
+    }
 
     return (
         <Spinner loading={loading}>
@@ -177,6 +189,15 @@ function ViewTimeSheetLog() {
                         تسجيل مغادرة
                     </Button>
                 </div>
+                <ServerSideSearchField
+                    placeholder='البحث عن سجل حضور موظف'
+                    searchBtnText='البحث'
+                    resetBtnText='إعادة'
+                    searchValue={searchValue}
+                    setSearchValue={setSearchValue}
+                    handleReset={handleReset}
+                    handleSearch={handleSearch}
+                />
                 <Table
                     columns={columns}
                     dataSource={timeSheetLog}
