@@ -299,7 +299,7 @@ const JobApplicationMultiStepForm = () => {
           />
           <Button
             disabled={
-              false &&
+              true &&
               (!generalInfoFormValidateState ||
                 !employmentFormValidateState ||
                 !drivingLicenseFormValidateState ||

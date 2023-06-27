@@ -1,129 +1,156 @@
-import {all, fork, takeEvery, call, put} from "redux-saga/effects";
-import * as actionTypes from './constants';
-import * as actions from './actions';
+import { all, fork, takeEvery, call, put } from "redux-saga/effects";
 import AxiosInstance from "../utils/axiosInstance";
+import {
+  createRole,
+  createRoleSuccess,
+  createRoleFail,
+  getRoles,
+  getRolesSuccess,
+  getRolesFail,
+  getPermissions,
+  getPermissionsSuccess,
+  getPermissionsFail,
+  updateRole,
+  updateRoleSuccess,
+  updateRoleFail,
+  destroyRole,
+  destroyRoleSuccess,
+  destroyRoleFail,
+} from "./slice";
 
-const getRoles = (payload) => {
-    return AxiosInstance().get('job-titles', payload);
+const getAllRoles = (payload) => {
+  return AxiosInstance().get("job-titles", payload);
+};
+
+const getAllPermissions = (payload) => {
+  return AxiosInstance().get("permissions", payload);
+};
+
+const destroy = (payload) => {
+  return AxiosInstance().delete(`job-titles/${payload.id}`, payload);
+};
+
+const update = (payload) => {
+  return AxiosInstance().put(`job-titles/${payload.id}`, payload);
+};
+
+const create = (payload) => {
+  return AxiosInstance().post("job-titles", payload);
+};
+
+function* getRolesSaga({ payload }) {
+  try {
+    const response = yield call(getAllRoles, payload);
+    yield put(
+      getRolesSuccess({
+        roles: response.data.data,
+      })
+    );
+  } catch (error) {
+    yield put(
+      getRolesFail({
+        error: error,
+      })
+    );
+  }
 }
 
-const getPermissions = (payload) => {
-    return AxiosInstance().get('permissions', payload);
+function* getPermissionsSaga({ payload }) {
+  try {
+    const response = yield call(getAllPermissions, payload);
+    yield put(
+      getPermissionsSuccess({
+        permissions: response.data.data,
+      })
+    );
+  } catch (error) {
+    yield put(
+      getPermissionsFail({
+        error: error,
+      })
+    );
+  }
 }
 
-const deleteRole = (payload) => {
-    return AxiosInstance().delete(`job-titles/${payload.id}`, payload);
+function* deleteRoleSaga({ payload }) {
+  try {
+    const response = yield call(destroy, payload);
+    yield put(
+      destroyRoleSuccess({
+        role: response.data.data,
+      })
+    );
+  } catch (error) {
+    yield put(
+      destroyRoleFail({
+        error: error,
+      })
+    );
+  }
 }
 
-const updateRole = (payload) => {
-    return AxiosInstance().put(`job-titles/${payload.id}`, payload);
+function* updateRoleSaga({ payload }) {
+  try {
+    const response = yield call(update, payload);
+    yield put(
+      updateRoleSuccess({
+        role: response.data.data,
+      })
+    );
+  } catch (error) {
+    yield put(
+      updateRoleFail({
+        error: error,
+      })
+    );
+  }
 }
 
-const createRole = (payload) => {
-    return AxiosInstance().post('job-titles', payload);
+function* createRoleSaga({ payload }) {
+  try {
+    const response = yield call(create, payload);
+    yield put(
+      createRoleSuccess({
+        role: response.data.data,
+      })
+    );
+  } catch (error) {
+    yield put(
+      createRoleFail({
+        error: error,
+      })
+    );
+  }
 }
 
-
-function* getRolesSaga({payload}) {
-    try {
-        const response = yield call(getRoles, payload);
-        yield put(actions.getRolesSuccess({
-            roles: response.data.data,
-        }));
-    }
-    catch(error) {
-        yield put(actions.getRolesFailed({                                                                         
-            error: error
-        }));
-    }
+function* watchGetRoles() {
+  yield takeEvery(getRoles, getRolesSaga);
 }
 
-function* getPermissionsSaga({payload}) {
-    try {
-        const response = yield call(getPermissions, payload);
-        yield put(actions.getPermissionsSuccess({
-            permissions: response.data.data,
-        }));
-    }
-    catch(error) {
-        yield put(actions.getPermissionsFailed({                                                                         
-            error: error
-        }));
-    }
+function* watchGetPermissions() {
+  yield takeEvery(getPermissions, getPermissionsSaga);
 }
 
-function* deleteRoleSaga({payload}) {
-    try {
-        const response = yield call(deleteRole, payload);
-        yield put(actions.deleteRoleSuccess({
-            role: response.data.data,
-        }));
-    }
-    catch(error) {
-        yield put(actions.deleteRoleFailed({                                                                         
-            error: error
-        }));
-    }
+function* watchDeleteRole() {
+  yield takeEvery(destroyRole, deleteRoleSaga);
 }
 
-function* updateRoleSaga({payload}) {
-    try {
-        const response = yield call(updateRole, payload);
-        yield put(actions.updateRoleSuccess({
-            role: response.data.data,
-        }));
-    }
-    catch(error) {
-        yield put(actions.updateRoleFailed({                                                                         
-            error: error
-        }));
-    }
+function* watchUpdateRole() {
+  yield takeEvery(updateRole, updateRoleSaga);
 }
 
-function* createRoleSaga({payload}) {
-    try {
-        const response = yield call(createRole, payload);
-        yield put(actions.createRoleSuccess({
-            role: response.data.data,
-        }));
-    }
-    catch(error) {
-        yield put(actions.createRoleFailed({                                                                         
-            error: error
-        }));
-    }
+function* watchCreateRole() {
+  yield takeEvery(createRole, createRoleSaga);
 }
-
-function* watchGetRoles () {
-    yield takeEvery(actionTypes.GET_ROLES, getRolesSaga);
-}
-
-function* watchGetPermissions () {
-    yield takeEvery(actionTypes.GET_PERMISSIONS, getPermissionsSaga);
-}
-
-function* watchDeleteRole () {
-    yield takeEvery(actionTypes.DELETE_ROLE, deleteRoleSaga);
-}
-
-function* watchUpdateRole () {
-    yield takeEvery(actionTypes.UPDATE_ROLE, updateRoleSaga);
-}
-
-function* watchCreateRole () {
-    yield takeEvery(actionTypes.CREATE_ROLE, createRoleSaga);
-}
-
-
 
 function* RolesSaga() {
-    yield all([
-        fork(watchGetRoles),
-        fork(watchDeleteRole),
-        fork(watchUpdateRole),
-        fork(watchCreateRole),
-        fork(watchGetPermissions),
-    ]);
+  yield all([
+    fork(watchGetRoles),
+    fork(watchDeleteRole),
+    fork(watchUpdateRole),
+    fork(watchCreateRole),
+    fork(watchGetPermissions),
+  ]);
 }
 
 export default RolesSaga;

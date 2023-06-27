@@ -1,5 +1,4 @@
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import Icon from "@ant-design/icons/lib/components/Icon";
 import { Badge, Card, Space } from "antd";
 
 const VacancyCard = ({

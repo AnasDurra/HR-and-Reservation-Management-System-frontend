@@ -1,7 +1,6 @@
 import {
   Button,
   Col,
-  Divider,
   Form,
   Input,
   Row,
@@ -20,8 +19,15 @@ import { validationRules } from "../createProfileValidationRules";
 function CreateProfileDrawer({ onClose, open, employeeName, job_app_id }) {
   const [form] = useForm();
   const dispatch = useDispatch();
-
   const rolesSlice = useSelector((state) => state.rolesSlice);
+
+  useEffect(() => {
+    //TODO fetch departments & job titles & schedules
+    if (open) {
+      dispatch(getRoles());
+      dispatch(getPermissions());
+    }
+  }, [open]);
 
   const onJobTitleSelect = (id) => {
     const selectedPerms = form.getFieldValue(["permissions"]);
@@ -34,25 +40,17 @@ function CreateProfileDrawer({ onClose, open, employeeName, job_app_id }) {
     );
   };
 
-  useEffect(() => {
-    //TODO fetch departments & job titles & schedules
-    if (open) {
-      dispatch(getRoles());
-      dispatch(getPermissions());
-    }
-  }, [open]);
-
-  const createProfile = () => {
+  const createProfile = () =>
     form
       .validateFields()
       .then((_) => {
         //TODO call create api
       })
       .catch((_) => {});
-  };
+
   return (
     <Drawer
-      title={`إنشاء حساب موظّف ( ${employeeName} )`}
+      title={` حساب الموظَف ( ${employeeName} )`}
       placement="top"
       onClose={onClose}
       open={open}

@@ -53,9 +53,21 @@ function* watchCreateJobApplication() {
   yield takeEvery(createJobApplication, createJobApplicationSaga);
 }
 
-const getAll = (payload) => {
+const getAll = ({ page, status, vacancy, dep, name } = {}) => {
+  const params = {
+    ...(page && { page }),
+    ...(status && status.length > 0 && { status: status.join(",") }),
+    ...(vacancy && vacancy.length > 0 && { vacancy: vacancy.join(",") }),
+    ...(dep && dep.length > 0 && { dep: dep.join(",") }),
+    ...(name && { name }),
+  };
+  const queryString = Object.entries(params)
+    .map(([key, value]) => `${key}=${value}`)
+    .join("&");
+  console.log(queryString);
+
   return AxiosInstance().get(
-    `job-applications${payload ? `?page=${payload}` : ""}`
+    `job-applications${queryString ? `?${queryString}` : ""}`
   );
 };
 

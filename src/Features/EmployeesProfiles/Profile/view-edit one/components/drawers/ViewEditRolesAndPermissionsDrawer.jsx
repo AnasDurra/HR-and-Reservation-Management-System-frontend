@@ -1,27 +1,28 @@
-import {
-  Button,
-  Col,
-  Divider,
-  Form,
-  Input,
-  Row,
-  Select,
-  Space,
-  Drawer,
-  DatePicker,
-} from "antd";
+import { Button, Col, Form, Row, Select, Space, Drawer } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useEffect, useState } from "react";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { getPermissions, getRoles } from "../../../../redux/roles/slice";
 import { validationRules } from "../createProfileValidationRules";
 
-function CreateProfileDrawer({ onClose, open, employeeName, job_app_id }) {
+function ViewEditRolesAndPermissionsDrawer({
+  onClose,
+  isOpen,
+  current_job_title,
+  permissions,
+  emp_id,
+  employeeName,
+}) {
   const [form] = useForm();
   const dispatch = useDispatch();
-
   const rolesSlice = useSelector((state) => state.rolesSlice);
+
+  useEffect(() => {
+    if (isOpen) {
+      dispatch(getRoles());
+      dispatch(getPermissions());
+    }
+  }, [isOpen]);
 
   const onJobTitleSelect = (id) => {
     const selectedPerms = form.getFieldValue(["permissions"]);
@@ -34,28 +35,20 @@ function CreateProfileDrawer({ onClose, open, employeeName, job_app_id }) {
     );
   };
 
-  useEffect(() => {
-    //TODO fetch departments & job titles & schedules
-    if (open) {
-      dispatch(getRoles());
-      dispatch(getPermissions());
-    }
-  }, [open]);
-
-  const createProfile = () => {
+  const createProfile = () =>
     form
       .validateFields()
       .then((_) => {
         //TODO call create api
       })
       .catch((_) => {});
-  };
+
   return (
     <Drawer
-      title={`إنشاء حساب موظّف ( ${employeeName} )`}
+      title={` المسمى والوظيفي والصلاحيلات للموظَف ( ${employeeName} )`}
       placement="top"
       onClose={onClose}
-      open={open}
+      open={isOpen}
       footer={
         <Space>
           <Button onClick={onClose}>إلغاء</Button>
@@ -67,34 +60,7 @@ function CreateProfileDrawer({ onClose, open, employeeName, job_app_id }) {
       height={"60%"}
     >
       <Form form={form} layout="vertical">
-        <Form.Item
-          name={"job_app_id"}
-          initialValue={job_app_id}
-          style={{ display: "none" }}
-          rules={validationRules.job_app_id}
-        />
-        <Row gutter={16}>
-          <Col span={8}>
-            <Form.Item
-              name={["username"]}
-              label="اسم المستخدم"
-              //  validateStatus="error"
-              //</Col> help="قم بإدخال اسم مستخدم غير موجود مسبقاَ في النظام"
-              rules={validationRules.username}
-            >
-              <Input prefix={<UserOutlined />} />
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item
-              name={["password"]}
-              rules={validationRules.password}
-              label="كلمة السر"
-            >
-              <Input.Password prefix={<LockOutlined />} />
-            </Form.Item>
-          </Col>
-        </Row>
+        <Form.Item name={"emp_id"} noStyle />
         <Row gutter={16}>
           <Col span={8}>
             <Form.Item
@@ -130,21 +96,8 @@ function CreateProfileDrawer({ onClose, open, employeeName, job_app_id }) {
             </Form.Item>
           </Col>
         </Row>
-        <Row gutter={16}>
-          <Col span={8}>
-            {/* TODO sagas from hadi */}
-            <Form.Item rules={validationRules.schedule_id} label="جدول الدوام">
-              <Select />
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item label="تاريخ بدأ العمل">
-              <DatePicker />
-            </Form.Item>
-          </Col>
-        </Row>
       </Form>
     </Drawer>
   );
 }
-export default CreateProfileDrawer;
+export default ViewEditRolesAndPermissionsDrawer;

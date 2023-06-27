@@ -1,7 +1,7 @@
 import { useForm } from "antd/lib/form/Form";
-import ViewEditJobApplicationForm from "../../Profile/view-edit one/components/ViewEditJobApplicationForm";
+import ViewEditJobApplicationForm from "../../Profile/view-edit one/components/forms/ViewEditJobApplicationForm";
 import VacancyCard from "../components/VacancyCard";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -10,9 +10,20 @@ import {
   updateJobApplication,
 } from "../../../../redux/Features/Employee Profile/Job application/slice";
 import Spinner from "../../../../Components/Spinner/Spinner";
-import { SettingOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Modal, Select, Space, Tag } from "antd";
+import { ExclamationCircleFilled, SettingOutlined } from "@ant-design/icons";
+import {
+  Button,
+  Dropdown,
+  Modal,
+  Popconfirm,
+  Select,
+  Space,
+  Tag,
+  message,
+} from "antd";
 import CreateProfileDrawer from "../components/CreateProfileDrawer";
+import { getJobVacancies } from "../../../../redux/jobVacancies/reducer";
+import confirm from "antd/es/modal/confirm";
 
 const colorMapping = {
   1: "#FFA500",
@@ -28,18 +39,21 @@ const statusMapping = {
 };
 
 const ViewJobApplication = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [searchParam, setSearchParam] = useSearchParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [selectedVacancy, setSelectedVacancy] = useState(null);
   const [form] = useForm();
-  const dispatch = useDispatch();
-  const [searchParam, setSearchParam] = useSearchParams();
   const jobApplication = useSelector(
     (state) => state.jobApplicationsSlice.jobApplication
   );
   const jobApplicationsSlice = useSelector(
     (state) => state.jobApplicationsSlice
   );
+  const jobVacanciesSlice = useSelector((state) => state.jobVacanciesReducer);
 
   const toggleEditMode = () => {
     setIsEditMode(!isEditMode);
@@ -59,16 +73,33 @@ const ViewJobApplication = () => {
       toggleEditMode();
     }
   };
+
   const showModal = () => {
+    dispatch(getJobVacancies());
     setIsModalOpen(true);
   };
-
   const handleModalOk = () => {
-    setIsModalOpen(false);
+    if (selectedVacancy === null) {
+      message.warning("الرجاء اختيار الشاغر الوظيفي");
+    } else {
+      dispatch(
+        updateJobApplication({
+          form: {
+            job_application: {
+              job_vacancy_id: selectedVacancy,
+            },
+          },
+          id: searchParam.get("id"),
+        })
+      );
+      setSelectedVacancy(null);
+      setIsModalOpen(false);
+    }
   };
   const handleModalCancel = () => {
     setIsModalOpen(false);
   };
+
   const openDrawer = () => {
     setIsDrawerOpen(true);
   };
@@ -100,6 +131,27 @@ const ViewJobApplication = () => {
     );
   };
 
+  const showDeleteConfirm = () => {
+    console.log("hi");
+    console.log(jobApplication?.employee_data?.personal_data?.full_name);
+    Modal.confirm({
+      title: "حذف طلب توظيف",
+      icon: <ExclamationCircleFilled />,
+      content: `هل أنت متأكد من رغبتك بحذف طلب توظيف ${jobApplication?.employee_data?.personal_data?.full_name}`,
+      okText: "نعم",
+      okType: "danger",
+      cancelText: "لا",
+      onOk() {
+        deleteJobApplication();
+        navigate(-1);
+      },
+      onCancel() {},
+    });
+  };
+  useEffect(() => {
+    dispatch(getJobApplication(searchParam.get("id")));
+  }, []);
+
   useEffect(() => {
     form.resetFields();
     form.setFieldsValue(jobApplication?.employee_data);
@@ -108,90 +160,101 @@ const ViewJobApplication = () => {
     } */
   }, [jobApplication]);
 
-  useEffect(() => {
-    dispatch(getJobApplication(searchParam.get("id")));
-  }, []);
-
   const items = [
     {
-      label: <span onClick={toggleEditMode}>تعديل البيانات</span>,
+      label: "تعديل",
       key: "0",
-    },
-    {
-      label: <span onClick={showModal}>تعديل الشاغر</span>,
-      key: "1",
-    },
-    {
-      label: <span>تعديل حالة الطلب</span>,
-      key: "2",
       children: [
         {
-          key: "2-1",
-          disabled: jobApplication?.application_status?.id === 1,
-          label: (
-            <span
-              onClick={() => {
-                updateStatus(1);
-              }}
-            >
-              {" "}
-              تعليق
-            </span>
-          ),
+          label: <div onClick={toggleEditMode}> البيانات</div>,
+          key: "0-0",
         },
         {
-          key: "2-2",
-          disabled: jobApplication?.application_status?.id === 2,
+          label: <div onClick={showModal}> الشاغر</div>,
+          key: "0-1",
+        },
+        {
+          label: "حالة الطلب",
+          key: "0-2",
+          children: [
+            {
+              key: "0-2-1",
+              disabled: jobApplication?.application_status?.app_status_id === 1,
+              label: (
+                <div
+                  onClick={() => {
+                    updateStatus(1);
+                  }}
+                >
+                  {" "}
+                  تعليق
+                </div>
+              ),
+            },
+            {
+              key: "0-2-2",
+              disabled: jobApplication?.application_status?.app_status_id === 2,
 
-          label: (
-            <span
-              onClick={() => {
-                updateStatus(2);
-              }}
-            >
-              {" "}
-              قبول
-            </span>
-          ),
-        },
-        {
-          key: "2-3",
-          disabled: jobApplication?.application_status?.id === 3,
-          label: (
-            <span
-              onClick={() => {
-                updateStatus(3);
-              }}
-            >
-              {" "}
-              رفض
-            </span>
-          ),
-        },
-        {
-          key: "2-4",
-          disabled: jobApplication?.application_status?.id === 4,
-          label: (
-            <span
-              onClick={() => {
-                updateStatus(4);
-              }}
-            >
-              {" "}
-              أرشفة
-            </span>
-          ),
+              label: (
+                <div
+                  onClick={() => {
+                    updateStatus(2);
+                  }}
+                >
+                  {" "}
+                  قبول
+                </div>
+              ),
+            },
+            {
+              key: "0-2-3",
+              disabled: jobApplication?.application_status?.app_status_id === 3,
+              label: (
+                <div
+                  onClick={() => {
+                    updateStatus(3);
+                  }}
+                >
+                  {" "}
+                  رفض
+                </div>
+              ),
+            },
+            {
+              key: "0-2-4",
+              disabled: jobApplication?.application_status?.app_status_id === 4,
+              label: (
+                <div
+                  onClick={() => {
+                    updateStatus(4);
+                  }}
+                >
+                  {" "}
+                  أرشفة
+                </div>
+              ),
+            },
+          ],
         },
       ],
     },
     {
-      label: <span onClick={openDrawer}>إنشاء حساب موظَف</span>,
-      key: "3",
-      disabled: jobApplication?.application_status?.id !== 2,
+      label: (
+        <div
+          onClick={() => {
+            jobApplication?.application_status?.app_status_id === 2 &&
+              openDrawer();
+          }}
+        >
+          إنشاء حساب موظَف
+        </div>
+      ),
+      key: "1",
+      disabled: jobApplication?.application_status?.app_status_id !== 2,
     },
     {
-      label: <span onClick={deleteJobApplication}> حذف</span>,
-      key: "4",
+      label: <div onClick={showDeleteConfirm}>حذف</div>,
+      key: "2",
       danger: true,
     },
   ];
@@ -210,8 +273,7 @@ const ViewJobApplication = () => {
           <Dropdown menu={{ items }} trigger={["click"]}>
             <Space>
               <Button type="link">
-                تعديل
-                <SettingOutlined />
+                <SettingOutlined style={{ fontSize: '150%'}} />
               </Button>
             </Space>
           </Dropdown>
@@ -244,9 +306,13 @@ const ViewJobApplication = () => {
                 <h5 style={{ marginTop: 0, padding: 0 }}>حالة الطلب: </h5>
                 <Tag
                   style={{ marginTop: "2%", padding: 0 }}
-                  color={colorMapping[jobApplication?.application_status?.id]}
+                  color={
+                    colorMapping[
+                      jobApplication?.application_status?.app_status_id
+                    ]
+                  }
                 >
-                  {statusMapping[jobApplication?.application_status?.id]}
+                  {jobApplication?.application_status?.name}
                 </Tag>
               </div>
               <VacancyCard
@@ -288,21 +354,35 @@ const ViewJobApplication = () => {
         centered
         maskClosable
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            margin: "5%",
-          }}
-        >
-          <Select size="large" placeholder="انقر لاختيار الشاغر الجديد">
-            //TODO link the job vacancies
-          </Select>
-        </div>
+        <Spinner loading={jobVacanciesSlice.loading}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              margin: "5%",
+            }}
+          >
+            <Select
+              size="large"
+              placeholder="انقر لاختيار الشاغر الجديد"
+              options={jobVacanciesSlice.jobVacancies.map((jv) => ({
+                value: jv.id,
+                label: jv.name,
+              }))}
+              //TODO search queries on API
+              showSearch
+              onSelect={(selectedVacancy) =>
+                setSelectedVacancy(selectedVacancy)
+              }
+            />
+          </div>
+        </Spinner>
       </Modal>
+
       <CreateProfileDrawer
         employeeName={jobApplication?.employee_data?.personal_data?.full_name}
+        job_app_id={jobApplication?.job_application?.id}
         open={isDrawerOpen}
         onClose={closeDrawer}
       />

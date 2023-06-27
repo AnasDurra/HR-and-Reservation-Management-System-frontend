@@ -1,5 +1,5 @@
-import axios from 'axios';
-import authUtil from './authUtil';
+import axios from "axios";
+import authUtil from "./authUtil";
 
 const AxiosInstance = () => {
     const axiosInstance = axios.create({
@@ -14,9 +14,7 @@ const AxiosInstance = () => {
     const token = authUtil();
     axiosInstance.defaults.headers.common['Authorization'] = token
 
-    return axiosInstance;
-}
+  return axiosInstance;
+};
 
-
-
-export default AxiosInstance
+export default AxiosInstance;

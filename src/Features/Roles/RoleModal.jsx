@@ -1,10 +1,11 @@
 import { Button, Form, Input, Modal, Select } from "antd";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 export default function RoleModal({ open, onFinish, handleCancel, role, form, permissions, getPermissions }) {
-
+    const dispatch = useDispatch();
     useEffect(() => {
-        // getPermissions();
+        dispatch(getPermissions());
     }, []);
 
     const { Option } = Select;
