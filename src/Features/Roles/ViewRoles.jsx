@@ -14,11 +14,6 @@ import {
 } from "../../redux/roles/slice";
 
 function ViewRoles(props) {
-
-    useEffect(() => {
-        props.getRoles();
-    }, []);
-
   const [form] = Form.useForm();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [selectedRole, setSelectedRole] = useState(null);
