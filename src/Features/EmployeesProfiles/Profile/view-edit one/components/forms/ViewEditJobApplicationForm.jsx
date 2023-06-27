@@ -1,11 +1,11 @@
 import { Form, Segmented } from "antd";
-import GeneralInfo from "../sections/GeneralInfo";
-import DrivingLicense from "../sections/DrivingLicense";
-import Employment from "../sections/Employment";
-import Skills from "../sections/Skills";
-import Education from "../sections/Education";
-import Certificates from "../sections/Certificates";
-import Additional from "../sections/Additional";
+import GeneralInfo from "./sections/GeneralInfo";
+import DrivingLicense from "./sections/DrivingLicense";
+import Employment from "./sections/Employment";
+import Skills from "./sections/Skills";
+import Education from "./sections/Education";
+import Certificates from "./sections/Certificates";
+import Additional from "./sections/Additional";
 import { useState } from "react";
 
 const ViewEditJobApplicationForm = ({
@@ -18,6 +18,7 @@ const ViewEditJobApplicationForm = ({
   const [segmentValue, setSegmentValue] = useState(1);
   return (
     <div className="info-container">
+    
       <Segmented
         style={{ marginBottom: "2rem" }}
         value={segmentValue}

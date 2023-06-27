@@ -12,9 +12,9 @@ import {
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons/lib/icons";
 import TextArea from "antd/es/input/TextArea";
-import { previousEmploymentRecordRules } from "../../../validationRules";
-import CustomCard from "../components/CustomCard";
-import "../style.css";
+import { previousEmploymentRecordRules } from "../../../../../validationRules";
+import CustomCard from "../../CustomCard";
+import "../../../style.css";
 
 const Employment = (props) => {
   return (

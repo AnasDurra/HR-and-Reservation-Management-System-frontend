@@ -1,9 +1,10 @@
 import React from "react";
 import { Input, Button, Form, Divider, Row, Col, Select, Empty } from "antd";
 import { PlusOutlined } from "@ant-design/icons/lib/icons";
-import CustomCard from "../components/CustomCard";
-import { convictionsRules, referencesRules } from "../../../validationRules";
-import "../style.css";
+import CustomCard from "../../CustomCard";
+import { convictionsRules, referencesRules } from "../../../../../validationRules";
+
+import "../../../style.css";
 
 const Additional = (props) => {
   return (

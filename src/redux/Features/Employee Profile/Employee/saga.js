@@ -12,6 +12,12 @@ import {
   /*  updateEmployee,
   updateEmployeeSuccess,
   updateEmployeeFail, */
+  updateEmployeeDepartment,
+  updateEmployeeDepartmentSuccess,
+  updateEmployeeDepartmentFail,
+  updateEmployeeCredentials,
+  updateEmployeeCredentialsSuccess,
+  updateEmployeeCredentialsFail,
   destroyEmployees,
   destroyEmployeesSuccess,
   destroyEmployeesFail,
@@ -113,38 +119,62 @@ function* watchGetEmployee() {
   yield takeEvery(getEmployee, getEmployeeSaga);
 }
 
-/* const update = (payload) => {
-  return AxiosInstance().post(
-    `job-applications/update/${payload.id}`,
-    formatRequestBeforeSend(payload.form),
-    {
-      headers: {
-        "Content-type": "multipart/form-data",
-      },
-    }
-  );
+const updateDepartment = (payload) => {
+  console.log(payload);
+  return AxiosInstance().post(`employees/edit-department/${payload.id}`, {
+    dep_id: payload.dep_id,
+  });
 };
 
-function* updateEmployeeSaga({ payload }) {
+function* updateEmployeeDepartmentSaga({ payload }) {
   try {
-    const response = yield call(update, payload);
+    const response = yield call(updateDepartment, payload);
     yield put(
-      updateEmployeeSuccess({
-        Employee: response.data.data,
+      updateEmployeeDepartmentSuccess({
+        department: response.data.data,
       })
     );
   } catch (error) {
     console.log(error);
     yield put(
-      updateEmployeeFail({
+      updateEmployeeDepartmentFail({
         error: error,
       })
     );
   }
 }
-function* watchUpdateEmployee() {
-  yield takeEvery(updateEmployee, updateEmployeeSaga);
-} */
+function* watchUpdateEmployeeDepartment() {
+  yield takeEvery(updateEmployeeDepartment, updateEmployeeDepartmentSaga);
+}
+
+const updateCredentials = (payload) => {
+  console.log(payload);
+  return AxiosInstance().post(`employees/edit-credentials/${payload.id}`, {
+    username: payload.username,
+    password: payload.password,
+  });
+};
+
+function* updateEmployeeCredentialsSaga({ payload }) {
+  try {
+    const response = yield call(updateCredentials, payload);
+    yield put(
+      updateEmployeeCredentialsSuccess({
+        Credentials: response.data.data,
+      })
+    );
+  } catch (error) {
+    console.log(error);
+    yield put(
+      updateEmployeeCredentialsFail({
+        error: error,
+      })
+    );
+  }
+}
+function* watchUpdateEmployeeCredentials() {
+  yield takeEvery(updateEmployeeCredentials, updateEmployeeCredentialsSaga);
+}
 
 const destroy = (payload) => {
   return AxiosInstance().post(`employees/destroy`, { ids: payload });
@@ -176,6 +206,9 @@ function* employeesSaga() {
     fork(watchCreateEmployee),
     fork(watchGetEmployees),
     fork(watchGetEmployee),
+    fork(watchUpdateEmployeeDepartment),
+    fork(watchUpdateEmployeeCredentials),
+
     /*     fork(watchUpdateEmployee), */
     fork(watchDestroyEmployees),
   ]);

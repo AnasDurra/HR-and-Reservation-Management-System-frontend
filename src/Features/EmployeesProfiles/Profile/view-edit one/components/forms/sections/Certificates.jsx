@@ -20,11 +20,11 @@ import {
 import {
   certificatesAllowedTypes,
   certificatesRules,
-} from "../../../validationRules";
-import { getFile } from "../../../utils/getFile";
-import useForceUpdate from "../../../Hooks/useForceUpdate";
-import { downloadFile } from "../utils/helpers";
-import "../style.css";
+} from "../../../../../validationRules";
+import { getFile } from "../../../../../utils/getFile";
+import useForceUpdate from "../../../../../Hooks/useForceUpdate";
+import { downloadFile } from "../../../utils/helpers";
+import "../../../style.css";
 
 const Certificates = (props) => {
   const forceUpdate = useForceUpdate();

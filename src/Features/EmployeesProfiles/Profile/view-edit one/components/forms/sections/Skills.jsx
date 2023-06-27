@@ -1,9 +1,9 @@
 import React from "react";
 import { Input, Button, Form, Divider, Row, Col, Select, Cascader } from "antd";
 import { MinusCircleOutlined } from "@ant-design/icons/lib/icons";
-import { predefinedSkill } from "../../../constants";
-import { computerSkillsRules, languagesRules } from "../../../validationRules";
-import "../style.css";
+import { predefinedSkill } from "../../../../../constants";
+import { computerSkillsRules, languagesRules } from "../../../../../validationRules";
+import "../../../style.css";
 
 const Skills = (props) => {
   return (

@@ -60,6 +60,38 @@ export const employeesSlice = createSlice({
       state.loading = false;
       state.error = action.payload.error;
     }, */
+
+    updateEmployeeDepartment: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    updateEmployeeDepartmentSuccess: (state, action) => {
+      state.loading = false;
+      console.log("action:", action);
+      /*       state.employee = action.payload.employee;
+       */
+    },
+    updateEmployeeDepartmentFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+    updateEmployeeCredentials: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+
+    updateEmployeeCredentialsSuccess: (state, action) => {
+      state.loading = false;
+      console.log("action:", action);
+      //TODO update state
+      /*       state.employee = action.payload.employee;
+       */
+    },
+    updateEmployeeCredentialsFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+
     destroyEmployees: (state) => {
       state.loading = true;
       state.error = null;
@@ -91,6 +123,12 @@ export const {
   /*  updateEmployee,
   updateEmployeeSuccess,
   updateEmployeeFail, */
+  updateEmployeeDepartment,
+  updateEmployeeDepartmentSuccess,
+  updateEmployeeDepartmentFail,
+  updateEmployeeCredentials,
+  updateEmployeeCredentialsSuccess,
+  updateEmployeeCredentialsFail,
   destroyEmployees,
   destroyEmployeesSuccess,
   destroyEmployeesFail,

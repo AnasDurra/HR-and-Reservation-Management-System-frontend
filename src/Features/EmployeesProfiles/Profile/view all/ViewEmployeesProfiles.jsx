@@ -80,7 +80,7 @@ function ViewEmployeesProfiles(props) {
     <Spinner loading={props.loading}>
       <div>
         <Table columns={columns} dataSource={data} rowKey="id" />
-        <Button className="employeesButton" onClick={() => {}}>
+        <Button className="employeesButton" onClick={() => {navigate("/jobApplications/add")}}>
           إضافة موظف
         </Button>
       </div>

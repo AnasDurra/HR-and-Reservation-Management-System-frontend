@@ -24,12 +24,12 @@ import {
   passportRules,
   personalCardRules,
   personalDataRules,
-} from "../../../validationRules";
+} from "../../../../../validationRules";
 import moment from "moment";
-import CustomCard from "../components/CustomCard";
-import useForceUpdate from "../../../Hooks/useForceUpdate";
-import "../style.css";
-import { getFile } from "../../../utils/getFile";
+import CustomCard from "../../CustomCard";
+import useForceUpdate from "../../../../../Hooks/useForceUpdate";
+import "../../../style.css";
+import { getFile } from "../../../../../utils/getFile";
 
 const GeneralInfo = (props) => {
   const forceUpdate = useForceUpdate();

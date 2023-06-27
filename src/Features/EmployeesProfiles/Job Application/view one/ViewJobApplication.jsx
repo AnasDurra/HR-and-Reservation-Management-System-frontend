@@ -1,5 +1,5 @@
 import { useForm } from "antd/lib/form/Form";
-import ViewEditJobApplicationForm from "../../Profile/view-edit one/components/ViewEditJobApplicationForm";
+import ViewEditJobApplicationForm from "../../Profile/view-edit one/components/forms/ViewEditJobApplicationForm";
 import VacancyCard from "../components/VacancyCard";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
