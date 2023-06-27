@@ -4,6 +4,7 @@ export const employeesSlice = createSlice({
   name: "employees",
   initialState: {
     employees: [],
+    indexedEmployees:[],
     pagination: null,
     employee: null,
     loading: false,
@@ -36,6 +37,21 @@ export const employeesSlice = createSlice({
       state.loading = false;
       state.error = action.payload.error;
     },
+
+    getIndexedEmployees: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    getIndexedEmployeesSuccess: (state, action) => {
+      state.loading = false;
+      state.indexedEmployees = action.payload.indexedEmployees;
+      state.pagination = action.payload.pagination;
+    },
+    getIndexedEmployeesFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+    
     getEmployee: (state) => {
       state.loading = true;
       state.error = null;
@@ -117,6 +133,9 @@ export const {
   getEmployees,
   getEmployeesSuccess,
   getEmployeesFail,
+  getIndexedEmployees,
+  getIndexedEmployeesSuccess,
+  getIndexedEmployeesFail,
   getEmployee,
   getEmployeeSuccess,
   getEmployeeFail,

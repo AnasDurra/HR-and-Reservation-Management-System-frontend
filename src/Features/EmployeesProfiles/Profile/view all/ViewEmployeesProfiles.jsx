@@ -2,7 +2,10 @@ import { useEffect } from "react";
 import { Button, Table } from "antd";
 import Spinner from "../../../../Components/Spinner/Spinner";
 import { Navigate, useNavigate } from "react-router-dom";
-import { getEmployee } from "../../../../redux/Features/Employee Profile/Employee/slice";
+import {
+  getEmployee,
+  getIndexedEmployees,
+} from "../../../../redux/Features/Employee Profile/Employee/slice";
 import {
   DeleteOutlined,
   EyeFilled,
@@ -17,7 +20,7 @@ function ViewEmployeesProfiles(props) {
 
   useEffect(() => {
     // props.getJobVacancies();
-  //  dispatch(getEmployee());
+    //  dispatch(getEmployee());
   }, []);
 
   const columns = [
@@ -80,7 +83,13 @@ function ViewEmployeesProfiles(props) {
     <Spinner loading={props.loading}>
       <div>
         <Table columns={columns} dataSource={data} rowKey="id" />
-        <Button className="employeesButton" onClick={() => {navigate("/jobApplications/add")}}>
+        <Button
+          className="employeesButton"
+          onClick={() => {
+            navigate("/jobApplications/add");
+            dispatch(getIndexedEmployees(2));
+          }}
+        >
           إضافة موظف
         </Button>
       </div>

@@ -9,6 +9,9 @@ import {
   getEmployee,
   getEmployeeSuccess,
   getEmployeeFail,
+  getIndexedEmployees,
+  getIndexedEmployeesSuccess,
+  getIndexedEmployeesFail,
   /*  updateEmployee,
   updateEmployeeSuccess,
   updateEmployeeFail, */
@@ -93,6 +96,35 @@ function* getEmployeesSaga({ payload }) {
 }
 function* watchGetEmployees() {
   yield takeEvery(getEmployees, getEmployeesSaga);
+}
+
+const getAllIndexed = (payload) => {
+  return AxiosInstance().get(
+    `employees/list${payload ? `?page=${payload}` : ""}`
+  );
+};
+function* getIndexedEmployeesSaga({ payload }) {
+  try {
+    const response = yield call(getAllIndexed, payload);
+    yield put(
+      getIndexedEmployeesSuccess({
+        indexedEmployees: response.data.data,
+        pagination: {
+          ...response.data,
+          data: undefined,
+        },
+      })
+    );
+  } catch (error) {
+    yield put(
+      getIndexedEmployeesFail({
+        error: error,
+      })
+    );
+  }
+}
+function* watchGetIndexedEmployees() {
+  yield takeEvery(getIndexedEmployees, getIndexedEmployeesSaga);
 }
 
 const getOne = (payload) => {
@@ -205,10 +237,10 @@ function* employeesSaga() {
   yield all([
     fork(watchCreateEmployee),
     fork(watchGetEmployees),
+    fork(watchGetIndexedEmployees),
     fork(watchGetEmployee),
     fork(watchUpdateEmployeeDepartment),
     fork(watchUpdateEmployeeCredentials),
-
     /*     fork(watchUpdateEmployee), */
     fork(watchDestroyEmployees),
   ]);
