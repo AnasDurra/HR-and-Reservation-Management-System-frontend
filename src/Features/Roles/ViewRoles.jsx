@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import Spinner from "../../Components/Spinner/Spinner";
 import "./ViewRoles.css";
 import RoleModal from "./RoleModal";
-import { connect, useDispatch, useSelector } from "react-redux";
 import {
   createRole,
   destroyRole,
