@@ -12,16 +12,26 @@ import {
   getRoles,
   updateRole,
 } from "../../redux/roles/slice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-function ViewRoles(props) {
+function ViewRoles() {
+
   const [form] = Form.useForm();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [selectedRole, setSelectedRole] = useState(null);
+  const dispatch = useDispatch();
 
   const [openRoleModal, setOpenRoleModal] = useState(false);
   const rolesSlice = useSelector((state) => state.rolesSlice);
-  
+
+  const roles = useSelector((state) => state.rolesSlice.roles);
+
+  useEffect(() => {
+    dispatch(getRoles());
+    dispatch(getPermissions());
+  }, [dispatch]);
+
+
   const deleteRole = () => {
     console.log("deleted: ", selectedRole);
     dispatch(
@@ -54,7 +64,6 @@ function ViewRoles(props) {
       delete data.permissions_ids;
     }
     if (Object.keys(data).length !== 0) {
-      console.log(data);
       data.id = selectedRole.job_title_id;
       dispatch(updateRole(data));
     }
@@ -134,7 +143,6 @@ function ViewRoles(props) {
             />
             <EditOutlined
               onClick={() => {
-                console.log(record);
                 setSelectedRole(record);
                 let permissionsIDS = [];
                 permissionsIDS = permissionsIDS.concat(
@@ -155,11 +163,11 @@ function ViewRoles(props) {
   ];
 
   return (
-    <Spinner loading={false}>
+    <Spinner loading={rolesSlice.loading}>
       <div>
         <Table
           columns={columns}
-          dataSource={rolesSlice.roles}
+          dataSource={roles}
           rowKey="job_title_id"
         />
         <Button className="roleButton" onClick={() => setOpenRoleModal(true)}>

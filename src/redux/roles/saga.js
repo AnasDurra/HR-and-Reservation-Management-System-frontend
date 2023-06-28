@@ -17,6 +17,7 @@ import {
   destroyRoleSuccess,
   destroyRoleFail,
 } from "./slice";
+import { handleError } from "../utils/helpers";
 
 const getAllRoles = (payload) => {
   return AxiosInstance().get("job-titles", payload);
@@ -81,6 +82,9 @@ function* deleteRoleSaga({ payload }) {
       })
     );
   } catch (error) {
+    if(error?.response?.data?.message === "There is one or more employees have this Job title") {
+      handleError("لا يمكن حذف هذا المسمى الوظيفي, يوجد موظف أو اكثر مرتبط به.")
+    }
     yield put(
       destroyRoleFail({
         error: error,

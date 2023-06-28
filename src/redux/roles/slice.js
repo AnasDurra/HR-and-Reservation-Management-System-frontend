@@ -55,7 +55,7 @@ export const rolesSlice = createSlice({
     updateRoleSuccess: (state, action) => {
       state.loading = false;
       state.roles = state.roles.map((role) =>
-        role.dep_id !== action.payload.role.role_id ? role : action.payload.role
+        role.job_title_id !== action.payload.role.job_title_id ? role : action.payload.role
       );
     },
     updateRoleFail: (state, action) => {
