@@ -1,19 +1,24 @@
 import { Button, DatePicker, Form, Modal, Select, TimePicker } from "antd";
-import dayjs from "dayjs";
+import { useDispatch, useSelector } from "react-redux";
+import { getIndexedEmployees } from "../../../redux/Features/Employee Profile/Employee/slice";
+import { useEffect } from "react";
 
 export default function TimeSheetModal({ open, onFinish, handleCancel, action, form }) {
 
     const { Option } = Select;
-    const employees = [
-        {
-            id: 4,
-            name: 'hadi',
-        },
-        {
-            id: 2,
-            name: 'anas',
-        }
-    ];
+    
+    const dispatch = useDispatch();
+    const employees = useSelector(state => state.employeesSlice.indexedEmployees);
+    const loading = useSelector(state => state.employeesSlice.loading);
+
+    const handleSearch = (data) => {
+        console.log(data);
+        dispatch(getIndexedEmployees({ name: data }));
+    }
+
+    useEffect(() => {
+        dispatch(getIndexedEmployees());
+    }, [dispatch]);
 
     return (
         <Modal
@@ -54,14 +59,13 @@ export default function TimeSheetModal({ open, onFinish, handleCancel, action, f
                     ]}
                 >
                     <Select
+                        loading={loading}
+                        onSearch={handleSearch}
                         showSearch
                         placeholder="اختيار الموظف"
-                        filterOption={(input, option) => {
-                            return (option?.children ?? '').toLowerCase().includes(input.toLowerCase())
-                        }
-                        }
+                        filterOption={false}
                     >
-                        {employees.map((e) => <Option value={e.id} key={e.id}>{e.name}</Option>)}
+                        {employees.map((e) => <Option value={e.emp_id} key={e.emp_id}>{e.full_name}</Option>)}
                     </Select>
                 </Form.Item>
 

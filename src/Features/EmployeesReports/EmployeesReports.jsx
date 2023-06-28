@@ -1,11 +1,15 @@
 import { Button, Select, Typography } from "antd";
 import './EmployeesReports.css';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReportElement from "./ReportElement";
 import AxiosInstance from "../../redux/utils/axiosInstance";
 import { handleError, handleResponse } from "../../redux/utils/helpers";
+import { getIndexedEmployees } from "../../redux/Features/Employee Profile/Employee/slice";
+import { useDispatch, useSelector } from "react-redux";
 
 function EmployeesReports() {
+
+
 
     const { Option } = Select;
 
@@ -23,45 +27,40 @@ function EmployeesReports() {
 
     const [checkedEmployeeLifeReport, setCheckedEmployeeLifeReport] = useState(false);
 
-    const exmployees = [
-        {
-            id: 1,
-            name: 'hadi',
-            permissions: [1, 2],
-        },
-        {
-            id: 2,
-            name: 'anas',
-            permissions: [2, 3],
-        }
-    ];
+    const dispatch = useDispatch();
+    const employees = useSelector(state => state.employeesSlice.indexedEmployees);
+    const loading = useSelector(state => state.employeesSlice.loading);
+
+    useEffect(() => {
+        dispatch(getIndexedEmployees());
+    }, [dispatch]);
 
     const getReport = () => {
         if (selectedEmployee) {
             const params = new URLSearchParams();
 
-            params.append('emp_id', 534);
+            params.append('emp_id', selectedEmployee);
 
-            if(checkedAbsenceReport) {
+            if (checkedAbsenceReport) {
                 params.append('absence_report', true);
 
-                if(absenceStartDate) {
+                if (absenceStartDate) {
                     params.append('absence_start_date', absenceStartDate);
                 }
 
-                if(absenceEndDate) {
+                if (absenceEndDate) {
                     params.append('absence_end_date', absenceEndDate);
                 }
             }
 
-            if(checkedAttendanceReport) {
+            if (checkedAttendanceReport) {
                 params.append('attendance_report', true);
 
-                if(attendanceStartDate) {
+                if (attendanceStartDate) {
                     params.append('attendance_start_date', attendanceStartDate);
                 }
 
-                if(attendanceEndDate) {
+                if (attendanceEndDate) {
                     params.append('attendance_end_date', attendanceEndDate);
                 }
             }
@@ -75,22 +74,25 @@ function EmployeesReports() {
 
     }
 
+    const handleSearch = (data) => {
+        console.log(data);
+        dispatch(getIndexedEmployees({ name: data }));
+    }
+
 
     return (
         <div className="employeesReportsContainer">
             <Typography.Title level={3}>إصدار تقرير خاص بموظف</Typography.Title>
 
             <Select
+                loading={loading}
+                onSearch={handleSearch}
                 onSelect={(id) => setSelectedEmployee(id)}
                 showSearch
                 placeholder="اختيار الموظف"
-                filterOption={(input, option) => {
-                    return (option?.children ?? '').toLowerCase().includes(input.toLowerCase())
-                }
-
-                }
+                filterOption={false}
             >
-                {exmployees.map((e) => <Option value={e.id} key={e.id}>{e.name}</Option>)}
+                {employees.map((e) => <Option value={e.emp_id} key={e.emp_id}>{e.full_name}</Option>)}
             </Select>
 
             <ReportElement
