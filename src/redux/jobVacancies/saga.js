@@ -26,7 +26,6 @@ const createJobVacancy = (payload) => {
 function* getJobVacanciesSaga({ payload }) {
     try {
         const response = yield call(getJobVacancies, payload);
-        console.log(response);
         yield put(getJobVacanciesSuccess(response.data));
     }
     catch (error) {
@@ -37,6 +36,7 @@ function* getJobVacanciesSaga({ payload }) {
 function* deletejobVacancySaga({ payload }) {
     try {
         const response = yield call(deleteJobVacancy, payload);
+        console.log(response);
         yield put(deleteJobVacancySuccess(response.data.data));
     }
     catch (error) {

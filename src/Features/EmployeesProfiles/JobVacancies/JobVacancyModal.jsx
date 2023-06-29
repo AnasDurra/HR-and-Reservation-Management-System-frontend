@@ -1,25 +1,22 @@
 import { Button, Form, Input, Modal, Select } from "antd";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getDepartments } from "../../../redux/departments/slice";
 
 export default function JobVacancyModal({ open, onFinish, handleCancel, jobVacancy, form }) {
-    const data = [
-        {
-            id: 1,
-            name: 'التدريب',
-            description: 'قسم التدريب الخاص بالمركز',
-            employees_count: 10
-        },
-        {
-            id: 2,
-            name: 'الإعلامي',
-            description: 'قسم التدريب الخاص بالمركز',
-            employees_count: 10
-        }
-    ];
+
+
+    const dispatch = useDispatch();
+    const departments = useSelector(state => state.departmentsSlice.departments);
+    const loading = useSelector(state => state.departmentsSlice.loading);
+
+    useEffect(() => {
+        dispatch(getDepartments());
+    }, [dispatch]);
 
     const { Option } = Select;
     return (
         <Modal
-            // zIndex={1500}
             centered
             open={open}
             title={jobVacancy ? "تعديل الشاغر الوظيفي" : "إضافة شاغر وظيفي"}
@@ -56,6 +53,7 @@ export default function JobVacancyModal({ open, onFinish, handleCancel, jobVacan
                     ]}
                 >
                     <Select
+                        loading={loading}
                         showSearch
                         placeholder="اختيار القسم"
                         filterOption={(input, option) => {
@@ -65,7 +63,7 @@ export default function JobVacancyModal({ open, onFinish, handleCancel, jobVacan
 
                         }
                     >
-                        {data.map((d) => <Option value={d.id} key={d.id}>{d.name}</Option>)}
+                        {departments.map((d) => <Option value={d.dep_id} key={d.dep_id}>{d.name}</Option>)}
                     </Select>
                 </Form.Item>
 

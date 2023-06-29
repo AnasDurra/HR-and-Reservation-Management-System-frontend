@@ -14,6 +14,7 @@ import {
   createDepartmentSuccess,
 } from "./slice";
 import AxiosInstance from "../utils/axiosInstance";
+import { handleError } from "../utils/helpers";
 
 const getAll = (payload) => {
   return AxiosInstance().get("departments", payload);
@@ -57,7 +58,9 @@ function* destroyDepartmentSaga({ payload }) {
       })
     );
   } catch (error) {
-    console.log(error);
+    if (error?.response?.data?.message === "There is one or more employees in the department") {
+      handleError("يوجد موظف واحد أو اكثر مرتبط بهذا القسم");
+    }
     yield put(
       destroyDepartmentFail({
         error: error,
@@ -75,6 +78,9 @@ function* updateDepartmentSaga({ payload }) {
       })
     );
   } catch (error) {
+    if (error?.response?.data?.data?.name[0] === "The name has already been taken.") {
+      handleError("يوجد قسم آخر بنفس هذا الاسم");
+    }
     yield put(
       updateDepartmentFail({
         error: error,
@@ -92,6 +98,9 @@ function* createDepartmentSaga({ payload }) {
       })
     );
   } catch (error) {
+    if (error?.response?.data?.data?.name[0] === "The name has already been taken.") {
+      handleError("يوجد قسم آخر بنفس هذا الاسم");
+    }
     yield put(
       createDepartmentFail({
         error: error,

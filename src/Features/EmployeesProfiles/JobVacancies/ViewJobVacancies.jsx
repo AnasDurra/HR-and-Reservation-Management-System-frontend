@@ -86,8 +86,13 @@ function ViewJobVacancies() {
         },
         {
             title: 'القسم',
-            dataIndex: 'department',
+            dataIndex: 'department_name',
             key: 'department',
+        },
+        {
+            title: 'حالة الشاعر',
+            dataIndex: 'vacancy_status_name',
+            key: 'vacancy_status',
         },
         {
             title: 'العمليات',
