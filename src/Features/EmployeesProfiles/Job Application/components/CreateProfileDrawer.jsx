@@ -12,33 +12,35 @@ import {
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useEffect, useState } from "react";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { getPermissions, getRoles } from "../../../../redux/roles/slice";
 import { validationRules } from "../createProfileValidationRules";
+import { getShifts } from "../../../../redux/shifts/reducer";
 
 function CreateProfileDrawer({ onClose, open, employeeName, job_app_id }) {
   const [form] = useForm();
   const dispatch = useDispatch();
 
+  const [selectedRole, setSelectedRole] = useState();
+
   const rolesSlice = useSelector((state) => state.rolesSlice);
+  const shiftsSlice = useSelector((state) => state.shiftsReducer);
 
   const onJobTitleSelect = (id) => {
-    const selectedPerms = form.getFieldValue(["permissions"]);
-    const selectedJobTitle = rolesSlice.roles.find(
-      (role) => role.job_title_id === id
-    );
+    const jobTitle = rolesSlice.roles.find((role) => role.job_title_id === id);
+    setSelectedRole(jobTitle);
     form.setFieldValue(
       ["permissions"],
-      [...selectedJobTitle.permissions.map((perm) => perm.perm_id)]
+      jobTitle?.permissions.map((perm) => perm.perm_id)
     );
   };
 
   useEffect(() => {
-    //TODO fetch departments & job titles & schedules
     if (open) {
       dispatch(getRoles());
       dispatch(getPermissions());
+      dispatch(getShifts());
     }
   }, [open]);
 
@@ -95,6 +97,19 @@ function CreateProfileDrawer({ onClose, open, employeeName, job_app_id }) {
             </Form.Item>
           </Col>
         </Row>
+        <Row >
+          <Col span={16}>
+            <Form.Item
+              name={"email"}
+              label="البريد الإلكتروني"
+              //  validateStatus="error"
+              //</Col> help="قم بإدخال اسم مستخدم غير موجود مسبقاَ في النظام"
+              rules={validationRules.email}
+            >
+              <Input prefix={<MailOutlined />} />
+            </Form.Item>
+          </Col>
+        </Row>
         <Row gutter={16}>
           <Col span={8}>
             <Form.Item
@@ -115,12 +130,20 @@ function CreateProfileDrawer({ onClose, open, employeeName, job_app_id }) {
           <Col span={8}>
             <Form.Item name={["permissions"]} label="الصلاحيات">
               <Select
-                options={rolesSlice?.permissions?.map((perm) => ({
-                  value: perm.perm_id,
-                  label: perm.name,
-                }))}
                 mode="multiple"
                 loading={rolesSlice?.loading}
+                options={rolesSlice?.permissions?.map((perm) => ({
+                  value: perm.perm_id,
+                  label: selectedRole?.permissions.some(
+                    (rperm) => rperm.perm_id == perm.perm_id
+                  ) ? (
+                    <span style={{ color: "green" }}>
+                      {`افتراضي : ${perm.name}`}
+                    </span>
+                  ) : (
+                    `+ ${perm.name}`
+                  ),
+                }))}
                 filterOption={(input, option) =>
                   (option?.label ?? "")
                     .toLowerCase()
@@ -133,12 +156,26 @@ function CreateProfileDrawer({ onClose, open, employeeName, job_app_id }) {
         <Row gutter={16}>
           <Col span={8}>
             {/* TODO sagas from hadi */}
-            <Form.Item rules={validationRules.schedule_id} label="جدول الدوام">
-              <Select />
+            <Form.Item
+              name={"schedule_id"}
+              rules={validationRules.schedule_id}
+              label="جدول الدوام"
+            >
+              <Select
+                options={shiftsSlice.shifts.map((shift) => ({
+                  value: shift.schedule_id,
+                  label: shift.name,
+                }))}
+                loading={shiftsSlice?.loading}
+              />
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item label="تاريخ بدأ العمل">
+            <Form.Item
+              name={"start_working_date"}
+              rules={validationRules.start_working_date}
+              label="تاريخ بدأ العمل"
+            >
               <DatePicker />
             </Form.Item>
           </Col>

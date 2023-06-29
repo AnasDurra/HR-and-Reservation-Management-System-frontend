@@ -55,6 +55,18 @@ const ViewJobApplication = () => {
   );
   const jobVacanciesSlice = useSelector((state) => state.jobVacanciesReducer);
 
+  useEffect(() => {
+    dispatch(getJobApplication(searchParam.get("id")));
+  }, []);
+
+  useEffect(() => {
+    form.resetFields();
+    form.setFieldsValue(jobApplication?.employee_data);
+    /*  if (isEditMode) {
+      toggleEditMode();
+    } */
+  }, [jobApplication]);
+
   const toggleEditMode = () => {
     setIsEditMode(!isEditMode);
   };
@@ -100,12 +112,9 @@ const ViewJobApplication = () => {
     setIsModalOpen(false);
   };
 
-  const openDrawer = () => {
-    setIsDrawerOpen(true);
-  };
-  const closeDrawer = () => {
-    setIsDrawerOpen(false);
-  };
+  const openDrawer = () => setIsDrawerOpen(true);
+
+  const closeDrawer = () => setIsDrawerOpen(false);
 
   const handleRemoveField = (fieldName) => {
     const fields = form.getFieldsValue();
@@ -114,9 +123,8 @@ const ViewJobApplication = () => {
     form.setFieldsValue(fields);
   };
 
-  const deleteJobApplication = () => {
+  const deleteJobApplication = () =>
     dispatch(destroyJobApplications([jobApplication.job_application?.id]));
-  };
 
   const updateStatus = (newStatus) => {
     dispatch(
@@ -148,17 +156,6 @@ const ViewJobApplication = () => {
       onCancel() {},
     });
   };
-  useEffect(() => {
-    dispatch(getJobApplication(searchParam.get("id")));
-  }, []);
-
-  useEffect(() => {
-    form.resetFields();
-    form.setFieldsValue(jobApplication?.employee_data);
-    /*  if (isEditMode) {
-      toggleEditMode();
-    } */
-  }, [jobApplication]);
 
   const items = [
     {
@@ -269,21 +266,25 @@ const ViewJobApplication = () => {
           alignItems: "start",
         }}
       >
+
         {!isEditMode && (
           <Dropdown menu={{ items }} trigger={["click"]}>
             <Space>
               <Button type="link">
-                <SettingOutlined style={{ fontSize: '150%'}} />
+                <SettingOutlined style={{ fontSize: "150%" }} />
               </Button>
             </Space>
           </Dropdown>
         )}
 
-        <ViewEditJobApplicationForm
-          editMode={isEditMode}
-          form={form}
-          handleRemoveField={handleRemoveField}
-        />
+        <div style={{ width: "60%" }}>
+          <ViewEditJobApplicationForm
+            editMode={isEditMode}
+            form={form}
+            handleRemoveField={handleRemoveField}
+          />
+        </div>
+
         <div
           style={{
             width: "25%",
@@ -293,6 +294,7 @@ const ViewJobApplication = () => {
             justifyContent: "flex-start",
           }}
         >
+
           {!isEditMode && (
             <>
               <div
@@ -303,6 +305,7 @@ const ViewJobApplication = () => {
                   alignItems: "start",
                 }}
               >
+
                 <h5 style={{ marginTop: 0, padding: 0 }}>حالة الطلب: </h5>
                 <Tag
                   style={{ marginTop: "2%", padding: 0 }}
@@ -315,6 +318,7 @@ const ViewJobApplication = () => {
                   {jobApplication?.application_status?.name}
                 </Tag>
               </div>
+
               <VacancyCard
                 vacancyName={jobApplication?.job_application?.job_vacancy?.name}
                 vacancyDescription={
@@ -327,13 +331,17 @@ const ViewJobApplication = () => {
                   jobApplication?.job_application?.job_vacancy?.count
                 }
               />
+
             </>
           )}
+
           {isEditMode && (
             <Space>
+
               <Button type="primary" onClick={onSaveEdit}>
                 حفظ
               </Button>
+
               <Button
                 type="ghost"
                 style={{ color: "red" }}
@@ -341,6 +349,7 @@ const ViewJobApplication = () => {
               >
                 الغاء
               </Button>
+
             </Space>
           )}
         </div>
@@ -354,6 +363,7 @@ const ViewJobApplication = () => {
         centered
         maskClosable
       >
+
         <Spinner loading={jobVacanciesSlice.loading}>
           <div
             style={{
@@ -363,6 +373,7 @@ const ViewJobApplication = () => {
               margin: "5%",
             }}
           >
+
             <Select
               size="large"
               placeholder="انقر لاختيار الشاغر الجديد"
@@ -376,6 +387,7 @@ const ViewJobApplication = () => {
                 setSelectedVacancy(selectedVacancy)
               }
             />
+            
           </div>
         </Spinner>
       </Modal>

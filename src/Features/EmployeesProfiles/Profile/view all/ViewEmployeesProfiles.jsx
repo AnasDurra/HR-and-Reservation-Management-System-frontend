@@ -4,6 +4,7 @@ import Spinner from "../../../../Components/Spinner/Spinner";
 import { Navigate, useNavigate } from "react-router-dom";
 import {
   getEmployee,
+  getEmployees,
   getIndexedEmployees,
 } from "../../../../redux/Features/Employee Profile/Employee/slice";
 import {
@@ -12,82 +13,74 @@ import {
   EyeInvisibleOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function ViewEmployeesProfiles(props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const employeeSlice = useSelector((state) => state.employeesSlice);
 
   useEffect(() => {
-    // props.getJobVacancies();
-    //  dispatch(getEmployee());
+    dispatch(getEmployees());
   }, []);
 
   const columns = [
     {
       title: "الاسم",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "full_name",
+      key: "full_name",
     },
     {
       title: "القسم",
-      dataIndex: "department",
-      key: "department",
+      dataIndex: "department_name",
+      key: "department_name",
     },
     {
       title: "المسمى الوظيفي",
-      dataIndex: "job",
-      key: "job",
+      dataIndex: "job_title_name",
+      key: "job_title_name",
+    },
+    {
+      title: "الدوام",
+      dataIndex: ["schedule", "name"],
+      key: "schedule_name",
     },
     {
       title: "حالة الموظف",
-      dataIndex: "status",
-      key: "status",
-    },
-    {
-      title: "العمليات",
-      key: "actions",
-      render: (record) => {
-        return (
-          <div id="actions">
-            <Button
-              type="dashed"
-              style={{ color: "#0c3eed" }}
-              onClick={() => {
-                navigate("profile");
-              }}
-            >
-              استعراض
-            </Button>
-            <Button type="dashed" style={{ color: "#f5222d" }}>
-              حذف
-            </Button>
-          </div>
-        );
-      },
-      width: "10%",
+      dataIndex: "current_employment_status",
+      key: "current_employment_status",
     },
   ];
 
-  const data = [
-    {
-      id: 1,
-      name: "هادي بركات",
-      department: "قسم التدريب",
-      job: "منسق قسم التدريب",
-      status: "يعمل الان",
-    },
-  ];
+  const handlePageChange = (page) => {
+    dispatch(getEmployees({ page: page }));
+  };
 
   return (
     <Spinner loading={props.loading}>
       <div>
-        <Table columns={columns} dataSource={data} rowKey="id" />
+        <Table
+          columns={columns}
+          dataSource={employeeSlice.employees}
+          rowKey="id"
+          pagination={{
+            current: employeeSlice?.pagination?.meta?.current_page,
+            pageSize: employeeSlice?.pagination?.meta?.per_page,
+            total: employeeSlice?.pagination?.meta?.total,
+            onChange: handlePageChange,
+            showQuickJumper: false,
+            showSizeChanger: false,
+          }}
+          onRow={(record, _) => {
+            return {
+              onClick: () => navigate(`profile?id=${record.emp_id}`),
+            };
+          }}
+        />
         <Button
           className="employeesButton"
           onClick={() => {
             navigate("/jobApplications/add");
-            dispatch(getIndexedEmployees(2));
           }}
         >
           إضافة موظف

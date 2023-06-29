@@ -30,7 +30,7 @@ const Certificates = (props) => {
   const forceUpdate = useForceUpdate();
 
   return (
-    <div className={` ${props.show ? "" : "hidden"}`}>
+    <div className={` ${props.show ? "" : "hidden"}`} >
       <Form.List name="certificates" initialValue={""}>
         {(fields, { add, remove }) => {
           return (

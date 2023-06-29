@@ -4,7 +4,9 @@ export const employeesSlice = createSlice({
   name: "employees",
   initialState: {
     employees: [],
-    indexedEmployees:[],
+    indexedEmployees: [],
+    departmentsHistory: [],
+    jobTitlesHistory: [],
     pagination: null,
     employee: null,
     loading: false,
@@ -51,7 +53,7 @@ export const employeesSlice = createSlice({
       state.loading = false;
       state.error = action.payload.error;
     },
-    
+
     getEmployee: (state) => {
       state.loading = true;
       state.error = null;
@@ -61,6 +63,34 @@ export const employeesSlice = createSlice({
       state.employee = action.payload.employee;
     },
     getEmployeeFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+
+    getEmployeeDepartmentsHistory: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    getEmployeeDepartmentsHistorySuccess: (state, action) => {
+      state.loading = false;
+      console.log(action.payload);
+      state.departmentsHistory = action.payload.departmentsHistory;
+    },
+    getEmployeeDepartmentsHistoryFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+
+    getEmployeeJobTitlesHistory: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    getEmployeeJobTitlesHistorySuccess: (state, action) => {
+      state.loading = false;
+      console.log(action.payload);
+      state.jobTitlesHistory = action.payload.jobTitlesHistory;
+    },
+    getEmployeeJobTitlesHistoryFail: (state, action) => {
       state.loading = false;
       state.error = action.payload.error;
     },
@@ -91,11 +121,11 @@ export const employeesSlice = createSlice({
       state.loading = false;
       state.error = action.payload.error;
     },
+
     updateEmployeeCredentials: (state) => {
       state.loading = true;
       state.error = null;
     },
-
     updateEmployeeCredentialsSuccess: (state, action) => {
       state.loading = false;
       console.log("action:", action);
@@ -108,6 +138,20 @@ export const employeesSlice = createSlice({
       state.error = action.payload.error;
     },
 
+    updateEmployeeSchedule: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    updateEmployeeScheduleSuccess: (state, action) => {
+      state.loading = false;
+      console.log("action:", action);
+      state.employee.schedule = action.payload.schedule;
+    },
+    updateEmployeeScheduleFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+
     destroyEmployees: (state) => {
       state.loading = true;
       state.error = null;
@@ -116,7 +160,7 @@ export const employeesSlice = createSlice({
       state.loading = false;
       state.employees = state.employees.filter(
         (ja) =>
-          !action.payload.deletedemployees.map((ja) => ja.id).includes(ja.id)
+          !action.payload.deletedEmployees.map((ja) => ja.id).includes(ja.id)
       );
     },
     destroyEmployeesFail: (state, action) => {
@@ -130,24 +174,43 @@ export const {
   createEmployee,
   createEmployeeSuccess,
   createEmployeeFail,
+
   getEmployees,
   getEmployeesSuccess,
   getEmployeesFail,
+
   getIndexedEmployees,
   getIndexedEmployeesSuccess,
   getIndexedEmployeesFail,
+
   getEmployee,
   getEmployeeSuccess,
   getEmployeeFail,
+
+  getEmployeeDepartmentsHistory,
+  getEmployeeDepartmentsHistorySuccess,
+  getEmployeeDepartmentsHistoryFail,
+
+  getEmployeeJobTitlesHistory,
+  getEmployeeJobTitlesHistorySuccess,
+  getEmployeeJobTitlesHistoryFail,
+
   /*  updateEmployee,
   updateEmployeeSuccess,
   updateEmployeeFail, */
+
   updateEmployeeDepartment,
   updateEmployeeDepartmentSuccess,
   updateEmployeeDepartmentFail,
+
   updateEmployeeCredentials,
   updateEmployeeCredentialsSuccess,
   updateEmployeeCredentialsFail,
+
+  updateEmployeeSchedule,
+  updateEmployeeScheduleSuccess,
+  updateEmployeeScheduleFail,
+
   destroyEmployees,
   destroyEmployeesSuccess,
   destroyEmployeesFail,

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPermissions, getRoles } from "../../../../redux/roles/slice";
 import { validationRules } from "../createProfileValidationRules";
 
-function ViewEditRolesAndPermissionsDrawer({
+function ViewEditEmployeeRolesAndPermissionsDrawer({
   onClose,
   isOpen,
   current_job_title,
@@ -100,4 +100,4 @@ function ViewEditRolesAndPermissionsDrawer({
     </Drawer>
   );
 }
-export default ViewEditRolesAndPermissionsDrawer;
+export default ViewEditEmployeeRolesAndPermissionsDrawer;

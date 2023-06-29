@@ -36,7 +36,7 @@ const GeneralInfo = (props) => {
   const [fileList, setFileList] = useState([]);
 
   return (
-    <div className={`${props.show ? "" : "hidden"}`}>
+    <div className={`${props.show ? "" : "hidden"}`} >
       {!props.editMode && !props.hidePersonalImg && (
         <div
           style={{

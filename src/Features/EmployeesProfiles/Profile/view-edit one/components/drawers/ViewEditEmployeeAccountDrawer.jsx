@@ -18,7 +18,7 @@ import { validationRules } from "../../../../Job Application/createProfileValida
 import { useDispatch, useSelector } from "react-redux";
 import { updateEmployeeCredentials } from "../../../../../../redux/Features/Employee Profile/Employee/slice";
 
-function ViewEditAccountDrawer({
+function ViewEditEmployeeAccountDrawer({
   username,
   password,
   emp_id,
@@ -119,4 +119,4 @@ function ViewEditAccountDrawer({
     </Drawer>
   );
 }
-export default ViewEditAccountDrawer;
+export default ViewEditEmployeeAccountDrawer;
