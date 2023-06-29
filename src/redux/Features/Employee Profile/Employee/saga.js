@@ -1,17 +1,23 @@
 import { all, fork, takeEvery, call, put } from "redux-saga/effects";
 import {
   createEmployee,
-  createEmployeeFail,
   createEmployeeSuccess,
+  createEmployeeFail,
   getEmployees,
-  getEmployeesFail,
   getEmployeesSuccess,
-  getEmployee,
-  getEmployeeSuccess,
-  getEmployeeFail,
+  getEmployeesFail,
   getIndexedEmployees,
   getIndexedEmployeesSuccess,
   getIndexedEmployeesFail,
+  getEmployee,
+  getEmployeeSuccess,
+  getEmployeeFail,
+  getEmployeeDepartmentsHistory,
+  getEmployeeDepartmentsHistorySuccess,
+  getEmployeeDepartmentsHistoryFail,
+  getEmployeeJobTitlesHistory,
+  getEmployeeJobTitlesHistorySuccess,
+  getEmployeeJobTitlesHistoryFail,
   /*  updateEmployee,
   updateEmployeeSuccess,
   updateEmployeeFail, */
@@ -21,11 +27,15 @@ import {
   updateEmployeeCredentials,
   updateEmployeeCredentialsSuccess,
   updateEmployeeCredentialsFail,
+  updateEmployeeSchedule,
+  updateEmployeeScheduleSuccess,
+  updateEmployeeScheduleFail,
   destroyEmployees,
   destroyEmployeesSuccess,
   destroyEmployeesFail,
 } from "./slice";
 import AxiosInstance from "../../../utils/axiosInstance";
+import { formatRequestAfterReceive } from "../../../../Features/EmployeesProfiles/Job Application/utils/helpers";
 
 const create = (payload) => {
   return AxiosInstance().post("employees", payload, {
@@ -73,13 +83,12 @@ const getAll = ({ page, status, dep, name } = {}) => {
     `employees${queryString ? `?${queryString}` : ""}`
   );
 };
-
 function* getEmployeesSaga({ payload }) {
   try {
     const response = yield call(getAll, payload);
     yield put(
       getEmployeesSuccess({
-        Employees: response.data.data,
+        employees: response.data.data,
         pagination: {
           ...response.data,
           data: undefined,
@@ -98,9 +107,16 @@ function* watchGetEmployees() {
   yield takeEvery(getEmployees, getEmployeesSaga);
 }
 
-const getAllIndexed = (payload) => {
+const getAllIndexed = ({ page, name }) => {
+  const params = {
+    ...(page && { page }),
+    ...(name && { name }),
+  };
+  const queryString = Object.entries(params)
+    .map(([key, value]) => `${key}=${value}`)
+    .join("&");
   return AxiosInstance().get(
-    `employees/list${payload ? `?page=${payload}` : ""}`
+    `employees/list${queryString ? `?${queryString}` : ""}`
   );
 };
 function* getIndexedEmployeesSaga({ payload }) {
@@ -130,10 +146,12 @@ function* watchGetIndexedEmployees() {
 const getOne = (payload) => {
   return AxiosInstance().get(`employees/${payload}`);
 };
-
 function* getEmployeeSaga({ payload }) {
   try {
-    const response = yield call(getOne, payload);
+    var response = yield call(getOne, payload);
+    response.data.data.job_application = formatRequestAfterReceive(
+      response?.data?.data?.job_application
+    );
     yield put(
       getEmployeeSuccess({
         employee: response.data.data,
@@ -151,13 +169,61 @@ function* watchGetEmployee() {
   yield takeEvery(getEmployee, getEmployeeSaga);
 }
 
+const getDepartmentsHistory = ({ emp_id }) => {
+  return AxiosInstance().get(`employees/department-history/${emp_id}`);
+};
+function* getEmployeeDepartmentsHistorySaga({ payload }) {
+  try {
+    var response = yield call(getDepartmentsHistory, payload);
+    yield put(
+      getEmployeeDepartmentsHistorySuccess({
+        departmentsHistory: response.data,
+      })
+    );
+  } catch (error) {
+    yield put(
+      getEmployeeDepartmentsHistoryFail({
+        error: error,
+      })
+    );
+  }
+}
+function* watchGetEmployeeDepartmentsHistory() {
+  yield takeEvery(
+    getEmployeeDepartmentsHistory,
+    getEmployeeDepartmentsHistorySaga
+  );
+}
+
+const getJobTitlesHistory = ({ emp_id }) => {
+  return AxiosInstance().get(`employees/job-title-history/${emp_id}`);
+};
+function* getEmployeeJobTitlesHistorySaga({ payload }) {
+  try {
+    var response = yield call(getJobTitlesHistory, payload);
+    yield put(
+      getEmployeeJobTitlesHistorySuccess({
+        jobTitlesHistory: response.data,
+      })
+    );
+  } catch (error) {
+    yield put(
+      getEmployeeJobTitlesHistoryFail({
+        error: error,
+      })
+    );
+  }
+}
+function* watchGetEmployeeJobTitlesHistory() {
+  yield takeEvery(getEmployeeJobTitlesHistory, getEmployeeJobTitlesHistorySaga);
+}
+
 const updateDepartment = (payload) => {
   console.log(payload);
   return AxiosInstance().post(`employees/edit-department/${payload.id}`, {
     dep_id: payload.dep_id,
   });
 };
-
 function* updateEmployeeDepartmentSaga({ payload }) {
   try {
     const response = yield call(updateDepartment, payload);
@@ -186,7 +252,6 @@ const updateCredentials = (payload) => {
     password: payload.password,
   });
 };
-
 function* updateEmployeeCredentialsSaga({ payload }) {
   try {
     const response = yield call(updateCredentials, payload);
@@ -208,10 +273,35 @@ function* watchUpdateEmployeeCredentials() {
   yield takeEvery(updateEmployeeCredentials, updateEmployeeCredentialsSaga);
 }
 
+const updateSchedule = ({ emp_id, schedule_id }) => {
+  return AxiosInstance().post(`employees/edit-schedule/${emp_id}`, {
+    schedule_id,
+  });
+};
+function* updateEmployeeScheduleSaga({ payload }) {
+  try {
+    const response = yield call(updateSchedule, payload);
+    yield put(
+      updateEmployeeScheduleSuccess({
+        schedule: response.data.data,
+      })
+    );
+  } catch (error) {
+    console.log(error);
+    yield put(
+      updateEmployeeScheduleFail({
+        error: error,
+      })
+    );
+  }
+}
+function* watchUpdateEmployeeSchedule() {
+  yield takeEvery(updateEmployeeSchedule, updateEmployeeScheduleSaga);
+}
+
 const destroy = (payload) => {
   return AxiosInstance().post(`employees/destroy`, { ids: payload });
 };
-
 function* destroyEmployeesSaga({ payload }) {
   try {
     const response = yield call(destroy, payload);
@@ -239,8 +329,11 @@ function* employeesSaga() {
     fork(watchGetEmployees),
     fork(watchGetIndexedEmployees),
     fork(watchGetEmployee),
+    fork(watchGetEmployeeDepartmentsHistory),
+    fork(watchGetEmployeeJobTitlesHistory),
     fork(watchUpdateEmployeeDepartment),
     fork(watchUpdateEmployeeCredentials),
+    fork(watchUpdateEmployeeSchedule),
     /*     fork(watchUpdateEmployee), */
     fork(watchDestroyEmployees),
   ]);

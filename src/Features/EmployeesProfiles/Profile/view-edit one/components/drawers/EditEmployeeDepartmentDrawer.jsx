@@ -18,7 +18,7 @@ import { getDepartments } from "../../../../../../redux/departments/slice";
 import { updateEmployeeDepartment } from "../../../../../../redux/Features/Employee Profile/Employee/slice";
 import { fireEvent } from "@testing-library/react";
 
-function EditDepartmentDrawer({
+function EditEmployeeDepartmentDrawer({
   emp_id,
   employeeName,
   dep_id,
@@ -100,4 +100,4 @@ function EditDepartmentDrawer({
     </Drawer>
   );
 }
-export default EditDepartmentDrawer;
+export default EditEmployeeDepartmentDrawer;

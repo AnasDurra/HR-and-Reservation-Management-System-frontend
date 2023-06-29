@@ -17,7 +17,7 @@ const ViewEditJobApplicationForm = ({
 }) => {
   const [segmentValue, setSegmentValue] = useState(1);
   return (
-    <div className="info-container">
+    <div >
     
       <Segmented
         style={{ marginBottom: "2rem" }}
