@@ -1,4 +1,4 @@
-import { Button, Form, Table } from "antd";
+import { Button, Form, Table, Tag } from "antd";
 import './ViewJobVacancies.css';
 import { useEffect, useState } from "react";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
@@ -93,6 +93,7 @@ function ViewJobVacancies() {
             title: 'حالة الشاعر',
             dataIndex: 'vacancy_status_name',
             key: 'vacancy_status',
+            render: (status) => <Tag>{status}</Tag>
         },
         {
             title: 'العمليات',
