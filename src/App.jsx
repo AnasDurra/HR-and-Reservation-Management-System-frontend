@@ -1,9 +1,9 @@
 import { Button, ConfigProvider } from "antd";
 import "./App.css";
 import arEG from "antd/lib/locale/ar_EG";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import Layout from "./Components/Layout/Layout";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import LogInPage from "./Features/Login/Login";
 import Unauthorized from "./Components/Unauthorized/Unauthorized";
 import AccessRoute from "./Components/AccessRoute/AccessRoute";
@@ -27,8 +27,18 @@ import EmployeesVacationRequests from "./Features/Attendance/Vacations/Employees
 import ViewVacationRequests from "./Features/Attendance/Vacations/ViewVacationRequests";
 import ViewTimeShiftRequests from "./Features/Attendance/TimeShift/ViewTimeShiftRequests";
 import EmployeesReports from "./Features/EmployeesReports/EmployeesReports";
+import { useEffect } from "react";
+import { getEmployeePermissions } from "./redux/user/reducer";
 
 function App(props) {
+
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+  useEffect(() => {
+    dispatch(getEmployeePermissions());
+  }, [dispatch, location]);
+
   return (
     <div>
       <ConfigProvider
@@ -50,7 +60,9 @@ function App(props) {
           <Routes>
             {/*public Routes*/}
             <Route path="/" element={<div>Root</div>} />
-            <Route path="/login" element={<LogInPage />} />
+            <Route element={<AccessRoute />}>
+              <Route path="/login" element={<LogInPage />} />
+            </Route>
             <Route path="/unauthorized" element={<Unauthorized />} />
 
             {/*Example For Privilaged Routes*/}
@@ -58,43 +70,45 @@ function App(props) {
             {/*Some Route*/}
             {/* </Route> */}
 
-            <Route path="/departments" element={<ViewDepartments />} />
-            <Route path="/jobVacancies" element={<ViewJobVacancies />} />
+            <Route element={<AccessRoute />}>
+              <Route path="/departments" element={<ViewDepartments />} />
+              <Route path="/jobVacancies" element={<ViewJobVacancies />} />
 
-            <Route path="employees">
-              <Route index element={<ViewEmployeesProfiles />} />
-              <Route path="profile" element={<ViewEmployeeProfile />} />
-              <Route path="vacations">
-                <Route index element={<EmployeesVacations />} />
-                <Route path="requests" element={<ViewVacationRequests />} />
+              <Route path="employees">
+                <Route index element={<ViewEmployeesProfiles />} />
+                <Route path="profile" element={<ViewEmployeeProfile />} />
+                <Route path="vacations">
+                  <Route index element={<EmployeesVacations />} />
+                  <Route path="requests" element={<ViewVacationRequests />} />
+                </Route>
+                <Route path="timeShiftRequests" element={<ViewTimeShiftRequests />} />
+                <Route path="absences" element={<EmployeesAbsences />} />
+
+                <Route path="reports" element={<EmployeesReports />} />
               </Route>
-              <Route path="timeShiftRequests" element={<ViewTimeShiftRequests />} />
-              <Route path="absences" element={<EmployeesAbsences />} />
 
-              <Route path="reports" element={<EmployeesReports />} />
-            </Route>
+              <Route path="jobApplications">
+                <Route index element={<ViewJobApplications />} />
+                <Route path="add" element={<JobApplicationMultiStepForm />} />
+                <Route path="jobApplication" element={<ViewJobApplication />} />
+              </Route>
+              <Route path="log">
+                <Route index element={<Log />} />
+              </Route>
+              <Route path="/roles" element={<ViewRoles />} />
+              <Route
+                path="/changeEmployeePermissions"
+                element={<ChangeEmployeePermissions />}
+              />
+              <Route path="/shifts" element={<ViewShifts />} />
+              <Route
+                path="/biometricDevices"
+                element={<ViewBiometricDevices />}
+              />
+              <Route path="/timeSheetLog" element={<ViewTimeSheetLog />} />
 
-            <Route path="jobApplications">
-              <Route index element={<ViewJobApplications />} />
-              <Route path="add" element={<JobApplicationMultiStepForm />} />
-              <Route path="jobApplication" element={<ViewJobApplication />} />
+              <Route path="*" element={<Navigate to="/" />} />
             </Route>
-            <Route path="log">
-              <Route index element={<Log />} />
-            </Route>
-            <Route path="/roles" element={<ViewRoles />} />
-            <Route
-              path="/changeEmployeePermissions"
-              element={<ChangeEmployeePermissions />}
-            />
-            <Route path="/shifts" element={<ViewShifts />} />
-            <Route
-              path="/biometricDevices"
-              element={<ViewBiometricDevices />}
-            />
-            <Route path="/timeSheetLog" element={<ViewTimeSheetLog />} />
-
-            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Layout>
       </ConfigProvider>

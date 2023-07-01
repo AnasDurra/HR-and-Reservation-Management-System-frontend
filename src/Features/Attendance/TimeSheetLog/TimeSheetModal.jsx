@@ -12,7 +12,6 @@ export default function TimeSheetModal({ open, onFinish, handleCancel, action, f
     const loading = useSelector(state => state.employeesSlice.loading);
 
     const handleSearch = (data) => {
-        console.log(data);
         dispatch(getIndexedEmployees({ name: data }));
     }
 

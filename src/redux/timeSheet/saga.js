@@ -44,7 +44,6 @@ function* addAttendanceRecordSaga({ payload }) {
         yield put(addAttendanceRecordSuccess(response.data.data));
     }
     catch (error) {
-        console.log(error);
         if (error?.response?.data?.message === "Employee has already checked-in in this day") {
             handleError('لقد تم تسجيل دخول هذا الموظف في هذا اليوم سابقا', error);
         }

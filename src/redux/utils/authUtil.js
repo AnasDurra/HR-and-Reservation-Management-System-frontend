@@ -8,7 +8,7 @@ export default function authUtil() {
         user ?
         'Bearer ' +
         (user.length !== 0
-            ? JSON.parse(user).access_token
+            ? JSON.parse(user).token
             : '') : ''
     );
 }

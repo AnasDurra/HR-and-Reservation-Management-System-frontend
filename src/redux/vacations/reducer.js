@@ -32,7 +32,6 @@ export const vacationsReducer = createSlice({
             state.error = null;
         },
         addVacationSuccess: (state, action) => {
-            console.log(action.payload);
             let newVacations = state.allVacations;
             newVacations.unshift(action.payload);
             state.allVacations = newVacations;

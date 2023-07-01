@@ -33,7 +33,6 @@ function EmployeesVacations() {
 
     const onFinish = (data) => {
         data.start_date = dayjs(data.start_date.$d).format('YYYY-MM-DD');
-        console.log(data);
 
         dispatch(addVacation(data));
         closeAddVacationModal();

@@ -8,9 +8,13 @@ import { useDispatch } from 'react-redux';
 import { addVacationRequest } from '../../redux/vacations/reducer';
 import { addTimeShiftRequest } from '../../redux/timeShifts/reducer';
 import MakeTimeShiftRequestModal from '../../Features/Attendance/TimeShift/MakeTimeShiftRequestModal';
+import { logout } from '../../redux/user/reducer';
+import { useNavigate } from 'react-router-dom';
 
 
 function AppBar() {
+
+    const navigate = useNavigate();
 
     const [openVacationRequestModal, setOpenVacationRequestModal] = useState(false);
     const [vacationForm] = Form.useForm();
@@ -25,7 +29,6 @@ function AppBar() {
 
         // it must be taken from the token
         data.user_id = 410;
-        console.log(data);
         dispatch(addVacationRequest(data));
         setOpenVacationRequestModal(false);
         vacationForm.resetFields();
@@ -76,7 +79,7 @@ function AppBar() {
     return (
         <div className="AppBar">
             <div className='AppBarItem'>
-                <LogoutOutlined onClick={() => console.log('hey')} />
+                <LogoutOutlined onClick={() => dispatch(logout({ navigate }))} />
                 <Dropdown
                     menu={{
                         items
