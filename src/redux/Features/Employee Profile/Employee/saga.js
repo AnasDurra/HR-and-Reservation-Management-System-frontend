@@ -107,7 +107,7 @@ function* watchGetEmployees() {
   yield takeEvery(getEmployees, getEmployeesSaga);
 }
 
-const getAllIndexed = ({ page, name }) => {
+const getAllIndexed = ({ page, name } = {}) => {
   const params = {
     ...(page && { page }),
     ...(name && { name }),
