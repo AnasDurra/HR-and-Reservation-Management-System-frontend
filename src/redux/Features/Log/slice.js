@@ -22,7 +22,7 @@ export const logSlice = createSlice({
     getLogsSuccess: (state, action) => {
       state.loading = false;
       state.logs = action.payload.logs;
-      state.meta = action.payload.meta;
+      state.logsMeta = action.payload.meta;
     },
     getLogsFail: (state, action) => {
       state.loading = false;

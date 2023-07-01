@@ -46,17 +46,13 @@ const getAllLogs = ({
       affected_user.length > 0 && {
         affected_user: affected_user.join(","),
       }),
-    ...(severities &&
-      severities.length > 0 && {
-        severities: severities.join(","),
-      }),
   };
   const queryString = Object.entries(params)
     .map(([key, value]) => `${key}=${value}`)
     .join("&");
   console.log(queryString);
 
-  return AxiosInstance().get(`logs${queryString ? `?${queryString}` : ""}`);
+  return AxiosInstance().get(`log/all-log${queryString ? `?${queryString}` : ""}`);
 };
 
 function* getLogsSaga({ payload }) {
@@ -69,6 +65,7 @@ function* getLogsSaga({ payload }) {
       })
     );
   } catch (error) {
+    console.log(error)
     yield put(
       getLogsFail({
         error: error,
@@ -80,7 +77,7 @@ function* watchGetLogs() {
   yield takeEvery(getLogs, getLogsSaga);
 }
 
-const getAllActions = ({ page }) => {
+const getAllActions = (payload) => {
   return AxiosInstance().get("log/all-action");
 };
 function* getActionsSaga({ payload }) {

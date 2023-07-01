@@ -15,6 +15,7 @@ import { useForm } from 'antd/es/form/Form';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getActionedUsers,
+  getActions,
   getAffectedUsers,
   getLogs,
 } from '../../../redux/Features/Log/slice';
@@ -39,6 +40,7 @@ const LogFilter = () => {
   const logSlice = useSelector((state) => state.logSlice);
 
   useEffect(() => {
+    dispatch(getActions());
     dispatch(getActionedUsers());
     dispatch(getAffectedUsers());
   }, []);
@@ -99,7 +101,7 @@ const LogFilter = () => {
                   placeholder='انقر للاختيار'
                   style={{ width: '100%' }}
                   options={logSlice?.actionedUsers.map((user) => ({
-                    label: `(${user.user_id}) ${user.name} `,
+                    label: `${user.name} (${user.user_id})`,
                     value: user.user_id,
                   }))}
                   filterOption={false}
@@ -138,19 +140,10 @@ const LogFilter = () => {
                   mode='multiple'
                   placeholder='انقر للاختيار'
                   style={{ width: '100%' }}
-                  options={[
-                    {
-                      label: 'قسم التدريب',
-                      options: [
-                        { label: 'Jack', value: 'jack' },
-                        { label: 'Lucy', value: 'lucy' },
-                      ],
-                    },
-                    {
-                      label: 'قسم العمليات',
-                      options: [{ label: 'yiminghe', value: 'Yiminghe' }],
-                    },
-                  ]}
+                  options={logSlice?.actions?.map((action) => ({
+                    label: `(${action.action_id}) ${action.name} `,
+                    value: action.action_id,
+                  }))}
                 />
               </Form.Item>
             </Col>
