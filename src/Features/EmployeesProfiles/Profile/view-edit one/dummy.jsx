@@ -1,50 +1,35 @@
+import { Avatar, List } from 'antd';
 import React from 'react';
-import { Button, Form, Input, message, Space } from 'antd';
 
-const App: React.FC = () => {
-  const [form] = Form.useForm();
+const data = [
+  {
+    title: 'Ant Design Title 1',
+  },
+  {
+    title: 'Ant Design Title 2',
+  },
+  {
+    title: 'Ant Design Title 3',
+  },
+  {
+    title: 'Ant Design Title 4',
+  },
+];
 
-  const onFinish = () => {
-    message.success('Submit success!');
-  };
-
-  const onFinishFailed = () => {
-    message.error('Submit failed!');
-  };
-
-  const onFill = () => {
-    form.setFieldsValue({
-      url: 'https://taobao.com/',
-    });
-  };
-
-  return (
-    <Form
-      form={form}
-      layout="vertical"
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off"
-    >
-      <Form.Item
-        name="url"
-        label="URL"
-        rules={[{ required: true }, { type: 'url', warningOnly: true }, { type: 'string', min: 6 }]}
-      >
-        <Input placeholder="input placeholder" />
-      </Form.Item>
-      <Form.Item>
-        <Space>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-          <Button htmlType="button" onClick={onFill}>
-            Fill
-          </Button>
-        </Space>
-      </Form.Item>
-    </Form>
-  );
-};
+const App: React.FC = () => (
+  <List
+    itemLayout="horizontal"
+    dataSource={data}
+    renderItem={(item, index) => (
+      <List.Item>
+        <List.Item.Meta
+          avatar={<Avatar src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`} />}
+          title={<a href="https://ant.design">{item.title}</a>}
+          description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+        />
+      </List.Item>
+    )}
+  />
+);
 
 export default App;

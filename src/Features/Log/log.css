@@ -49,3 +49,7 @@
   background-color: #5c73c7 !important;
   color: #ffffff !important;
 }
+.list-item-hoverable:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
