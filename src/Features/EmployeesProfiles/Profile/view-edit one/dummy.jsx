@@ -1,37 +1,50 @@
 import React from 'react';
-import { Select, Tag } from 'antd';
-import type { CustomTagProps } from 'rc-select/lib/BaseSelect';
+import { Button, Form, Input, message, Space } from 'antd';
 
-const options = [{ value: 'gold' }, { value: 'lime' }, { value: 'green' }, { value: 'cyan' }];
+const App: React.FC = () => {
+  const [form] = Form.useForm();
 
-const tagRender = (props: CustomTagProps) => {
-  const { label, value, closable, onClose } = props;
-  const onPreventMouseDown = (event: React.MouseEvent<HTMLSpanElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
+  const onFinish = () => {
+    message.success('Submit success!');
   };
+
+  const onFinishFailed = () => {
+    message.error('Submit failed!');
+  };
+
+  const onFill = () => {
+    form.setFieldsValue({
+      url: 'https://taobao.com/',
+    });
+  };
+
   return (
-    <Tag
-      color={value}
-      onMouseDown={onPreventMouseDown}
-      closable={closable}
-      onClose={onClose}
-      style={{ marginRight: 3 }}
+    <Form
+      form={form}
+      layout="vertical"
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      autoComplete="off"
     >
-      {label}
-    </Tag>
+      <Form.Item
+        name="url"
+        label="URL"
+        rules={[{ required: true }, { type: 'url', warningOnly: true }, { type: 'string', min: 6 }]}
+      >
+        <Input placeholder="input placeholder" />
+      </Form.Item>
+      <Form.Item>
+        <Space>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+          <Button htmlType="button" onClick={onFill}>
+            Fill
+          </Button>
+        </Space>
+      </Form.Item>
+    </Form>
   );
 };
-
-const App: React.FC = () => (
-  <Select
-    mode="multiple"
-    showArrow
-    tagRender={tagRender}
-    defaultValue={['gold', 'cyan']}
-    style={{ width: '100%' }}
-    options={options}
-  />
-);
 
 export default App;

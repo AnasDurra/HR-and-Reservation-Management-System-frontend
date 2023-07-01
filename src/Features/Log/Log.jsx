@@ -1,97 +1,57 @@
 import React from "react";
 import { Table, Tag } from "antd";
 import { ProfileOutlined, WarningOutlined } from "@ant-design/icons";
-import Filter from "./components/Filter";
+import LogFilter from "./components/LogFilter";
 import "./log.css";
+
+const colorMapping = {
+  1: "#FF0000",
+  2: "#008000",
+  3: "#808080",
+};
+const statusMapping = {
+  1: "حرج",
+  2: "متوسَط",
+  3: "منخفض",
+};
 
 const columns = [
   {
-    title: (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        {"الدرجة"}
-      </div>
-    ),
+    title: <div className="table-header-title">{"الدرجة"}</div>,
     dataIndex: ["action", "severity"],
     key: "action_severity",
     className: "column-warning",
     render: (severity) => {
       return (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Tag icon={<WarningOutlined />} color="#f5222d">{`  عالي`}</Tag>
+        <div className="table-cell-container">
+          <Tag icon={<WarningOutlined />} color={colorMapping[severity]}>
+            {statusMapping[severity]}
+          </Tag>
         </div>
       );
     },
   },
   {
-    title: (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        {" الحدث"}
-      </div>
-    ),
+    title: <div className="table-header-title">{" الحدث"}</div>,
     dataIndex: ["action", "name"],
     key: "action_name",
     className: "column-two",
   },
   {
-    title: (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        {" معرَف الفائم بالحدث"}
-      </div>
-    ),
-    dataIndex: "user_id",
+    title: <div className="table-header-title">{" معرَف الفائم بالحدث"}</div>,
+    dataIndex: "user",
     key: "user_id",
     className: "column-one",
 
-    render: (user_id) => {
+    render: (user) => {
       return (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-          }}
-        >
+        <div className="table-cell-container">
           <Tag
             icon={<ProfileOutlined />}
-            style={{
-              backgroundColor: "#f0f0f0",
-              fontSize: "14px",
-              padding: "0.2rem",
-            }}
+            className="user-tag"
             onClick={() => {}}
           >
-            <span>{`  أنس ريش`}</span>
+            <span>{`${user.name} (${user.user_id})`}</span>
           </Tag>
         </div>
       );
@@ -99,43 +59,20 @@ const columns = [
   },
   {
     title: (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        {" معرفات المتأثرين بالحدث"}
-      </div>
+      <div className="table-header-title">{" معرفات المتأثرين بالحدث"}</div>
     ),
-    dataIndex: "affected_user_id",
-    key: "affected_user_id",
+    dataIndex: "affected_users",
+    key: "affected_users",
     className: "column-two",
-
-    render: (affected_user_id) => (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          cursor: "pointer",
-          flexWrap: "wrap",
-        }}
-      >
-        {affected_user_id.map((id) => (
+    render: (affected_users) => (
+      <div className="table-cell-container">
+        {affected_users.map((user) => (
           <Tag
             icon={<ProfileOutlined />}
-            style={{
-              backgroundColor: "#f0f0f0",
-              fontSize: "14px",
-              padding: "0.2rem",
-            }}
+            className="user-tag"
             onClick={() => {}}
           >
-            <span>{`  أنس ريش`}</span>
+            <span>{`${user.name} (${user.user_id})`}</span>
           </Tag>
         ))}
       </div>
@@ -143,84 +80,20 @@ const columns = [
   },
 
   {
-    title: (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        {" وصف الحدث"}
-      </div>
-    ),
+    title: <div className="table-header-title">{" وصف الحدث"}</div>,
     dataIndex: ["action", "description"],
     key: "action_description",
     className: "column-one",
   },
   {
-    title: (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        {" التاريخ"}
-      </div>
-    ),
-
+    title: <div className="table-header-title">{" التاريخ"}</div>,
     dataIndex: "date",
     key: "date",
     className: "column-two",
   },
 ];
 
-const data = [
-  {
-    key: "1",
-    user_id: 1,
-    affected_user_id: [2, 4],
-    action: {
-      name: "delete",
-      description: "delete student",
-      severity: "high",
-    },
-    date: "2023-05-28",
-  },
-
-  {
-    key: "1",
-    user_id: 1,
-    affected_user_id: [2, 4, 23, 23, 2],
-    action: {
-      name: "delete",
-      description: "delete student",
-      severity: "high",
-    },
-    date: "2023-05-28",
-  },
-
-  {
-    key: "1",
-    user_id: 1,
-    affected_user_id: [2, 4, 23, 23, 2],
-    action: {
-      name: "delete",
-      description: "delete student",
-      severity: "high",
-    },
-    date: "2023-05-28",
-  },
-  // Add more data objects here
-];
-
-const getColorClass = (index) => {
+const getCssClass = (index) => {
   const classes = ["row-odd", "row-even"];
   return classes[index % classes.length];
 };
@@ -230,13 +103,13 @@ const Log = () => {
     <div style={{ display: "flex", flexDirection: "row" }}>
       <Table
         className="my-table"
+        size="middle"
         columns={columns}
-        dataSource={data}
         pagination={true}
-        rowClassName={(record, index) => getColorClass(index)}
-      />{" "}
-      <div style={{ width: "22%", marginRight: "0.5rem" }}>
-        <Filter />
+        rowClassName={(record, index) => getCssClass(index)}
+      />
+      <div style={{ width: "30%", marginRight: "0.5rem" }}>
+        <LogFilter />
       </div>
     </div>
   );

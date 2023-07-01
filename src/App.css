@@ -24,3 +24,9 @@
   border: 3px solid #acacac;
   /* creates padding around scroll thumb */
 }
+
+
+.ant-table-thead .ant-table-cell {
+  background-color: #5c73c7 !important;
+  color: #ffffff !important;
+}
