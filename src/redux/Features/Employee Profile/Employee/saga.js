@@ -1,4 +1,4 @@
-import { all, fork, takeEvery, call, put } from "redux-saga/effects";
+import { all, fork, takeEvery, call, put } from 'redux-saga/effects';
 import {
   createEmployee,
   createEmployeeSuccess,
@@ -18,6 +18,12 @@ import {
   getEmployeeJobTitlesHistory,
   getEmployeeJobTitlesHistorySuccess,
   getEmployeeJobTitlesHistoryFail,
+  getEmployeeAbsences,
+  getEmployeeAbsencesSuccess,
+  getEmployeeAbsencesFail,
+  getEmployeeLogs,
+  getEmployeeLogsSuccess,
+  getEmployeeLogsFail,
   /*  updateEmployee,
   updateEmployeeSuccess,
   updateEmployeeFail, */
@@ -33,14 +39,14 @@ import {
   destroyEmployees,
   destroyEmployeesSuccess,
   destroyEmployeesFail,
-} from "./slice";
-import AxiosInstance from "../../../utils/axiosInstance";
-import { formatRequestAfterReceive } from "../../../../Features/EmployeesProfiles/Job Application/utils/helpers";
+} from './slice';
+import AxiosInstance from '../../../utils/axiosInstance';
+import { formatRequestAfterReceive } from '../../../../Features/EmployeesProfiles/Job Application/utils/helpers';
 
 const create = (payload) => {
-  return AxiosInstance().post("employees", payload, {
+  return AxiosInstance().post('employees', payload, {
     headers: {
-      "Content-type": "multipart/form-data",
+      'Content-type': 'multipart/form-data',
     },
   });
 };
@@ -69,18 +75,18 @@ const getAll = ({ page, status, dep, name } = {}) => {
     ...(page && { page }),
     ...(status &&
       status.length > 0 && {
-        status: status.join(","),
+        status: status.join(','),
       }),
-    ...(dep && dep.length > 0 && { dep: dep.join(",") }),
+    ...(dep && dep.length > 0 && { dep: dep.join(',') }),
     ...(name && { name }),
   };
   const queryString = Object.entries(params)
     .map(([key, value]) => `${key}=${value}`)
-    .join("&");
+    .join('&');
   console.log(queryString);
 
   return AxiosInstance().get(
-    `employees${queryString ? `?${queryString}` : ""}`
+    `employees${queryString ? `?${queryString}` : ''}`
   );
 };
 function* getEmployeesSaga({ payload }) {
@@ -114,9 +120,9 @@ const getAllIndexed = ({ page, name } = {}) => {
   };
   const queryString = Object.entries(params)
     .map(([key, value]) => `${key}=${value}`)
-    .join("&");
+    .join('&');
   return AxiosInstance().get(
-    `employees/list${queryString ? `?${queryString}` : ""}`
+    `employees/list${queryString ? `?${queryString}` : ''}`
   );
 };
 function* getIndexedEmployeesSaga({ payload }) {
@@ -216,6 +222,52 @@ function* getEmployeeJobTitlesHistorySaga({ payload }) {
 }
 function* watchGetEmployeeJobTitlesHistory() {
   yield takeEvery(getEmployeeJobTitlesHistory, getEmployeeJobTitlesHistorySaga);
+}
+
+const getAbsences = ({ emp_id }) => {
+  return AxiosInstance().get(`employees/absence/${emp_id}`);
+};
+function* getEmployeeAbsencesSaga({ payload }) {
+  try {
+    var response = yield call(getAbsences, payload);
+    yield put(
+      getEmployeeAbsencesSuccess({
+        absences: response.data,
+      })
+    );
+  } catch (error) {
+    yield put(
+      getEmployeeAbsencesFail({
+        error: error,
+      })
+    );
+  }
+}
+function* watchGetEmployeeAbsences() {
+  yield takeEvery(getEmployeeAbsences, getEmployeeAbsencesSaga);
+}
+
+const getLogs = ({ emp_id }) => {
+  return AxiosInstance().get(`employees/log/${emp_id}`);
+};
+function* getEmployeeLogsSaga({ payload }) {
+  try {
+    var response = yield call(getLogs, payload);
+    yield put(
+      getEmployeeLogsSuccess({
+        employeeLogs: response.data,
+      })
+    );
+  } catch (error) {
+    yield put(
+      getEmployeeLogsFail({
+        error: error,
+      })
+    );
+  }
+}
+function* watchGetEmployeeLogs() {
+  yield takeEvery(getEmployeeLogs, getEmployeeLogsSaga);
 }
 
 const updateDepartment = (payload) => {
@@ -331,6 +383,8 @@ function* employeesSaga() {
     fork(watchGetEmployee),
     fork(watchGetEmployeeDepartmentsHistory),
     fork(watchGetEmployeeJobTitlesHistory),
+    fork(watchGetEmployeeAbsences),
+    fork(watchGetEmployeeLogs),
     fork(watchUpdateEmployeeDepartment),
     fork(watchUpdateEmployeeCredentials),
     fork(watchUpdateEmployeeSchedule),

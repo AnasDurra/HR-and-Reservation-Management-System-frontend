@@ -1,19 +1,20 @@
-import { useEffect } from "react";
-import { Button, Table } from "antd";
-import Spinner from "../../../../Components/Spinner/Spinner";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
+import { Button, Table } from 'antd';
+import Spinner from '../../../../Components/Spinner/Spinner';
+import { Navigate, useNavigate } from 'react-router-dom';
 import {
   getEmployee,
   getEmployees,
   getIndexedEmployees,
-} from "../../../../redux/Features/Employee Profile/Employee/slice";
+} from '../../../../redux/Features/Employee Profile/Employee/slice';
 import {
   DeleteOutlined,
   EyeFilled,
   EyeInvisibleOutlined,
   EyeOutlined,
-} from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
+} from '@ant-design/icons';
+import { useDispatch, useSelector } from 'react-redux';
+import './EmployessProfiles.css';
 
 function ViewEmployeesProfiles(props) {
   const navigate = useNavigate();
@@ -26,29 +27,29 @@ function ViewEmployeesProfiles(props) {
 
   const columns = [
     {
-      title: "الاسم",
-      dataIndex: "full_name",
-      key: "full_name",
+      title: 'الاسم',
+      dataIndex: 'full_name',
+      key: 'full_name',
     },
     {
-      title: "القسم",
-      dataIndex: "department_name",
-      key: "department_name",
+      title: 'القسم',
+      dataIndex: 'department_name',
+      key: 'department_name',
     },
     {
-      title: "المسمى الوظيفي",
-      dataIndex: "job_title_name",
-      key: "job_title_name",
+      title: 'المسمى الوظيفي',
+      dataIndex: 'job_title_name',
+      key: 'job_title_name',
     },
     {
-      title: "الدوام",
-      dataIndex: ["schedule", "name"],
-      key: "schedule_name",
+      title: 'الدوام',
+      dataIndex: ['schedule', 'name'],
+      key: 'schedule_name',
     },
     {
-      title: "حالة الموظف",
-      dataIndex: "current_employment_status",
-      key: "current_employment_status",
+      title: 'حالة الموظف',
+      dataIndex: 'current_employment_status',
+      key: 'current_employment_status',
     },
   ];
 
@@ -57,12 +58,12 @@ function ViewEmployeesProfiles(props) {
   };
 
   return (
-    <Spinner loading={props.loading}>
+    <Spinner loading={employeeSlice?.loading}>
       <div>
         <Table
           columns={columns}
           dataSource={employeeSlice.employees}
-          rowKey="id"
+          rowKey='id'
           pagination={{
             current: employeeSlice?.pagination?.meta?.current_page,
             pageSize: employeeSlice?.pagination?.meta?.per_page,
@@ -71,18 +72,16 @@ function ViewEmployeesProfiles(props) {
             showQuickJumper: false,
             showSizeChanger: false,
           }}
-          onRow={(record, _) => {
-            return {
-              onClick: () => navigate(`profile?id=${record.emp_id}`),
-            };
-          }}
+          onRow={(record, index) => ({
+            onClick: () => navigate(`profile?id=${record.emp_id}`),
+            className: 'table-row-hoverable',
+          })}
         />
         <Button
-          className="employeesButton"
+          className='employeesButton'
           onClick={() => {
-            navigate("/jobApplications/add");
-          }}
-        >
+            navigate('/jobApplications/add');
+          }}>
           إضافة موظف
         </Button>
       </div>
