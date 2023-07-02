@@ -36,6 +36,9 @@ import {
   updateEmployeeSchedule,
   updateEmployeeScheduleSuccess,
   updateEmployeeScheduleFail,
+  updateEmployeeStatus,
+  updateEmployeeStatusSuccess,
+  updateEmployeeStatusFail,
   destroyEmployees,
   destroyEmployeesSuccess,
   destroyEmployeesFail,
@@ -70,15 +73,17 @@ function* watchCreateEmployee() {
   yield takeEvery(createEmployee, createEmployeeSaga);
 }
 
-const getAll = ({ page, status, dep, name } = {}) => {
+const getAll = ({ page, status, dep, name, schedule, title } = {}) => {
   const params = {
     ...(page && { page }),
+    ...(name && { name }),
+    ...(dep && dep.length > 0 && { dep: dep.join(',') }),
     ...(status &&
       status.length > 0 && {
         status: status.join(','),
       }),
-    ...(dep && dep.length > 0 && { dep: dep.join(',') }),
-    ...(name && { name }),
+    ...(schedule && schedule.length > 0 && { schedule: schedule.join(',') }),
+    ...(title && title.length > 0 && { title: title.join(',') }),
   };
   const queryString = Object.entries(params)
     .map(([key, value]) => `${key}=${value}`)
@@ -351,6 +356,33 @@ function* watchUpdateEmployeeSchedule() {
   yield takeEvery(updateEmployeeSchedule, updateEmployeeScheduleSaga);
 }
 
+const updateStatus = ({ emp_id, emp_status_id }) => {
+  return AxiosInstance().post(`/employees/edit-employment-status/${emp_id}`, {
+    emp_status_id,
+  });
+};
+function* updateEmployeeStatusSaga({ payload }) {
+  try {
+    const response = yield call(updateStatus, payload);
+    yield put(
+      updateEmployeeStatusSuccess({
+        current_employment_status:
+          response.data.employment_status?.emp_status_id,
+      })
+    );
+  } catch (error) {
+    console.log(error);
+    yield put(
+      updateEmployeeStatusFail({
+        error: error,
+      })
+    );
+  }
+}
+function* watchUpdateEmployeeStatus() {
+  yield takeEvery(updateEmployeeStatus, updateEmployeeStatusSaga);
+}
+
 const destroy = (payload) => {
   return AxiosInstance().post(`employees/destroy`, { ids: payload });
 };
@@ -388,6 +420,7 @@ function* employeesSaga() {
     fork(watchUpdateEmployeeDepartment),
     fork(watchUpdateEmployeeCredentials),
     fork(watchUpdateEmployeeSchedule),
+    fork(watchUpdateEmployeeStatus),
     /*     fork(watchUpdateEmployee), */
     fork(watchDestroyEmployees),
   ]);

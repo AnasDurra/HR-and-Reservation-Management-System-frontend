@@ -1,7 +1,7 @@
-import { Modal, Timeline } from "antd";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getEmployeeJobTitlesHistory } from "../../../../../../redux/Features/Employee Profile/Employee/slice";
+import { Empty, Modal, Timeline } from 'antd';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getEmployeeJobTitlesHistory } from '../../../../../../redux/Features/Employee Profile/Employee/slice';
 
 function EmployeeJobTitlesHistoryModal({ emp_id, isOpen, onClose }) {
   const dispatch = useDispatch();
@@ -17,13 +17,12 @@ function EmployeeJobTitlesHistoryModal({ emp_id, isOpen, onClose }) {
 
   return (
     <Modal
-      title="سجل المسمَيات الوظيفيَة"
+      title='سجل المسمَيات الوظيفيَة'
       open={isOpen}
       onCancel={onClose}
-      footer={null}
-    >
+      footer={null}>
       <Timeline
-        mode={"alternate"}
+        mode={'alternate'}
         items={jobTitlesHistory
           ?.flatMap((his) => [
             {
@@ -31,30 +30,32 @@ function EmployeeJobTitlesHistoryModal({ emp_id, isOpen, onClose }) {
               children: (
                 <span>
                   منح مسمّى
-                  <span style={{ fontWeight: "bold", color: "blue" }}>
-                    {his.job_title}
+                  <span style={{ fontWeight: 'bold', color: 'blue' }}>
+                    {`${his.job_title} (${his.job_title_id})`}
                   </span>
                 </span>
               ),
-              color: "green",
+              color: 'green',
             },
             {
               label: his.end_date,
               children: (
                 <span>
                   إزالة مسمّى
-                  <span style={{ fontWeight: "bold", color: "blue" }}>
-                    {his.job_title}
+                  <span style={{ fontWeight: 'bold', color: 'blue' }}>
+                    {`${his.job_title} (${his.job_title_id})`}
                   </span>
                 </span>
               ),
-              color: "red",
+              color: 'red',
             },
           ])
           .filter((entry) => entry.label !== null)
           .sort((a, b) => new Date(a.label) - new Date(b.label))}
-        style={{ margin: "2rem" }}
+        style={{ margin: '2rem' }}
       />
+
+      {jobTitlesHistory?.length == 0 && <Empty />}
     </Modal>
   );
 }

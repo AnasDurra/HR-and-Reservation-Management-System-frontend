@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   getEmployee,
   getEmployeeLogs,
+  updateEmployeeStatus,
 } from '../../../../redux/Features/Employee Profile/Employee/slice';
 import { useEffect, useState } from 'react';
 import {
@@ -19,13 +20,8 @@ import {
   Col,
   Avatar,
 } from 'antd';
-import {
-  ArrowLeftOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
+import { ArrowLeftOutlined, SettingOutlined } from '@ant-design/icons';
 import ViewEditJobApplicationForm from './components/forms/ViewEditJobApplicationForm';
-import './ViewEmployeeProfile.css';
-import './style.css';
 import EmployeeInfoCard from './components/EmployeeInfoCard';
 import ViewEditEmployeeAccountDrawer from './components/drawers/ViewEditEmployeeAccountDrawer';
 import EditEmployeeDepartmentDrawer from './components/drawers/EditEmployeeDepartmentDrawer';
@@ -33,6 +29,19 @@ import ViewEditEmployeeScheduleDrawer from './components/drawers/ViewEditEmploye
 import EmployeeDepartmentsHistoryModal from './components/modals/EmployeeDepartmentsHistoryModal';
 import EmployeeJobTitlesHistoryModal from './components/modals/EmployeeJobTitlesHistoryModal';
 import EmployeeAbsencesModal from './components/modals/EmployeeAbsencesModal';
+import './ViewEmployeeProfile.css';
+import './style.css';
+
+const colorMapping = {
+  1: '#FF0000',
+  2: '#008000',
+  3: '#808080',
+};
+const statusMapping = {
+  1: 'حرج',
+  2: 'متوسَط',
+  3: 'منخفض',
+};
 
 const ViewEmployeeProfile = (props) => {
   const [form] = Form.useForm();
@@ -128,24 +137,74 @@ const ViewEmployeeProfile = (props) => {
           children: [
             {
               key: '0-5-1',
-              // disabled: jobApplication?.application_status?.app_status_id === 1,
-              label: <div onClick={() => {}}> يعمل</div>,
+              disabled: employee?.current_employment_status == 1,
+              label: (
+                <div
+                  onClick={() =>
+                    dispatch(
+                      updateEmployeeStatus({
+                        emp_id: employee?.emp_id,
+                        emp_status_id: 1,
+                      })
+                    )
+                  }>
+                  {' '}
+                  يعمل
+                </div>
+              ),
             },
             {
               key: '0-5-2',
-              //disabled: jobApplication?.application_status?.app_status_id === 2,
+              disabled: employee?.current_employment_status == 2,
 
-              label: <div onClick={() => {}}> إجازة</div>,
+              label: (
+                <div
+                  onClick={() =>
+                    dispatch(
+                      updateEmployeeStatus({
+                        emp_id: employee?.emp_id,
+                        emp_status_id: 2,
+                      })
+                    )
+                  }>
+                  {' '}
+                  إجازة
+                </div>
+              ),
             },
             {
               key: '0-5-3',
-              // disabled: jobApplication?.application_status?.app_status_id === 3,
-              label: <div onClick={() => {}}>استقالة</div>,
+              disabled: employee?.current_employment_status == 3,
+              label: (
+                <div
+                  onClick={() =>
+                    dispatch(
+                      updateEmployeeStatus({
+                        emp_id: employee?.emp_id,
+                        emp_status_id: 3,
+                      })
+                    )
+                  }>
+                  استقالة
+                </div>
+              ),
             },
             {
               key: '0-5-4',
-              // disabled: jobApplication?.application_status?.app_status_id === 4,
-              label: <div onClick={() => {}}>إيقاف مؤقت</div>,
+              disabled: employee?.current_employment_status == 4,
+              label: (
+                <div
+                  onClick={() =>
+                    dispatch(
+                      updateEmployeeStatus({
+                        emp_id: employee?.emp_id,
+                        emp_status_id: 4,
+                      })
+                    )
+                  }>
+                  إيقاف مؤقت
+                </div>
+              ),
             },
           ],
         },
@@ -273,16 +332,6 @@ const ViewEmployeeProfile = (props) => {
                 size='small'
                 dataSource={[...employeeLogs, ...employeeLogs]}
                 renderItem={(item, index) => {
-                  const colorMapping = {
-                    1: '#FF0000',
-                    2: '#008000',
-                    3: '#808080',
-                  };
-                  const statusMapping = {
-                    1: 'حرج',
-                    2: 'متوسَط',
-                    3: 'منخفض',
-                  };
                   return (
                     <List.Item>
                       <List.Item.Meta
@@ -401,7 +450,9 @@ const ViewEmployeeProfile = (props) => {
       />
 
       <EditEmployeeDepartmentDrawer
-        employeeName={employee?.job_application?.employee_data?.personal_data?.full_name}
+        employeeName={
+          employee?.job_application?.employee_data?.personal_data?.full_name
+        }
         emp_id={employee?.emp_id}
         dep_id={employee?.current_department?.dep_id}
         isOpen={isDepartmentDrawerOpen}
@@ -410,7 +461,9 @@ const ViewEmployeeProfile = (props) => {
 
       <ViewEditEmployeeScheduleDrawer
         emp_id={employee?.emp_id}
-        employeeName={employee?.job_application?.employee_data?.personal_data?.full_name}
+        employeeName={
+          employee?.job_application?.employee_data?.personal_data?.full_name
+        }
         schedule={employee?.schedule}
         isOpen={isScheduleDrawerOpen}
         onClose={closeScheduleDrawer}

@@ -10,7 +10,7 @@ export const employeesSlice = createSlice({
     pagination: null,
     employee: null,
     employeeAbsences: [],
-    employeeLogs:[],
+    employeeLogs: [],
     loading: false,
     error: null,
   },
@@ -180,6 +180,20 @@ export const employeesSlice = createSlice({
       state.error = action.payload.error;
     },
 
+    updateEmployeeStatus: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    updateEmployeeStatusSuccess: (state, action) => {
+      state.loading = false;
+      state.employee.current_employment_status =
+        action.payload.current_employment_status;
+    },
+    updateEmployeeStatusFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+
     destroyEmployees: (state) => {
       state.loading = true;
       state.error = null;
@@ -246,6 +260,10 @@ export const {
   updateEmployeeSchedule,
   updateEmployeeScheduleSuccess,
   updateEmployeeScheduleFail,
+
+  updateEmployeeStatus,
+  updateEmployeeStatusSuccess,
+  updateEmployeeStatusFail,
 
   destroyEmployees,
   destroyEmployeesSuccess,

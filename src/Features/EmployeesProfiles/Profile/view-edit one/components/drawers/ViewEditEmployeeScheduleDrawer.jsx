@@ -10,17 +10,13 @@ import {
   Select,
   Descriptions,
 } from "antd";
-import { useForm } from "antd/lib/form/Form";
 import { useEffect, useState } from "react";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { validationRules } from "../../../../Job Application/createProfileValidationRules";
 import { useDispatch, useSelector } from "react-redux";
 import { getDepartments } from "../../../../../../redux/departments/slice";
 import {
   updateEmployeeDepartment,
   updateEmployeeSchedule,
 } from "../../../../../../redux/Features/Employee Profile/Employee/slice";
-import { fireEvent } from "@testing-library/react";
 import { getShifts } from "../../../../../../redux/shifts/reducer";
 
 function ViewEditEmployeeScheduleDrawer({
