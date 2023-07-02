@@ -45,6 +45,7 @@ import {
 } from './slice';
 import AxiosInstance from '../../../utils/axiosInstance';
 import { formatRequestAfterReceive } from '../../../../Features/EmployeesProfiles/Job Application/utils/helpers';
+import { message } from 'antd';
 
 const create = (payload) => {
   return AxiosInstance().post('employees', payload, {
@@ -62,9 +63,18 @@ function* createEmployeeSaga({ payload }) {
       })
     );
   } catch (error) {
+    message.error({
+      content: error?.response?.data?.errors
+        ? Object.values(error.response.data.errors)[0][0] ?? null
+        : null,
+      style: {
+        marginTop: '10vh',
+        fontFamily: 'cairo',
+      },
+    });
     yield put(
       createEmployeeFail({
-        error: error,
+        error: error.response ? error.response.data.errors : null,
       })
     );
   }

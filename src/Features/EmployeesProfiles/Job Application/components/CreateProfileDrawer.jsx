@@ -28,6 +28,7 @@ function CreateProfileDrawer({ onClose, open, employeeName, job_app_id }) {
 
   const rolesSlice = useSelector((state) => state.rolesSlice);
   const shiftsSlice = useSelector((state) => state.shiftsReducer);
+  const errors = useSelector((state) => state.employeesSlice.error);
 
   const onJobTitleSelect = (id) => {
     const jobTitle = rolesSlice.roles.find((role) => role.job_title_id === id);
@@ -53,11 +54,15 @@ function CreateProfileDrawer({ onClose, open, employeeName, job_app_id }) {
         dispatch(
           createEmployee({
             ...form.getFieldsValue(),
-            start_date: moment(form.getFieldValue(['start_date'])).format('YYYY-MM-DD'),
+            start_date: moment(form.getFieldValue(['start_date'])).format(
+              'YYYY-MM-DD'
+            ),
           })
         );
       })
-      .catch((e) => {console.log(e)});
+      .catch((e) => {
+        console.log(e);
+      });
   };
   return (
     <Drawer
@@ -92,9 +97,9 @@ function CreateProfileDrawer({ onClose, open, employeeName, job_app_id }) {
             <Form.Item
               name={['username']}
               label='اسم المستخدم'
-              //  validateStatus="error"
-              //</Col> help="قم بإدخال اسم مستخدم غير موجود مسبقاَ في النظام"
-              rules={validationRules.username}>
+              rules={validationRules.username}
+              validateStatus={errors?.username ? 'error' : null}
+              help={errors?.username?.[0] ?? null}>
               <Input prefix={<UserOutlined />} />
             </Form.Item>
           </Col>
@@ -103,6 +108,8 @@ function CreateProfileDrawer({ onClose, open, employeeName, job_app_id }) {
             <Form.Item
               name={['password']}
               rules={validationRules.password}
+              validateStatus={errors?.password ? 'error' : null}
+              help={errors?.password?.[0] ?? null}
               label='كلمة السر'>
               <Input.Password prefix={<LockOutlined />} />
             </Form.Item>
@@ -114,9 +121,9 @@ function CreateProfileDrawer({ onClose, open, employeeName, job_app_id }) {
             <Form.Item
               name={'email'}
               label='البريد الإلكتروني'
-              //  validateStatus="error"
-              //</Col> help="قم بإدخال اسم مستخدم غير موجود مسبقاَ في النظام"
-              rules={validationRules.email}>
+              rules={validationRules.email}
+              validateStatus={errors?.email ? 'error' : null}
+              help={errors?.email?.[0] ?? null}>
               <Input prefix={<MailOutlined />} />
             </Form.Item>
           </Col>

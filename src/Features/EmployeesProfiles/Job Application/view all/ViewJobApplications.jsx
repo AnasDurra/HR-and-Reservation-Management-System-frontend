@@ -1,28 +1,27 @@
-import { Button, Input, Popconfirm, Table, Tag } from "antd";
-import Spinner from "../../../../Components/Spinner/Spinner";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Button, Input, Popconfirm, Table, Tag } from 'antd';
+import Spinner from '../../../../Components/Spinner/Spinner';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   destroyJobApplications,
   getJobApplications,
-} from "../../../../redux/Features/Employee Profile/Job application/slice";
-import "./ViewJobApplications.css";
-import CreateProfileDrawer from "../components/CreateProfileDrawer";
-import { getDepartments } from "../../../../redux/departments/slice";
-import { getJobVacancies } from "../../../../redux/jobVacancies/reducer";
-import Search from "antd/es/input/Search";
+} from '../../../../redux/Features/Employee Profile/Job application/slice';
+import { getDepartments } from '../../../../redux/departments/slice';
+import { getJobVacancies } from '../../../../redux/jobVacancies/reducer';
+import './ViewJobApplications.css';
+
 const colorMapping = {
-  1: "#FFA500",
-  2: "#008000",
-  3: "#FF0000",
-  4: "#808080",
+  1: '#FFA500',
+  2: '#008000',
+  3: '#FF0000',
+  4: '#808080',
 };
 const statusMapping = {
-  1: "بانتظار المراجعة",
-  2: "مقبول",
-  3: "مرفوض",
-  4: "مؤرشف",
+  1: 'بانتظار المراجعة',
+  2: 'مقبول',
+  3: 'مرفوض',
+  4: 'مؤرشف',
 };
 
 function ViewJobApplications(props) {
@@ -81,14 +80,14 @@ function ViewJobApplications(props) {
 
   const columns = [
     {
-      title: "المعرف الشخصي",
-      dataIndex: "id",
-      key: "id",
+      title: 'المعرف الشخصي',
+      dataIndex: 'id',
+      key: 'id',
     },
     {
-      title: "الاسم",
-      dataIndex: "employee_name",
-      key: "employee_name",
+      title: 'الاسم',
+      dataIndex: 'employee_name',
+      key: 'employee_name',
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -97,23 +96,23 @@ function ViewJobApplications(props) {
       }) => (
         <div style={{ padding: 8 }}>
           <Input.Search
-            placeholder="اسم الموظَف"
+            placeholder='اسم الموظَف'
             value={selectedKeys[0]}
             onChange={(e) =>
               setSelectedKeys(e.target.value ? [e.target.value] : [])
             }
             onPressEnter={confirm}
             onSearch={confirm}
-            style={{ width: 188, marginBottom: 8, display: "block" }}
+            style={{ width: 188, marginBottom: 8, display: 'block' }}
           />
         </div>
       ),
       filteredValue: filters.employee_name,
     },
     {
-      title: "الشاغر الوظيفي",
-      dataIndex: "job_name",
-      key: "job_name",
+      title: 'الشاغر الوظيفي',
+      dataIndex: 'job_name',
+      key: 'job_name',
       filters: jobVacancies?.map((jv) => ({
         text: jv.name,
         value: jv.id,
@@ -121,9 +120,9 @@ function ViewJobApplications(props) {
       filteredValue: filters.job_name,
     },
     {
-      title: "القسم",
-      dataIndex: "department_name",
-      key: "department_name",
+      title: 'القسم',
+      dataIndex: 'department_name',
+      key: 'department_name',
       filters: departments?.map((dep) => ({
         text: dep.name,
         value: dep.dep_id,
@@ -131,9 +130,9 @@ function ViewJobApplications(props) {
       filteredValue: filters.department_name,
     },
     {
-      title: "الحالة",
-      dataIndex: "status",
-      key: "status",
+      title: 'الحالة',
+      dataIndex: 'status',
+      key: 'status',
       filters: Object.entries(statusMapping).map(([value, text]) => ({
         text,
         value: parseInt(value),
@@ -146,7 +145,7 @@ function ViewJobApplications(props) {
   ];
 
   return (
-    <div className="table-container">
+    <div className='table-container'>
       <Spinner loading={jobApplicationsSlice.loading}>
         <Table
           onChange={onTableChange}
@@ -158,42 +157,40 @@ function ViewJobApplications(props) {
             showQuickJumper: false,
             showSizeChanger: false,
           }}
-          rowKey="id"
-          size="small"
+          rowKey='id'
+          size='small'
           columns={columns}
           rowSelection={{
-            type: "checkbox",
+            type: 'checkbox',
             selectedRowKeys,
             onChange: handleRowSelection,
           }}
           onRow={(record, _) => {
             return {
               onClick: () => navigate(`jobApplication?id=${record.id}`),
+              className: 'table-row-hoverable',
             };
           }}
         />
         <div
           style={{
-            display: selectedRowKeys.length === 0 ? "none" : "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+            display: selectedRowKeys.length === 0 ? 'none' : 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
           <Popconfirm
-            title=" حذف طلبات التوظيف المختارة ؟"
-            onConfirm={handleDelete}
-          >
-            <Button type="primary">حذف</Button>
+            title=' حذف طلبات التوظيف المختارة ؟'
+            onConfirm={handleDelete}>
+            <Button type='primary'>حذف</Button>
           </Popconfirm>
         </div>
       </Spinner>
 
       <Button
-        className="jobApplicationsButton"
+        className='jobApplicationsButton'
         onClick={() => {
-          navigate("add");
-        }}
-      >
+          navigate('add');
+        }}>
         إضافة طلب توظيف
       </Button>
     </div>

@@ -4,9 +4,10 @@ import Spinner from '../../../../Components/Spinner/Spinner';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { getEmployees } from '../../../../redux/Features/Employee Profile/Employee/slice';
 import { useDispatch, useSelector } from 'react-redux';
-import './EmployessProfiles.css';
 import { getDepartments } from '../../../../redux/departments/slice';
 import { getRoles } from '../../../../redux/roles/slice';
+import './EmployessProfiles.css';
+
 
 const colorMapping = {
   1: '#FF0000',
