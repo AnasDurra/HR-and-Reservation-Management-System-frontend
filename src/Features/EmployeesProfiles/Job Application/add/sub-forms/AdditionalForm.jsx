@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { debounce } from "lodash";
+import React, { useEffect, useState } from 'react';
+import { debounce } from 'lodash';
 import {
   Input,
   Radio,
@@ -10,35 +10,28 @@ import {
   Col,
   FloatButton,
   Select,
-} from "antd";
+} from 'antd';
 import {
   FrownOutlined,
   PlusOutlined,
   MinusCircleOutlined,
-} from "@ant-design/icons/lib/icons";
-import { convictionsRules, referencesRules } from "../../../validationRules";
+} from '@ant-design/icons/lib/icons';
+import { convictionsRules, referencesRules } from '../../../validationRules';
+import { useDispatch, useSelector } from 'react-redux';
+import { getIndexedEmployees } from '../../../../../redux/Features/Employee Profile/Employee/slice';
 
 const { TextArea } = Input;
 
 const AdditionalForm = (props) => {
+  const dispatch = useDispatch();
   const [errorFields, setErrorFields] = useState([]);
+  const relatives = useSelector(
+    (state) => state.employeesSlice.indexedEmployees
+  );
 
-  const validateForm = () => {
-    if (props.validateState !== undefined) {
-      props.form
-        .validateFields()
-        .then((values) => {
-          props.setValidateState(true);
-        })
-        .catch((values) => {
-          props.setValidateState(false);
-          const errorFieldNames = values.errorFields.map((error) => error.name);
-          setErrorFields(errorFieldNames);
-        });
-    }
-  };
-
-  const debouncedValidateForm = debounce(validateForm, 1000);
+  useEffect(() => {
+    dispatch(getIndexedEmployees());
+  }, []);
 
   useEffect(() => {
     if (props.validateState === false) {
@@ -57,34 +50,56 @@ const AdditionalForm = (props) => {
     }
   }, [props.validateState, props.numDependents]);
 
+  const validateForm = () => {
+    if (props.validateState !== undefined) {
+      props.form
+        .validateFields()
+        .then((values) => {
+          props.setValidateState(true);
+        })
+        .catch((values) => {
+          props.setValidateState(false);
+          const errorFieldNames = values.errorFields.map((error) => error.name);
+          setErrorFields(errorFieldNames);
+        });
+    }
+  };
+
+  const debouncedValidateForm = debounce(validateForm, 1000);
+
+  const onRelativesSearch = debounce(
+    (data) => dispatch(getIndexedEmployees({ name: data })),
+    1000
+  );
+
   return (
-    <div className={`form-container ${props.show ? "" : "hidden"}`}>
+    <div className={`form-container ${props.show ? '' : 'hidden'}`}>
       <Form
         form={props.form}
-        layout="horizontal"
-        onChange={debouncedValidateForm}
-      >
+        layout='horizontal'
+        onChange={debouncedValidateForm}>
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label="هل صدرت بحقك أحكام قضائية ؟"
-              name="isConvicted"
-              rules={[{ required: true }]}
-            >
+              label='هل صدرت بحقك أحكام قضائية ؟'
+              name='isConvicted'
+              rules={[{ required: true }]}>
               <Radio.Group
                 value={props.isConvicted}
                 onChange={(e) => {
                   props.setIsConvicted(e.target.value);
-                }}
-              >
+                }}>
                 <Radio value={true}> نعم</Radio>
+
                 <Radio value={false}> لا</Radio>
               </Radio.Group>
             </Form.Item>
           </Col>
         </Row>
         {props.isConvicted && (
-          <Form.List name="convictions" initialValue={""}>
+          <Form.List
+            name='convictions'
+            initialValue={''}>
             {(fields, { add, remove }) => {
               if (fields.length == 0) {
                 add();
@@ -100,27 +115,27 @@ const AdditionalForm = (props) => {
                             <MinusCircleOutlined onClick={() => remove(name)} />
                           )}
                         </Col>
+
                         <Col span={16}>
                           <Form.Item
                             {...restField}
-                            name={[name, "description"]}
-                            rules={convictionsRules.description}
-                          >
-                            <TextArea placeholder="التفاصيل" />
+                            name={[name, 'description']}
+                            rules={convictionsRules.description}>
+                            <TextArea placeholder='التفاصيل' />
                           </Form.Item>
                         </Col>
                       </Row>
                     </div>
                   ))}
+
                   <Form.Item>
                     <Row>
                       <Col>
-                        <Form.Item label="إضافة محاكمة">
+                        <Form.Item label='إضافة محاكمة'>
                           <Button
-                            type="primary"
+                            type='primary'
                             onClick={() => add()}
-                            icon={<PlusOutlined />}
-                          >
+                            icon={<PlusOutlined />}>
                             إضافة
                           </Button>
                         </Form.Item>
@@ -136,28 +151,31 @@ const AdditionalForm = (props) => {
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label="هل تملك أقارب في المركز ؟"
-              name="isRelativeEmployeed"
-              rules={[{ required: true }]}
-            >
+              label='هل تملك أقارب في المركز ؟'
+              name='isRelativeEmployeed'
+              rules={[{ required: true }]}>
               <Radio.Group
                 value={props.isRelativeEmployee}
                 onChange={(e) => {
                   props.setIsRelativeEmployee(e.target.value);
-                }}
-              >
+                }}>
                 <Radio value={true}> نعم</Radio>
+
                 <Radio value={false}> لا</Radio>
               </Radio.Group>
             </Form.Item>
           </Col>
         </Row>
+
         {props.isRelativeEmployee && (
-          <Form.List name="relatives" initialValue={""}>
+          <Form.List
+            name='relatives'
+            initialValue={''}>
             {(fields, { add, remove }) => {
               if (fields.length == 0) {
                 add();
               }
+
               return (
                 <>
                   {fields.map(({ key, name, ...restField }) => (
@@ -169,31 +187,36 @@ const AdditionalForm = (props) => {
                             <MinusCircleOutlined onClick={() => remove(name)} />
                           )}
                         </Col>
+
                         <Col span={16}>
                           <Form.Item
                             {...restField}
-                            name={[name, "emp_id"]}
-                            rules={[]}
-                          >
-                            {/* TODO options from DB*/}
+                            name={[name, 'emp_id']}
+                            rules={[]}>
                             <Select
-                              placeholder="انقر لاختيار قريبك"
-                              options={[]}
-                            ></Select>
+                              placeholder='انقر لاختيار قريبك'
+                              options={relatives?.map((emp) => ({
+                                label: `(${emp.emp_id}) ${emp.full_name} `,
+                                value: emp.emp_id,
+                              }))}
+                              onSearch={onRelativesSearch}
+                              showSearch
+                              filterOption={false}
+                            />
                           </Form.Item>
                         </Col>
                       </Row>
                     </div>
                   ))}
+
                   <Form.Item>
                     <Row>
                       <Col>
-                        <Form.Item label="إضافة موظف">
+                        <Form.Item label='إضافة موظف'>
                           <Button
-                            type="primary"
+                            type='primary'
                             onClick={() => add()}
-                            icon={<PlusOutlined />}
-                          >
+                            icon={<PlusOutlined />}>
                             إضافة
                           </Button>
                         </Form.Item>
@@ -209,17 +232,14 @@ const AdditionalForm = (props) => {
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label="هل تريد أضافة أشخاص مرجعيين ؟"
-              name="isReference"
-              rules={[{ required: true }]}
-            >
+              label='هل تريد أضافة أشخاص مرجعيين ؟'
+              name='isReference'
+              rules={[{ required: true }]}>
               <Radio.Group
                 value={props.isReference}
                 onChange={(e) => {
                   props.setIsReference(e.target.value);
-                  
-                }}
-              >
+                }}>
                 <Radio value={true}> نعم</Radio>
                 <Radio value={false}> لا</Radio>
               </Radio.Group>
@@ -227,7 +247,9 @@ const AdditionalForm = (props) => {
           </Col>
         </Row>
         {props.isReference && (
-          <Form.List name="references" initialValue={""}>
+          <Form.List
+            name='references'
+            initialValue={''}>
             {(fields, { add, remove }) => {
               if (fields.length == 0) {
                 add();
@@ -246,52 +268,49 @@ const AdditionalForm = (props) => {
                         <Col span={7}>
                           <Form.Item
                             {...restField}
-                            name={[name, "name"]}
+                            name={[name, 'name']}
                             rules={referencesRules.name}
-                            label={"الاسم"}
-                          >
+                            label={'الاسم'}>
                             <Input />
                           </Form.Item>
                         </Col>
                         <Col span={7}>
                           <Form.Item
                             {...restField}
-                            name={[name, "job"]}
+                            name={[name, 'job']}
                             rules={referencesRules.job}
-                            label={"الوظيفة"}
-                          >
+                            label={'الوظيفة'}>
                             <Input />
                           </Form.Item>
                         </Col>
                         <Col span={7}>
                           <Form.Item
                             {...restField}
-                            name={[name, "company"]}
+                            name={[name, 'company']}
                             rules={referencesRules.company}
-                            label={"الشركة"}
-                          >
+                            label={'الشركة'}>
                             <Input />
                           </Form.Item>
                         </Col>
                       </Row>
                       <Row gutter={16}>
-                        <Col span={7} offset={2}>
+                        <Col
+                          span={7}
+                          offset={2}>
                           <Form.Item
                             {...restField}
-                            name={[name, "telephone"]}
+                            name={[name, 'telephone']}
                             rules={referencesRules.telephone}
-                            label={"الهاتف"}
-                          >
+                            label={'الهاتف'}>
                             <Input />
                           </Form.Item>
                         </Col>
                         <Col span={7}>
                           <Form.Item
                             {...restField}
-                            name={[name, "address"]}
+                            name={[name, 'address']}
                             rules={referencesRules.address}
-                            label={"العنوان"}
-                          >
+                            label={'العنوان'}>
                             <Input />
                           </Form.Item>
                         </Col>
@@ -300,12 +319,11 @@ const AdditionalForm = (props) => {
                   ))}
                   <Row>
                     <Col>
-                      <Form.Item label="إضافة شخص">
+                      <Form.Item label='إضافة شخص'>
                         <Button
-                          type="primary"
+                          type='primary'
                           onClick={() => add()}
-                          icon={<PlusOutlined />}
-                        >
+                          icon={<PlusOutlined />}>
                           إضافة
                         </Button>
                       </Form.Item>
@@ -319,10 +337,9 @@ const AdditionalForm = (props) => {
         <Row>
           <Col span={16}>
             <Form.Item
-              name={"howDidYouKnowAboutTheJob"}
-              rules={[{ required: false, message: "Missing first name" }]}
-              label={"كيف سمعت عن فرصة العمل ؟"}
-            >
+              name={'howDidYouKnowAboutTheJob'}
+              rules={[{ required: false, message: 'Missing first name' }]}
+              label={'كيف سمعت عن فرصة العمل ؟'}>
               <TextArea />
             </Form.Item>
           </Col>
@@ -330,26 +347,24 @@ const AdditionalForm = (props) => {
         <Row>
           <Col span={16}>
             <Form.Item
-              name={"doYouHaveAnyAdditionalInfo"}
-              rules={[{ required: false, message: "Missing first name" }]}
-              label={"هل تود اضافة معلومات أخرى ؟"}
-            >
+              name={'doYouHaveAnyAdditionalInfo'}
+              rules={[{ required: false, message: 'Missing first name' }]}
+              label={'هل تود اضافة معلومات أخرى ؟'}>
               <TextArea />
             </Form.Item>
           </Col>
         </Row>
         <Form.Item
-          name={["job_application", "job_vacancy_id"]}
+          name={['job_application', 'job_vacancy_id']}
           initialValue={1}
-          noStyle
-        >
-          <Input type="hidden" />
+          noStyle>
+          <Input type='hidden' />
         </Form.Item>
       </Form>
       {props.validateState === false && (
         <FloatButton
           badge={{ count: errorFields.length }}
-          icon={<FrownOutlined style={{ color: "red" }} />}
+          icon={<FrownOutlined style={{ color: 'red' }} />}
           onClick={() => {
             props.form.getFieldInstance(errorFields[0]).focus();
           }}
