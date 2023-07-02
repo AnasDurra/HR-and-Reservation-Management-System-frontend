@@ -1,11 +1,16 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import getUser from "../../redux/utils/cookiesUtils";
 import { useSelector } from "react-redux";
+import Cookies from "js-cookie";
+import Spinner from "../Spinner/Spinner";
 
 const AccessRoute = ({ allowedRoutes }) => {
 
     const user = getUser();
-    const permissions = useSelector(state => state.userReducer.permissions);
+    const permissionsReducer = useSelector(state => state.userReducer.permissions);
+    const stringified = Cookies.get('perms');
+    const permissions = stringified ? JSON.parse(stringified) : permissionsReducer;
+
     const location = useLocation();
 
     if (location.pathname === '/login') {
@@ -13,6 +18,9 @@ const AccessRoute = ({ allowedRoutes }) => {
     }
     if (!allowedRoutes) {
         return user ? <Outlet /> : <Navigate to="/login" state={{ from: location }} replace />;
+    }
+    if (permissions.length === 0) {
+        return <Spinner loading={true} />
     }
 
     const hasAllowedRole = permissions.some(role => allowedRoutes.includes(role));

@@ -28,6 +28,7 @@ export const userReducer = createSlice({
         },
         logoutSuccess: (state, action) => {
             state.user = null;
+            state.permissions = [];
             state.loading = false;
         },
         logoutFailed: (state, action) => {

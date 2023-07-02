@@ -38,6 +38,7 @@ function* userLogOutSaga({ payload }) {
     try {
         const response = yield call(userLogOut);
         Cookies.remove('user');
+        Cookies.remove('perms');
         payload.navigate('/login', { replace: true });
 
         yield put(logoutSuccess(response.data));

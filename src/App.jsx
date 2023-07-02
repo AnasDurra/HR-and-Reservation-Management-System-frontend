@@ -1,7 +1,7 @@
-import { Button, ConfigProvider } from "antd";
+import { ConfigProvider } from "antd";
 import "./App.css";
 import arEG from "antd/lib/locale/ar_EG";
-import { connect, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Layout from "./Components/Layout/Layout";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import LogInPage from "./Features/Login/Login";
@@ -13,7 +13,6 @@ import JobApplicationMultiStepForm from "./Features/EmployeesProfiles/Job Applic
 import ViewJobVacancies from "./Features/EmployeesProfiles/JobVacancies/ViewJobVacancies";
 import ViewJobApplications from "./Features/EmployeesProfiles/Job Application/view all/ViewJobApplications";
 import ViewRoles from "./Features/Roles/ViewRoles";
-import ChangeEmployeePermissions from "./Features/Roles/ChangeEmployeePermissions";
 import ViewShifts from "./Features/Attendance/Shifts/ViewShifts";
 import ViewBiometricDevices from "./Features/Attendance/BiometricDevices/ViewBiometricDevices";
 import ViewTimeSheetLog from "./Features/Attendance/TimeSheetLog/ViewTimeSheetLog";
@@ -23,21 +22,34 @@ import ViewJobApplication from "./Features/EmployeesProfiles/Job Application/vie
 import Log from "./Features/Log/Log";
 import EmployeesVacations from "./Features/Attendance/Vacations/EmployeesVacations";
 import EmployeesAbsences from "./Features/Attendance/Absences/EmployeesAbsences";
-import EmployeesVacationRequests from "./Features/Attendance/Vacations/EmployeesVacationRequests";
 import ViewVacationRequests from "./Features/Attendance/Vacations/ViewVacationRequests";
 import ViewTimeShiftRequests from "./Features/Attendance/TimeShift/ViewTimeShiftRequests";
 import EmployeesReports from "./Features/EmployeesReports/EmployeesReports";
 import { useEffect } from "react";
 import { getEmployeePermissions } from "./redux/user/reducer";
+import getUser from "./redux/utils/cookiesUtils";
+import PERMISSIONS from './Components/AccessRoute/Permissions';
+import Cookies from "js-cookie";
 
-function App(props) {
+function App() {
 
   const dispatch = useDispatch();
   const location = useLocation();
 
+  const user = getUser();
+  const permissions = useSelector(state => state.userReducer.permissions);
+
   useEffect(() => {
-    dispatch(getEmployeePermissions());
+    if (user) {
+      dispatch(getEmployeePermissions());
+    }
   }, [dispatch, location]);
+
+  useEffect(() => {
+    if (permissions.length > 0) {
+      Cookies.set('perms', JSON.stringify(permissions));
+    }
+  }, [permissions]);
 
   return (
     <div>
@@ -65,47 +77,66 @@ function App(props) {
             </Route>
             <Route path="/unauthorized" element={<Unauthorized />} />
 
-            {/*Example For Privilaged Routes*/}
-            {/* <Route element={<AccessRoute allowedRoutes={Permissions.ADD_DEPARTMENT} />}> */}
-            {/*Some Route*/}
-            {/* </Route> */}
 
             <Route element={<AccessRoute />}>
-              <Route path="/departments" element={<ViewDepartments />} />
-              <Route path="/jobVacancies" element={<ViewJobVacancies />} />
+              <Route element={<AccessRoute allowedRoutes={[PERMISSIONS.MANAGE_DEPARTMENTS]} />}>
+                <Route path="/departments" element={<ViewDepartments />} />
+              </Route>
+
+              <Route element={<AccessRoute allowedRoutes={[PERMISSIONS.MANAGE_JOB_VACANCIES]} />}>
+                <Route path="/jobVacancies" element={<ViewJobVacancies />} />
+              </Route>
 
               <Route path="employees">
-                <Route index element={<ViewEmployeesProfiles />} />
-                <Route path="profile" element={<ViewEmployeeProfile />} />
-                <Route path="vacations">
-                  <Route index element={<EmployeesVacations />} />
-                  <Route path="requests" element={<ViewVacationRequests />} />
+
+                <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_EMPLOYEES]} />}>
+                  <Route index element={<ViewEmployeesProfiles />} />
+                  <Route path="profile" element={<ViewEmployeeProfile />} />
                 </Route>
-                <Route path="timeShiftRequests" element={<ViewTimeShiftRequests />} />
-                <Route path="absences" element={<EmployeesAbsences />} />
 
-                <Route path="reports" element={<EmployeesReports />} />
+                <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_ATTENDANCE]} />}>
+                  <Route path="vacations">
+                    <Route index element={<EmployeesVacations />} />
+                    <Route path="requests" element={<ViewVacationRequests />} />
+                  </Route>
+                  <Route path="timeShiftRequests" element={<ViewTimeShiftRequests />} />
+                  <Route path="absences" element={<EmployeesAbsences />} />
+                </Route>
+
+                <Route element={<AccessRoute allowedRoutes={[Permissions.EXPORT_REPORTS]} />}>
+                  <Route path="reports" element={<EmployeesReports />} />
+                </Route>
               </Route>
 
-              <Route path="jobApplications">
-                <Route index element={<ViewJobApplications />} />
-                <Route path="add" element={<JobApplicationMultiStepForm />} />
-                <Route path="jobApplication" element={<ViewJobApplication />} />
+
+              <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_JOB_APPLICATIONS]} />}>
+                <Route path="jobApplications">
+                  <Route index element={<ViewJobApplications />} />
+                  <Route path="add" element={<JobApplicationMultiStepForm />} />
+                  <Route path="jobApplication" element={<ViewJobApplication />} />
+                </Route>
               </Route>
-              <Route path="log">
-                <Route index element={<Log />} />
+
+
+              <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_LOG]} />}>
+                <Route path="log">
+                  <Route index element={<Log />} />
+                </Route>
               </Route>
-              <Route path="/roles" element={<ViewRoles />} />
-              <Route
-                path="/changeEmployeePermissions"
-                element={<ChangeEmployeePermissions />}
-              />
-              <Route path="/shifts" element={<ViewShifts />} />
-              <Route
-                path="/biometricDevices"
-                element={<ViewBiometricDevices />}
-              />
-              <Route path="/timeSheetLog" element={<ViewTimeSheetLog />} />
+
+
+              <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_ROLES]} />}>
+                <Route path="/roles" element={<ViewRoles />} />
+              </Route>
+
+              <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_ATTENDANCE]} />}>
+                <Route path="/shifts" element={<ViewShifts />} />
+                <Route
+                  path="/biometricDevices"
+                  element={<ViewBiometricDevices />}
+                />
+                <Route path="/timeSheetLog" element={<ViewTimeSheetLog />} />
+              </Route>
 
               <Route path="*" element={<Navigate to="/" />} />
             </Route>
@@ -116,12 +147,4 @@ function App(props) {
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.userReducer.user,
-    error: state.userReducer.error,
-    loading: state.userReducer.loading,
-  };
-};
-
-export default connect(mapStateToProps)(App);
+export default App;
