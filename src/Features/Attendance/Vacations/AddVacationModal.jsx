@@ -12,7 +12,6 @@ export default function AddVacationModal({ form, onFinish, handleCancel, open })
     const loading = useSelector(state => state.employeesSlice.loading);
 
     const handleSearch = (data) => {
-        console.log(data);
         dispatch(getIndexedEmployees({ name: data }));
     }
 

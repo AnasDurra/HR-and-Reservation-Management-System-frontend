@@ -1,23 +1,67 @@
-import * as actionTypes from './constants';
+import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-    user: null,
-    loading: false,
-    error: null,
-}
+export const userReducer = createSlice({
+    name: 'userReducer',
+    initialState: {
+        user: null,
+        permissions: [],
+        loading: false,
+        error: null,
+    },
+    reducers: {
+        login: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        loginSuccess: (state, action) => {
+            state.user = action.payload;
+            state.loading = false;
+        },
+        loginFailed: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
 
-const userReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case actionTypes.USER_LOG_IN:
-            return { ...state, loading: true, error: null };
-        case actionTypes.USER_LOG_IN_SUCCESS:
-            return { ...state, loading: false, user: action.payload.user };
-        case actionTypes.USER_LOG_IN_FAILED:
-            return { ...state, loading: false, error: action.payload.error };
+        logout: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        logoutSuccess: (state, action) => {
+            state.user = null;
+            state.permissions = [];
+            state.loading = false;
+        },
+        logoutFailed: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
 
-        default:
-            return state;
+        getEmployeePermissions: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        getEmployeePermissionsSuccess: (state, action) => {
+            const permissions = action.payload.map(p => p.perm_id);
+            state.permissions = permissions;
+            state.loading = false;
+        },
+        getEmployeePermissionsFailed: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
     }
-}
+});
 
-export default userReducer;
+export const {
+    login,
+    loginSuccess,
+    loginFailed,
+    logout,
+    logoutSuccess,
+    logoutFailed,
+    getEmployeePermissions,
+    getEmployeePermissionsSuccess,
+    getEmployeePermissionsFailed
+} = userReducer.actions;
+
+export default userReducer.reducer;

@@ -4,6 +4,7 @@ import { getJobVacanciesSuccess, getJobVacanciesFailed } from "./reducer";
 import { addJobVacancySuccess, addJobVacancyFailed } from "./reducer";
 import { deleteJobVacancySuccess, deleteJobVacancyFailed } from "./reducer";
 import { updateJobVacancySuccess, updateJobVacancyFailed } from "./reducer";
+import { handleError } from '../utils/helpers';
 
 
 const getJobVacancies = (payload) => {
@@ -36,10 +37,18 @@ function* getJobVacanciesSaga({ payload }) {
 function* deletejobVacancySaga({ payload }) {
     try {
         const response = yield call(deleteJobVacancy, payload);
-        console.log(response);
         yield put(deleteJobVacancySuccess(response.data.data));
     }
     catch (error) {
+        if (error?.response?.data?.message === "Job Vacancy is Archived") {
+            handleError("لا يمكن حذف هذا الشاغر");
+        }
+        if (error?.response?.data?.message === "Job Vacancy is closed") {
+            handleError("هذا الشاغر مغلق, لا يمكن حذفه");
+        }
+        if (error?.response?.data?.message === "there is one or more accepted employment applications") {
+            handleError("يوجد طلب واحد أو اكثر مقبول في هذا الشاغر");
+        }
         yield put(deleteJobVacancyFailed(error));
     }
 }

@@ -65,7 +65,11 @@ function EmployeesReports() {
                 }
             }
 
-            AxiosInstance().post(`pdf?${params.toString()}`).then((response) => {
+            if (checkedEmployeeLifeReport) {
+                params.append('staffing_report', true);
+            }
+
+            AxiosInstance().get(`pdf?${params.toString()}`).then((response) => {
                 handleResponse('تم تجهيز التقرير بنجاح');
             });
         } else {
