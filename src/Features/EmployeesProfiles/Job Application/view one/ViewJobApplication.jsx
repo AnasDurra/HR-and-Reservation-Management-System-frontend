@@ -15,7 +15,6 @@ import {
   Button,
   Dropdown,
   Modal,
-  Popconfirm,
   Select,
   Space,
   Tag,
@@ -23,7 +22,6 @@ import {
 } from "antd";
 import CreateProfileDrawer from "../components/CreateProfileDrawer";
 import { getJobVacancies } from "../../../../redux/jobVacancies/reducer";
-import confirm from "antd/es/modal/confirm";
 
 const colorMapping = {
   1: "#FFA500",

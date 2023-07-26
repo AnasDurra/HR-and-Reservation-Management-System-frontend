@@ -2,6 +2,11 @@
   margin-top: 30px;
 }
 
+.table-row-hoverable:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
 #actions {
   display: flex;
   justify-content: center;
@@ -12,5 +17,5 @@
 }
 
 .table-container {
-    height: min-content;
+  height: min-content;
 }

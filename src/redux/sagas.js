@@ -12,6 +12,8 @@ import employeesSaga from "./Features/Employee Profile/Employee/saga";
 import VacationsSaga from "./vacations/saga";
 import EmployeesAbsencesSaga from "./absences/saga";
 import TimeShiftsSaga from "./timeShifts/saga";
+import logSaga from "./Features/Log/saga";
+
 
 export default function* rootSaga() {
   yield all([
@@ -28,5 +30,6 @@ export default function* rootSaga() {
     VacationsSaga(),
     EmployeesAbsencesSaga(),
     TimeShiftsSaga(),
+    logSaga()
   ]);
 }

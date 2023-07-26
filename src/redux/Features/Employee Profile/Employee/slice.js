@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 export const employeesSlice = createSlice({
-  name: "employees",
+  name: 'employees',
   initialState: {
     employees: [],
     indexedEmployees: [],
@@ -9,6 +9,8 @@ export const employeesSlice = createSlice({
     jobTitlesHistory: [],
     pagination: null,
     employee: null,
+    employeeAbsences: [],
+    employeeLogs: [],
     loading: false,
     error: null,
   },
@@ -94,6 +96,32 @@ export const employeesSlice = createSlice({
       state.loading = false;
       state.error = action.payload.error;
     },
+
+    getEmployeeAbsences: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    getEmployeeAbsencesSuccess: (state, action) => {
+      state.loading = false;
+      state.employeeAbsences = action.payload.absences;
+    },
+    getEmployeeAbsencesFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+
+    getEmployeeLogs: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    getEmployeeLogsSuccess: (state, action) => {
+      state.loading = false;
+      state.employeeLogs = action.payload.employeeLogs;
+    },
+    getEmployeeLogsFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
     /*   updateEmployee: (state) => {
       state.loading = true;
       state.error = null;
@@ -113,7 +141,7 @@ export const employeesSlice = createSlice({
     },
     updateEmployeeDepartmentSuccess: (state, action) => {
       state.loading = false;
-      console.log("action:", action);
+      console.log('action:', action);
       /*       state.employee = action.payload.employee;
        */
     },
@@ -128,7 +156,7 @@ export const employeesSlice = createSlice({
     },
     updateEmployeeCredentialsSuccess: (state, action) => {
       state.loading = false;
-      console.log("action:", action);
+      console.log('action:', action);
       //TODO update state
       /*       state.employee = action.payload.employee;
        */
@@ -144,10 +172,24 @@ export const employeesSlice = createSlice({
     },
     updateEmployeeScheduleSuccess: (state, action) => {
       state.loading = false;
-      console.log("action:", action);
+      console.log('action:', action);
       state.employee.schedule = action.payload.schedule;
     },
     updateEmployeeScheduleFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+
+    updateEmployeeStatus: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    updateEmployeeStatusSuccess: (state, action) => {
+      state.loading = false;
+      state.employee.current_employment_status =
+        action.payload.current_employment_status;
+    },
+    updateEmployeeStatusFail: (state, action) => {
       state.loading = false;
       state.error = action.payload.error;
     },
@@ -195,6 +237,14 @@ export const {
   getEmployeeJobTitlesHistorySuccess,
   getEmployeeJobTitlesHistoryFail,
 
+  getEmployeeAbsences,
+  getEmployeeAbsencesSuccess,
+  getEmployeeAbsencesFail,
+
+  getEmployeeLogs,
+  getEmployeeLogsSuccess,
+  getEmployeeLogsFail,
+
   /*  updateEmployee,
   updateEmployeeSuccess,
   updateEmployeeFail, */
@@ -210,6 +260,10 @@ export const {
   updateEmployeeSchedule,
   updateEmployeeScheduleSuccess,
   updateEmployeeScheduleFail,
+
+  updateEmployeeStatus,
+  updateEmployeeStatusSuccess,
+  updateEmployeeStatusFail,
 
   destroyEmployees,
   destroyEmployeesSuccess,

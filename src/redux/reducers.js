@@ -12,6 +12,7 @@ import employeesSlice from "./Features/Employee Profile/Employee/slice";
 import vacationsReducer from "./vacations/reducer";
 import employeesAbsencesReducer from "./absences/reducer";
 import timeShiftsReducer from "./timeShifts/reducer";
+import  logSlice  from "./Features/Log/slice";
 
 export default {
   userReducer: userReducer,
@@ -27,4 +28,5 @@ export default {
   vacationsReducer: vacationsReducer,
   employeesAbsencesReducer: employeesAbsencesReducer,
   timeShiftsReducer: timeShiftsReducer,
+  logSlice: logSlice,
 };
