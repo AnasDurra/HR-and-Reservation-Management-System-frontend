@@ -12,7 +12,9 @@ import employeesSlice from "./Features/Employee Profile/Employee/slice";
 import vacationsReducer from "./vacations/reducer";
 import employeesAbsencesReducer from "./absences/reducer";
 import timeShiftsReducer from "./timeShifts/reducer";
-import  logSlice  from "./Features/Log/slice";
+import logSlice from "./Features/Log/slice";
+import consultantsReducer from "./consultants/reducer";
+import clinicsReducer from "./clinics/reducer";
 
 export default {
   userReducer: userReducer,
@@ -29,4 +31,6 @@ export default {
   employeesAbsencesReducer: employeesAbsencesReducer,
   timeShiftsReducer: timeShiftsReducer,
   logSlice: logSlice,
+  consultantsReducer: consultantsReducer,
+  clinicsReducer: clinicsReducer,
 };

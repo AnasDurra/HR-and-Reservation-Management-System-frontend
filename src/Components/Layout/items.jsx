@@ -7,6 +7,7 @@ import {
   ProfileOutlined,
   ContainerOutlined,
   ReconciliationOutlined,
+  OneToOneOutlined,
 } from "@ant-design/icons";
 
 import Permissions from "../AccessRoute/Permissions";
@@ -93,5 +94,11 @@ export const items = [
         path: "/employees/reports",
       },
     ],
+  },
+  {
+    text: "الاستشاريين",
+    icon: <OneToOneOutlined />,
+    path: "/consultants",
+    // access: [  ],
   },
 ];

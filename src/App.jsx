@@ -30,6 +30,8 @@ import { getEmployeePermissions } from "./redux/user/reducer";
 import getUser from "./redux/utils/cookiesUtils";
 import PERMISSIONS from './Components/AccessRoute/Permissions';
 import Cookies from "js-cookie";
+import ViewConsultants from "./Features/Consultants/ViewConsultants";
+import MaintainConsultant from "./Features/Consultants/MaintainConsultant";
 
 function App() {
 
@@ -137,6 +139,14 @@ function App() {
                 />
                 <Route path="/timeSheetLog" element={<ViewTimeSheetLog />} />
               </Route>
+
+              {/* <Route element={<AccessRoute allowedRoutes={[]} />}> */}
+              <Route path="consultants">
+                <Route index element={<ViewConsultants />} />
+                <Route path="add" element={<MaintainConsultant />} />
+                <Route path="update/:consID" element={<MaintainConsultant />} />
+              </Route>
+              {/* </Route> */}
 
               <Route path="*" element={<Navigate to="/" />} />
             </Route>

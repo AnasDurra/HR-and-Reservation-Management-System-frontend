@@ -1,0 +1,110 @@
+import { Button, Table, Typography } from "antd";
+import { useEffect, useState } from "react";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import DeleteModal from "../../Components/DeleteModal/DeleteModal";
+import Spinner from "../../Components/Spinner/Spinner";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteConsultant, getConsultants } from "../../redux/consultants/reducer";
+import './Consultants.css';
+import { useNavigate } from "react-router-dom";
+
+function ViewConsultants() {
+
+    const consultants = useSelector(state => state.consultantsReducer.consultants);
+    const loading = useSelector(state => state.consultantsReducer.loading);
+    const error = useSelector(state => state.consultantsReducer.error);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        dispatch(getConsultants());
+    }, [dispatch]);
+
+    console.log(consultants);
+
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
+    const [selectedConsultant, setSelectedConsultant] = useState(null);
+
+    const deleteConsultantFunction = () => {
+        console.log('deleted: ', selectedConsultant);
+        dispatch(deleteConsultant({
+            id: selectedConsultant.id,
+        }));
+        closeDeleteModal();
+    }
+
+    const closeDeleteModal = () => {
+        setSelectedConsultant(null);
+        setOpenDeleteModal(false);
+    }
+
+    const columns = [
+        {
+            title: 'المعرّف الشخصي',
+            dataIndex: 'id',
+            key: 'id',
+        },
+        {
+            title: 'الاسم',
+            key: 'name',
+            render: (consultant) => <Typography>
+                {consultant.first_name + consultant.last_name}
+            </Typography>
+        },
+        {
+            title: 'رقم الهاتف',
+            dataIndex: 'phone_number',
+            key: 'phone_number',
+        },
+        {
+            title: 'البريد الألكتروني',
+            dataIndex: 'user_email',
+            key: 'email',
+        },
+        {
+            title: 'العمليات',
+            key: 'actions',
+            render: (record) => {
+                return (
+                    <div id="actions">
+                        <DeleteOutlined onClick={() => {
+                            setSelectedConsultant(record);
+                            setOpenDeleteModal(true);
+                        }} />
+                        <EditOutlined onClick={() => {
+                            setSelectedConsultant(record);
+                            navigate(`update/${record.id}`);
+                        }} />
+                    </div>
+                );
+            },
+            width: '10%'
+        },
+    ];
+
+    return (
+        <Spinner loading={loading}>
+            <div>
+                <Table
+                    columns={columns}
+                    dataSource={consultants}
+                    rowKey='id'
+                    scroll={{ x: 'max-content' }}
+                />
+                <Button
+                    className="consultantsButton"
+                    onClick={() => navigate("/consultants/add")}
+                >
+                    إضافة استشاري
+                </Button>
+                <DeleteModal
+                    open={openDeleteModal}
+                    handleOk={deleteConsultantFunction}
+                    handleCancel={closeDeleteModal}
+                />
+            </div>
+        </Spinner>
+    );
+}
+
+export default ViewConsultants;
