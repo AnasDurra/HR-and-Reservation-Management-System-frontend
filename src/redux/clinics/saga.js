@@ -5,7 +5,7 @@ import { handleError } from '../utils/helpers';
 
 
 const getClinics = (payload) => {
-    return AxiosInstance().get(`clinics${payload ? `?page=${payload}` : ""}`);
+    return AxiosInstance().get('clinic');
 }
 
 function* getClinicsSaga({ payload }) {

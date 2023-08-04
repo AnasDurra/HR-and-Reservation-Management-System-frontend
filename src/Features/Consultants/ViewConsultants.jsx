@@ -1,6 +1,6 @@
 import { Button, Table, Typography } from "antd";
 import { useEffect, useState } from "react";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import DeleteModal from "../../Components/DeleteModal/DeleteModal";
 import Spinner from "../../Components/Spinner/Spinner";
 import { useSelector, useDispatch } from "react-redux";
@@ -48,7 +48,7 @@ function ViewConsultants() {
             title: 'الاسم',
             key: 'name',
             render: (consultant) => <Typography>
-                {consultant.first_name + consultant.last_name}
+                {consultant.first_name + " " + consultant.last_name}
             </Typography>
         },
         {
@@ -72,8 +72,10 @@ function ViewConsultants() {
                             setOpenDeleteModal(true);
                         }} />
                         <EditOutlined onClick={() => {
-                            setSelectedConsultant(record);
                             navigate(`update/${record.id}`);
+                        }} />
+                        <EyeOutlined onClick={() => {
+                            navigate(`view/${record.id}`);
                         }} />
                     </div>
                 );

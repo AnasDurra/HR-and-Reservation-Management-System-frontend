@@ -32,6 +32,7 @@ import PERMISSIONS from './Components/AccessRoute/Permissions';
 import Cookies from "js-cookie";
 import ViewConsultants from "./Features/Consultants/ViewConsultants";
 import MaintainConsultant from "./Features/Consultants/MaintainConsultant";
+import ViewConsultant from "./Features/Consultants/ViewConsultant";
 
 function App() {
 
@@ -145,6 +146,7 @@ function App() {
                 <Route index element={<ViewConsultants />} />
                 <Route path="add" element={<MaintainConsultant />} />
                 <Route path="update/:consID" element={<MaintainConsultant />} />
+                <Route path="view/:consID" element={<ViewConsultant />} />
               </Route>
               {/* </Route> */}
 

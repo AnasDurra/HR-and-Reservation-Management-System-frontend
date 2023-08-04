@@ -24,7 +24,7 @@ function MaintainConsultant() {
     const { Option } = Select;
 
     useEffect(() => {
-        // dispatch(getClinics());
+        dispatch(getClinics());
         if (consID) {
             dispatch(getConsultant({ id: consID }));
         }
@@ -39,6 +39,8 @@ function MaintainConsultant() {
                 phone_number: consultant?.phone_number,
                 address: consultant?.address,
                 birth_date: dayjs(consultant?.birth_date),
+                clinic_id: consultant?.clinic_id,
+                email: consultant?.user?.user_email,
             });
         }
     }, [consultant]);
@@ -58,8 +60,18 @@ function MaintainConsultant() {
     }
 
     const updateConsultantFunction = (data) => {
-        console.log(data);
         data.id = consID;
+        if (data.email === consultant?.user?.user_email) {
+            console.log(data.email);
+            delete data.email;
+        }
+        if (data.phone_number === consultant?.phone_number) {
+            delete data.phone_number;
+        }
+        if (data.birth_date) {
+            data.birth_date = dayjs(data.birth_date.$d).format('YYYY-MM-DD');
+        }
+        console.log(data);
         dispatch(updateConsultant({ data: data, succeed: updateConsultantSuccessed }))
     }
 
@@ -70,13 +82,6 @@ function MaintainConsultant() {
     const updateConsultantSuccessed = () => {
         navigate('/consultants');
     }
-
-    const cli = [
-        {
-            id: 1,
-            name: 'النفسية',
-        }
-    ];
 
     return (
         <Spinner loading={consultantLoading}>
@@ -193,7 +198,7 @@ function MaintainConsultant() {
                                     placeholder="اختيار العيادة"
                                     filterOption={false}
                                 >
-                                    {cli.map((c) => <Option value={c.id} key={c.id}>{c.name}</Option>)}
+                                    {clinics.map((c) => <Option value={c.id} key={c.id}>{c.name}</Option>)}
                                 </Select>
                             </Form.Item>
                         </Col>
