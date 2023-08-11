@@ -7,80 +7,94 @@ import {
   ProfileOutlined,
   ContainerOutlined,
   ReconciliationOutlined,
-} from "@ant-design/icons";
+} from '@ant-design/icons';
 
 export const items = [
   {
-    text: "الأقسام",
+    text: 'الأقسام',
     icon: <ApartmentOutlined />,
-    path: "/departments",
+    path: '/departments',
   },
   {
-    text: "الشواغر الوظيفية",
+    text: 'الشواغر الوظيفية',
     icon: <ReconciliationOutlined />,
-    path: "/jobVacancies",
+    path: '/jobVacancies',
   },
   {
-    text: "المسميات الوظيفية",
+    text: 'المسميات الوظيفية',
     icon: <LockOutlined />,
-    path: "/roles",
+    path: '/roles',
   },
   {
-    text: "إدارة الدوام",
+    text: 'إدارة الدوام',
     icon: <ClockCircleOutlined />,
     items: [
       {
-        text: "فترات العمل",
-        path: "/shifts",
+        text: 'فترات العمل',
+        path: '/shifts',
       },
       {
-        text: "اجهزة البصمات",
-        path: "/biometricDevices",
+        text: 'اجهزة البصمات',
+        path: '/biometricDevices',
       },
       {
-        text: "سجل الدوام",
-        path: "/timeSheetLog",
+        text: 'سجل الدوام',
+        path: '/timeSheetLog',
       },
       {
-        text: "طلبات الإجازة",
-        path: "/employees/vacations/requests",
+        text: 'طلبات الإجازة',
+        path: '/employees/vacations/requests',
       },
       {
-        text: "إجازات الموظفين",
-        path: "/employees/vacations",
+        text: 'إجازات الموظفين',
+        path: '/employees/vacations',
       },
       {
-        text: "طلبات إزاحة الدوام",
-        path: "/employees/timeShiftRequests",
+        text: 'طلبات إزاحة الدوام',
+        path: '/employees/timeShiftRequests',
       },
       {
-        text: "غيابات الموظفين",
-        path: "/employees/absences",
+        text: 'غيابات الموظفين',
+        path: '/employees/absences',
       },
     ],
   },
   {
-    text: "طلبات التوظيف",
+    text: 'طلبات التوظيف',
     icon: <FileDoneOutlined />,
-    path: "/jobApplications",
+    path: '/jobApplications',
   },
   {
-    text: "الموظّفين",
+    text: 'الموظّفين',
     icon: <ProfileOutlined />,
-    path: "/employees",
+    path: '/employees',
   },
   {
-    text: "سجل الأحداث",
+    text: 'سجل الأحداث',
     icon: <HistoryOutlined />,
-    path: "/log",
+    path: '/log',
   },
   {
-    text: "التقارير",
+    text: 'التقارير',
     icon: <ContainerOutlined />,
     items: [
       {
-        text: "تقارير الموظفين",
-        path: "/employees/reports",
+        text: 'تقارير الموظفين',
+        path: '/employees/reports',
+      },
+    ],
+  },
+  {
+    text: 'إدارة المواعيد',
+    icon: <ContainerOutlined />,
+    items: [
+      {
+        text: 'جداول الدوام',
+        path: 'consultant/timeSchedules',
+      },
+      {
+        text: 'جدول مواعيد المستشار',
+        path: 'consultant/calendar',
       },
     ],
   },
