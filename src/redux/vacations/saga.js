@@ -53,7 +53,6 @@ function* getAllVacationsSaga({ payload }) {
 function* addVacationSaga({ payload }) {
     try {
         const response = yield call(addVacation, payload);
-        console.log(response);
         yield put(addVacationSuccess(response.data.data));
     }
     catch (error) {

@@ -7,27 +7,33 @@ import {
   ProfileOutlined,
   ContainerOutlined,
   ReconciliationOutlined,
-} from '@ant-design/icons';
+} from "@ant-design/icons";
+
+import Permissions from "../AccessRoute/Permissions";
 
 export const items = [
   {
     text: 'الأقسام',
     icon: <ApartmentOutlined />,
-    path: '/departments',
+    path: "/departments",
+    access: [Permissions.MANAGE_DEPARTMENTS]
   },
   {
     text: 'الشواغر الوظيفية',
     icon: <ReconciliationOutlined />,
-    path: '/jobVacancies',
+    path: "/jobVacancies",
+    access: [Permissions.MANAGE_JOB_VACANCIES]
   },
   {
     text: 'المسميات الوظيفية',
     icon: <LockOutlined />,
-    path: '/roles',
+    path: "/roles",
+    access: [Permissions.MANAGE_ROLES]
   },
   {
     text: 'إدارة الدوام',
     icon: <ClockCircleOutlined />,
+    access: [Permissions.MANAGE_ATTENDANCE],
     items: [
       {
         text: 'فترات العمل',
@@ -62,31 +68,25 @@ export const items = [
   {
     text: 'طلبات التوظيف',
     icon: <FileDoneOutlined />,
-    path: '/jobApplications',
+    path: "/jobApplications",
+    access: [Permissions.MANAGE_JOB_APPLICATIONS]
   },
   {
     text: 'الموظّفين',
     icon: <ProfileOutlined />,
-    path: '/employees',
+    path: "/employees",
+    access: [Permissions.MANAGE_EMPLOYEES]
   },
   {
     text: 'سجل الأحداث',
     icon: <HistoryOutlined />,
-    path: '/log',
-  },
-  {
-    text: 'التقارير',
-    icon: <ContainerOutlined />,
-    items: [
-      {
-        text: 'تقارير الموظفين',
-        path: '/employees/reports',
-      },
-    ],
+    path: "/log",
+    access: [Permissions.MANAGE_LOG]
   },
   {
     text: 'إدارة المواعيد',
     icon: <ContainerOutlined />,
+    access: [Permissions.EXPORT_REPORTS],
     items: [
       {
         text: 'جداول الدوام',
