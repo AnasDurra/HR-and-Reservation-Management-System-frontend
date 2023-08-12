@@ -30,6 +30,12 @@ import { getEmployeePermissions } from "./redux/user/reducer";
 import getUser from "./redux/utils/cookiesUtils";
 import PERMISSIONS from './Components/AccessRoute/Permissions';
 import Cookies from "js-cookie";
+import ViewConsultants from "./Features/Consultants/ViewConsultants";
+import MaintainConsultant from "./Features/Consultants/MaintainConsultant";
+import ViewConsultant from "./Features/Consultants/ViewConsultant";
+import ViewCustomers from "./Features/Customers/ViewCustomers";
+import MaintainCustomer from "./Features/Customers/MaintainCustomer";
+import ViewCustomer from "./Features/Customers/ViewCustomer";
 
 function App() {
 
@@ -137,6 +143,24 @@ function App() {
                 />
                 <Route path="/timeSheetLog" element={<ViewTimeSheetLog />} />
               </Route>
+
+              {/* <Route element={<AccessRoute allowedRoutes={[]} />}> */}
+              <Route path="consultants">
+                <Route index element={<ViewConsultants />} />
+                <Route path="add" element={<MaintainConsultant />} />
+                <Route path="update/:consID" element={<MaintainConsultant />} />
+                <Route path="view/:consID" element={<ViewConsultant />} />
+              </Route>
+              {/* </Route> */}
+
+              {/* <Route element={<AccessRoute allowedRoutes={[]} />}> */}
+              <Route path="customers">
+                <Route index element={<ViewCustomers />} />
+                <Route path="add" element={<MaintainCustomer />} />
+                <Route path="update/:custID" element={<MaintainCustomer />} />
+                <Route path="view/:custID" element={<ViewCustomer />} />
+              </Route>
+              {/* </Route> */}
 
               <Route path="*" element={<Navigate to="/" />} />
             </Route>

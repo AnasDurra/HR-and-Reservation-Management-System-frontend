@@ -13,6 +13,9 @@ import VacationsSaga from "./vacations/saga";
 import EmployeesAbsencesSaga from "./absences/saga";
 import TimeShiftsSaga from "./timeShifts/saga";
 import logSaga from "./Features/Log/saga";
+import ConsultantsSaga from "./consultants/saga";
+import ClinicsSaga from "./clinics/saga";
+import CustomersSaga from "./customers/saga";
 
 
 export default function* rootSaga() {
@@ -30,6 +33,9 @@ export default function* rootSaga() {
     VacationsSaga(),
     EmployeesAbsencesSaga(),
     TimeShiftsSaga(),
-    logSaga()
+    logSaga(),
+    ConsultantsSaga(),
+    ClinicsSaga(),
+    CustomersSaga(),
   ]);
 }
