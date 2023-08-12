@@ -1,41 +1,41 @@
 import { Button, Table, Typography } from "antd";
 import { useEffect, useState } from "react";
-import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, CloseCircleOutlined, DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import DeleteModal from "../../Components/DeleteModal/DeleteModal";
 import Spinner from "../../Components/Spinner/Spinner";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteConsultant, getConsultants } from "../../redux/consultants/reducer";
-import './Consultants.css';
+import { getCustomers, deleteCustomer } from "../../redux/customers/reducer";
+import './Customers.css';
 import { useNavigate } from "react-router-dom";
 import ServerSideSearchField from "../../Components/ServerSideSearchField/ServerSideSearchField";
 
-function ViewConsultants() {
+function ViewCustomers() {
 
-    const consultants = useSelector(state => state.consultantsReducer.consultants);
-    const loading = useSelector(state => state.consultantsReducer.loading);
-    const error = useSelector(state => state.consultantsReducer.error);
+    const customers = useSelector(state => state.customersReducer.customers);
+    const loading = useSelector(state => state.customersReducer.loading);
+    const error = useSelector(state => state.customersReducer.error);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const [searchValue, setSearchValue] = useState("");
+
     useEffect(() => {
-        dispatch(getConsultants());
+        dispatch(getCustomers());
     }, [dispatch]);
 
-    console.log(consultants);
-
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
-    const [selectedConsultant, setSelectedConsultant] = useState(null);
+    const [selectedCustomer, setSelectedCustomer] = useState(null);
 
-    const deleteConsultantFunction = () => {
-        console.log('deleted: ', selectedConsultant);
-        dispatch(deleteConsultant({
-            id: selectedConsultant.id,
+    const deleteCustomerFunction = () => {
+        console.log('deleted: ', selectedCustomer);
+        dispatch(deleteCustomer({
+            id: selectedCustomer.id,
         }));
         closeDeleteModal();
     }
 
     const closeDeleteModal = () => {
-        setSelectedConsultant(null);
+        setSelectedCustomer(null);
         setOpenDeleteModal(false);
     }
 
@@ -48,9 +48,7 @@ function ViewConsultants() {
         {
             title: 'الاسم',
             key: 'name',
-            render: (consultant) => <Typography>
-                {consultant.first_name + " " + consultant.last_name}
-            </Typography>
+            dataIndex: 'full_name',
         },
         {
             title: 'رقم الهاتف',
@@ -58,9 +56,15 @@ function ViewConsultants() {
             key: 'phone_number',
         },
         {
-            title: 'البريد الألكتروني',
-            dataIndex: 'user_email',
-            key: 'email',
+            title: 'حالة الحساب',
+            dataIndex: 'verified',
+            key: 'status',
+            render: (status) =>
+                <div style={{ display: "flex", justifyContent: 'space-around' }}>
+                    <Typography>{status ? "موثّق" : "غير موثّق"}</Typography>
+                    {status ? <CheckCircleOutlined style={{ color: "green" }} />
+                        : <CloseCircleOutlined style={{ color: "red" }} />}
+                </div>
         },
         {
             title: 'العمليات',
@@ -69,7 +73,7 @@ function ViewConsultants() {
                 return (
                     <div id="actions">
                         <DeleteOutlined onClick={() => {
-                            setSelectedConsultant(record);
+                            setSelectedCustomer(record);
                             setOpenDeleteModal(true);
                         }} />
                         <EditOutlined onClick={() => {
@@ -85,46 +89,45 @@ function ViewConsultants() {
         },
     ];
 
-    const [searchValue, setSearchValue] = useState("");
 
     const handleReset = () => {
         setSearchValue("");
-        dispatch(getConsultants());
+        dispatch(getCustomers());
     }
 
     const handleSearch = () => {
         console.log(searchValue);
-        dispatch(getConsultants({ name: searchValue }));
+        dispatch(getCustomers({ name: searchValue }));
     }
 
     return (
         <Spinner loading={loading}>
             <div>
                 <ServerSideSearchField
-                    placeholder="البحث عن الاستشاري"
-                    searchBtnText="البحث"
-                    resetBtnText="إعادة"
-                    setSearchValue={setSearchValue}
-                    searchValue={searchValue}
                     handleReset={handleReset}
                     handleSearch={handleSearch}
+                    placeholder="البحث عن المستفيد"
+                    resetBtnText="إعادة"
+                    searchBtnText="البحث"
+                    searchValue={searchValue}
+                    setSearchValue={setSearchValue}
                 />
                 <Table
                     columns={columns}
-                    dataSource={consultants}
+                    dataSource={customers}
                     rowKey='id'
                     scroll={{ x: 'max-content' }}
                     pagination={{ pageSize: 10 }}
                 />
                 <Button
-                    className="consultantsButton"
-                    onClick={() => navigate("/consultants/add")}
+                    className="customersButton"
+                    onClick={() => navigate("/customers/add")}
                 >
-                    إضافة استشاري
+                    إضافة مستفيد
                 </Button>
                 <DeleteModal
                     open={openDeleteModal}
-                    handleOk={deleteConsultantFunction}
+                    handleOk={deleteCustomerFunction}
                     handleCancel={closeDeleteModal}
                 />
             </div>
@@ -132,4 +135,4 @@ function ViewConsultants() {
     );
 }
 
-export default ViewConsultants;
+export default ViewCustomers;

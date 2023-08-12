@@ -193,7 +193,6 @@ function MaintainConsultant() {
                             >
                                 <Select
                                     loading={clinicsLoading}
-                                    // onSearch={handleSearch}
                                     showSearch
                                     placeholder="اختيار العيادة"
                                     filterOption={false}

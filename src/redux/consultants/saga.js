@@ -9,7 +9,13 @@ import { handleError } from '../utils/helpers';
 
 
 const getConsultants = (payload) => {
-    return AxiosInstance().get(`consultant${payload ? `?page=${payload}` : ""}`);
+    const params = new URLSearchParams();
+
+    if (payload?.name) {
+        params.append('name', payload.name);
+    }
+
+    return AxiosInstance().get(`consultant?${params.toString()}`);
 }
 
 const getConsultant = (payload) => {

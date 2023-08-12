@@ -15,6 +15,7 @@ import timeShiftsReducer from "./timeShifts/reducer";
 import logSlice from "./Features/Log/slice";
 import consultantsReducer from "./consultants/reducer";
 import clinicsReducer from "./clinics/reducer";
+import customersReducer from "./customers/reducer";
 
 export default {
   userReducer: userReducer,
@@ -33,4 +34,5 @@ export default {
   logSlice: logSlice,
   consultantsReducer: consultantsReducer,
   clinicsReducer: clinicsReducer,
+  customersReducer: customersReducer,
 };

@@ -1,11 +1,14 @@
-import { Button, Descriptions } from "antd";
+import { Button, Carousel, Descriptions, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { getConsultant } from "../../redux/consultants/reducer";
 import { getClinics } from "../../redux/clinics/reducer";
 import Spinner from "../../Components/Spinner/Spinner";
-import { PieChart, Pie, Sector, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Sector, ResponsiveContainer, CartesianGrid, AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
 
 
 function ViewConsultant() {
@@ -93,6 +96,65 @@ function ViewConsultant() {
         }
     }, [consultant]);
 
+    const data2 = [
+        {
+            name: 'كانون الثاني',
+            ["عدد المواعيد"]: 2,
+        },
+        {
+            name: 'شباط',
+            ["عدد المواعيد"]: 10,
+        },
+        {
+            name: 'آذار',
+            ["عدد المواعيد"]: 40,
+        },
+        {
+            name: 'نيسان',
+            ["عدد المواعيد"]: 5,
+        },
+        {
+            name: 'أيار',
+            ["عدد المواعيد"]: 15,
+        },
+        {
+            name: 'حزيران',
+            ["عدد المواعيد"]: 3,
+        },
+        {
+            name: 'تموز',
+            ["عدد المواعيد"]: 30,
+        },
+        {
+            name: 'آب',
+            ["عدد المواعيد"]: 10,
+        },
+        {
+            name: 'أيلول',
+            ["عدد المواعيد"]: 8,
+        },
+        {
+            name: 'تشرين الأول',
+            ["عدد المواعيد"]: 16,
+        },
+        {
+            name: 'تشرين الثاني',
+            ["عدد المواعيد"]: 19,
+        },
+        {
+            name: 'كانون الأول',
+            ["عدد المواعيد"]: 25,
+        },
+    ];
+
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1
+    };
+
     return (
         <Spinner loading={loading}>
             <div>
@@ -108,23 +170,49 @@ function ViewConsultant() {
                 </Descriptions>
 
                 {show ?
-                    <div>
-                        <ResponsiveContainer width={"100%"} height={500}>
-                            <PieChart width={800} height={500}>
-                                <Pie
-                                    activeIndex={activeIndex}
-                                    activeShape={renderActiveShape}
-                                    data={data}
-                                    cx="50%"
-                                    cy="50%"
-                                    innerRadius={120}
-                                    outerRadius={160}
-                                    fill="#8884d8"
-                                    dataKey="value"
-                                    onMouseEnter={onPieEnter}
-                                />
-                            </PieChart>
-                        </ResponsiveContainer>
+                    <div style={{paddingTop: '30px'}}>
+                        <Slider {...settings}>
+                            <div>
+                                <ResponsiveContainer width={"100%"} height={500}>
+                                    <PieChart width={800} height={500}>
+                                        <Pie
+                                            activeIndex={activeIndex}
+                                            activeShape={renderActiveShape}
+                                            data={data}
+                                            cx="50%"
+                                            cy="50%"
+                                            innerRadius={120}
+                                            outerRadius={160}
+                                            fill="#8884d8"
+                                            dataKey="value"
+                                            onMouseEnter={onPieEnter}
+                                        />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </div>
+                            <div>
+                                <ResponsiveContainer width="100%" height={500}>
+                                    <AreaChart
+                                        width={500}
+                                        height={400}
+                                        data={data2}
+                                        margin={{
+                                            top: 10,
+                                            right: 30,
+                                            left: 0,
+                                            bottom: 0,
+                                        }}
+                                    >
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="name" />
+                                        <YAxis />
+                                        <Tooltip />
+                                        <Area type="monotone" dataKey="عدد المواعيد" stroke="#8884d8" fill="#8884d8" />
+                                    </AreaChart>
+                                </ResponsiveContainer>
+                                <Typography.Title level={4} style={{display: "flex", justifyContent: "center", alignItems: "center"}}>2023</Typography.Title>
+                            </div>
+                        </Slider>
                         <Button
                             onClick={() => navigate('/consultants')}
                         >
