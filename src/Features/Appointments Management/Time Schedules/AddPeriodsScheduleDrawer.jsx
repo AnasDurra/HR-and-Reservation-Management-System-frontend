@@ -18,6 +18,9 @@ import { PlusOutlined, MinusCircleFilled } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import TimeSchedule from './TimeSchedule';
 import { useForm } from 'antd/es/form/Form';
+import moment from 'moment';
+import { useDispatch } from 'react-redux';
+import { createTimeSchedule } from '../../../redux/Features/Appointments Management/Consultant Time Schedules/slice';
 
 function formatPeriods(array) {
   const result = [];
@@ -31,11 +34,7 @@ function formatPeriods(array) {
     const durationHours = new Date(item.period).getHours();
     const durationMinutes = new Date(item.period).getMinutes();
 
-    const endTime = new Date(
-      startTime.getTime() +
-        durationHours * 60 * 60 * 1000 +
-        durationMinutes * 60 * 1000
-    );
+    const endTime = new Date(startTime.getTime() + durationHours * 60 * 60 * 1000 + durationMinutes * 60 * 1000);
 
     const startTimeString = formatTime(startTime);
     const endTimeString = formatTime(endTime);
@@ -64,6 +63,7 @@ function formatTime(time) {
 }
 
 function AddPeriodsScheduleDrawer({ isOpen, close, open } = {}) {
+  const dispatch = useDispatch();
   const [periods, setPeriods] = useState([]);
   const [isDefaultPeriods, setIsDefaultPeriods] = useState(false);
   const [defaultPeriod, setDefaultPeriod] = useState();
@@ -80,6 +80,25 @@ function AddPeriodsScheduleDrawer({ isOpen, close, open } = {}) {
 
   const onFinish = () => {
     console.log(form.getFieldsValue()['periods']);
+    const periods = form.getFieldsValue()['periods'].map((item) => {
+      const period = new Date(item.period);
+      const startTime = new Date(item.start_time);
+      const endTime = new Date(
+        startTime.getTime() + period.getHours() * 60 * 60 * 1000 + period.getMinutes() * 60 * 1000
+      );
+      return {
+        start_time: startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
+        end_time: endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
+      };
+    });
+    console.log(periods);
+
+    /*   dispatch(
+      createTimeSchedule({
+        name: form.getFieldValue(['name']),
+        periods,
+      })
+    ); */
   };
 
   return (
@@ -97,20 +116,24 @@ function AddPeriodsScheduleDrawer({ isOpen, close, open } = {}) {
             onClick={() => {
               form.submit();
             }}
-            type='primary'>
+            type='primary'
+          >
             إضافة
           </Button>
         </Space>
-      }>
+      }
+    >
       <Form
         form={form}
-        onFinish={onFinish}>
+        onFinish={onFinish}
+      >
         <Row>
           <Col span={8}>
             <Form.Item
               name='name'
               label='عنوان البرنامج'
-              rules={[{ required: true }]}>
+              rules={[{ required: true }]}
+            >
               <Input />
             </Form.Item>
           </Col>
@@ -120,87 +143,99 @@ function AddPeriodsScheduleDrawer({ isOpen, close, open } = {}) {
 
         <Row gutter={16}>
           <Col span={12}>
-              <Form.List name='periods'>
-                {(fields, { add, remove }) => {
-                  return (
-                    <>
-                      {fields.map(({ key, name, ...restField }) => (
-                        <>
-                          <div key={key}>
-                            <Row gutter={16}>
-                              <Col span={2}>
-                                <MinusCircleFilled
-                                  style={{ color: '#f5222d' }}
-                                  onClick={() => {
-                                    remove(name);
-                                    updatePeriods();
-                                  }}
+            <Form.List name='periods'>
+              {(fields, { add, remove }) => {
+                return (
+                  <>
+                    {fields.map(({ key, name, ...restField }) => (
+                      <>
+                        <div key={key}>
+                          <Row gutter={16}>
+                            <Col span={2}>
+                              <MinusCircleFilled
+                                style={{ color: '#f5222d' }}
+                                onClick={() => {
+                                  remove(name);
+                                  updatePeriods();
+                                }}
+                              />
+                            </Col>
+
+                            <Col span={10}>
+                              <Form.Item
+                                {...restField}
+                                label='توقيت الجلسة '
+                                name={[name, 'start_time']}
+                                rules={[{ required: true }]}
+                              >
+                                <TimePicker
+                                  format={'HH:mm'}
+                                  onChange={updatePeriods}
                                 />
-                              </Col>
+                              </Form.Item>
+                            </Col>
 
-                              <Col span={10}>
-                                <Form.Item
-                                  {...restField}
-                                  label='توقيت الجلسة '
-                                  name={[name, 'start_time']}>
-                                  <TimePicker
-                                    format={'HH:mm'}
-                                    onChange={updatePeriods}
-                                  />
-                                </Form.Item>
-                              </Col>
+                            <Col span={10}>
+                              <Form.Item
+                                {...restField}
+                                label='مدة الجلسة'
+                                name={[name, 'period']}
+                                initialValue={isDefaultPeriods ? defaultPeriod : null}
+                                rules={[
+                                  ({ getFieldValue }) => ({
+                                    validator(_, value) {
+                                      if (value) {
+                                        return Promise.resolve();
+                                      }
+                                      return Promise.reject('Please enter the session duration');
+                                    },
+                                  }),
+                                ]}
+                              >
+                                <TimePicker
+                                  format={'HH:mm'}
+                                  onChange={updatePeriods}
+                                />
+                              </Form.Item>
+                            </Col>
+                          </Row>
+                        </div>
 
-                              <Col span={10}>
-                                <Form.Item
-                                  {...restField}
-                                  label='مدة الجلسة'
-                                  name={[name, 'period']}>
-                                  <TimePicker
-                                    format={'HH:mm'}
-                                    defaultValue={
-                                      isDefaultPeriods ? defaultPeriod : null
-                                    }
-                                    onChange={updatePeriods}
-                                  />
-                                </Form.Item>
-                              </Col>
-                            </Row>
-                          </div>
+                        {name == fields.length - 1 && <Divider key={'dynamic divider'} />}
+                      </>
+                    ))}
 
-                          {name == fields.length - 1 && (
-                            <Divider key={'dynamic divider'} />
-                          )}
-                        </>
-                      ))}
+                    <Row>
+                      <Col
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <Checkbox
+                          checked={isDefaultPeriods}
+                          onChange={(e) => {
+                            setIsDefaultPeriods(e.target.checked);
+                          }}
+                        >
+                          فترة افتراضية
+                        </Checkbox>
+                      </Col>
 
-                      <Row>
-                        <Col
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}>
-                          <Checkbox
-                            checked={isDefaultPeriods}
-                            onChange={(e) => {
-                              setIsDefaultPeriods(e.target.checked);
-                            }}>
-                            فترة افتراضية
-                          </Checkbox>
-                        </Col>
-
-                        <Col
-                          offset={1}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}>
-                          <TimePicker
-                            format={'HH:mm'}
-                            disabled={!isDefaultPeriods}
-                            onChange={(value) => {
-                              /*  const periods = [
+                      <Col
+                        offset={1}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <TimePicker
+                          format={'HH:mm'}
+                          disabled={!isDefaultPeriods}
+                          onChange={(value) => {
+                            /*  const periods = [
                                 ...form.getFieldValue('periods'),
                               ];
                               periods.forEach((p) => {
@@ -208,24 +243,25 @@ function AddPeriodsScheduleDrawer({ isOpen, close, open } = {}) {
                               });
                               form.setFieldValue('periods', periods);
                               */
-                              setDefaultPeriod(value);
-                            }}
-                          />
-                        </Col>
+                            setDefaultPeriod(value);
+                          }}
+                        />
+                      </Col>
 
-                        <Col offset={1}>
-                          <Button
-                            onClick={() => {
-                              add();
-                            }}>
-                            إضافة فترة
-                          </Button>
-                        </Col>
-                      </Row>
-                    </>
-                  );
-                }}
-              </Form.List>
+                      <Col offset={1}>
+                        <Button
+                          onClick={() => {
+                            add();
+                          }}
+                        >
+                          إضافة فترة
+                        </Button>
+                      </Col>
+                    </Row>
+                  </>
+                );
+              }}
+            </Form.List>
           </Col>
 
           <Col
@@ -234,7 +270,8 @@ function AddPeriodsScheduleDrawer({ isOpen, close, open } = {}) {
               marginTop: '2.5%',
               display: 'flex',
               justifyContent: 'center',
-            }}>
+            }}
+          >
             <TimeSchedule periods={periods} />
           </Col>
         </Row>

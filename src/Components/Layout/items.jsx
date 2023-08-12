@@ -7,28 +7,28 @@ import {
   ProfileOutlined,
   ContainerOutlined,
   ReconciliationOutlined,
-} from "@ant-design/icons";
+} from '@ant-design/icons';
 
-import Permissions from "../AccessRoute/Permissions";
+import Permissions from '../AccessRoute/Permissions';
 
 export const items = [
   {
     text: 'الأقسام',
     icon: <ApartmentOutlined />,
-    path: "/departments",
-    access: [Permissions.MANAGE_DEPARTMENTS]
+    path: '/departments',
+    access: [Permissions.MANAGE_DEPARTMENTS],
   },
   {
     text: 'الشواغر الوظيفية',
     icon: <ReconciliationOutlined />,
-    path: "/jobVacancies",
-    access: [Permissions.MANAGE_JOB_VACANCIES]
+    path: '/jobVacancies',
+    access: [Permissions.MANAGE_JOB_VACANCIES],
   },
   {
     text: 'المسميات الوظيفية',
     icon: <LockOutlined />,
-    path: "/roles",
-    access: [Permissions.MANAGE_ROLES]
+    path: '/roles',
+    access: [Permissions.MANAGE_ROLES],
   },
   {
     text: 'إدارة الدوام',
@@ -68,33 +68,48 @@ export const items = [
   {
     text: 'طلبات التوظيف',
     icon: <FileDoneOutlined />,
-    path: "/jobApplications",
-    access: [Permissions.MANAGE_JOB_APPLICATIONS]
+    path: '/jobApplications',
+    access: [Permissions.MANAGE_JOB_APPLICATIONS],
   },
   {
     text: 'الموظّفين',
     icon: <ProfileOutlined />,
-    path: "/employees",
-    access: [Permissions.MANAGE_EMPLOYEES]
+    path: '/employees',
+    access: [Permissions.MANAGE_EMPLOYEES],
   },
   {
     text: 'سجل الأحداث',
     icon: <HistoryOutlined />,
-    path: "/log",
-    access: [Permissions.MANAGE_LOG]
+    path: '/log',
+    access: [Permissions.MANAGE_LOG],
+  },
+  {
+    text: 'التقارير',
+    icon: <ContainerOutlined />,
+    items: [
+      {
+        text: 'تقارير الموظفين',
+        path: '/employees/reports',
+        access: [Permissions.EXPORT_REPORTS],
+      },
+    ],
   },
   {
     text: 'إدارة المواعيد',
     icon: <ContainerOutlined />,
-    access: [Permissions.EXPORT_REPORTS],
+
     items: [
       {
+        text: 'جدول المواعيد',
+        path: '/appointments/calendar',
+      },
+      {
         text: 'جداول الدوام',
-        path: 'consultant/timeSchedules',
+        path: '/consultant/timeSchedules',
       },
       {
         text: 'جدول مواعيد المستشار',
-        path: 'consultant/calendar',
+        path: '/consultant/calendar',
       },
     ],
   },

@@ -8,7 +8,6 @@ import { Provider } from "react-redux";
 import rootSaga from "./redux/sagas";
 import reducers from "./redux/reducers";
 import { configureStore } from "@reduxjs/toolkit";
-import "react-big-calendar/lib/css/react-big-calendar.css";
 
 
 

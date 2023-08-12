@@ -1,61 +1,52 @@
-import { ExclamationCircleOutlined } from '@ant-design/icons';
-import React, { useState } from 'react';
-import { Button, Modal, Space } from 'antd';
+import React from 'react';
+import { DownOutlined, SmileOutlined } from '@ant-design/icons';
+import type { MenuProps } from 'antd';
+import { Dropdown, Space } from 'antd';
 
-const LocalizedModal = () => {
-  const [open, setOpen] = useState(false);
+const items: MenuProps['items'] = [
+  {
+    key: '1',
+    label: (
+      <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+        1st menu item
+      </a>
+    ),
+  },
+  {
+    key: '2',
+    label: (
+      <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+        2nd menu item (disabled)
+      </a>
+    ),
+    icon: <SmileOutlined />,
+    disabled: true,
+  },
+  {
+    key: '3',
+    label: (
+      <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+        3rd menu item (disabled)
+      </a>
+    ),
+    disabled: true,
+  },
+  {
+    key: '4',
+    danger: true,
+    label: 'a danger item',
+  },
+];
 
-  const showModal = () => {
-    setOpen(true);
-  };
-
-  const hideModal = () => {
-    setOpen(false);
-  };
-
-  return (
-    <>
-      <Button type="primary" onClick={showModal}>
-        Modal
-      </Button>
-      <Modal
-        title="Modal"
-        open={open}
-        onOk={hideModal}
-        onCancel={hideModal}
-        okText="确认"
-        cancelText="取消"
-      >
-        <p>Bla bla ...</p>
-        <p>Bla bla ...</p>
-        <p>Bla bla ...</p>
-      </Modal>
-    </>
-  );
-};
-
-const App: React.FC = () => {
-  const [modal, contextHolder] = Modal.useModal();
-
-  const confirm = () => {
-    modal.confirm({
-      title: 'Confirm',
-      icon: <ExclamationCircleOutlined />,
-      content: 'Bla bla ...',
-      okText: '确认',
-      cancelText: '取消',
-    });
-  };
-
-  return (
-    <>
+const App: React.FC = () => (
+  <Dropdown menu={{ items }}>
+    <a onClick={(e) => e.preventDefault()}>
       <Space>
-        <LocalizedModal />
-        <Button onClick={confirm}>Confirm</Button>
+        Hover me
+        <DownOutlined />
       </Space>
-      {contextHolder}
-    </>
-  );
-};
+    </a>
+  </Dropdown>
+);
 
 export default App;
