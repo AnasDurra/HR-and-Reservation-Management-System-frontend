@@ -18,13 +18,17 @@ function ViewCustomers() {
     const navigate = useNavigate();
 
     const [searchValue, setSearchValue] = useState("");
+    const [showAllCustomers, setShowAllCustomers] = useState(1);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
+    const [selectedCustomer, setSelectedCustomer] = useState(null);
 
     useEffect(() => {
         dispatch(getCustomers());
     }, [dispatch]);
 
-    const [openDeleteModal, setOpenDeleteModal] = useState(false);
-    const [selectedCustomer, setSelectedCustomer] = useState(null);
+    useEffect(() => {
+        dispatch(getCustomers({ type: showAllCustomers }));
+    }, [showAllCustomers]);
 
     const deleteCustomerFunction = () => {
         console.log('deleted: ', selectedCustomer);
@@ -39,7 +43,7 @@ function ViewCustomers() {
         setOpenDeleteModal(false);
     }
 
-    const columns = [
+    const allCustomersColumns = [
         {
             title: 'المعرّف الشخصي',
             dataIndex: 'id',
@@ -57,12 +61,14 @@ function ViewCustomers() {
         },
         {
             title: 'حالة الحساب',
-            dataIndex: 'verified',
             key: 'status',
-            render: (status) =>
+            render: (record) =>
                 <div style={{ display: "flex", justifyContent: 'space-around' }}>
-                    <Typography>{status ? "موثّق" : "غير موثّق"}</Typography>
-                    {status ? <CheckCircleOutlined style={{ color: "green" }} />
+                    <Typography>{record.verified ? "موثّق" : "غير موثّق"}</Typography>
+                    {record.verified ? <CheckCircleOutlined style={{ color: "green" }} />
+                        : <CloseCircleOutlined style={{ color: "red" }} />}
+                    <Typography>{!record.blocked ? "فعّال" : "غير فعّال"}</Typography>
+                    {!record.blocked ? <CheckCircleOutlined style={{ color: "green" }} />
                         : <CloseCircleOutlined style={{ color: "red" }} />}
                 </div>
         },
@@ -89,20 +95,60 @@ function ViewCustomers() {
         },
     ];
 
+    const contrayCustomersColumns = [
+        {
+            title: 'المعرّف الشخصي',
+            dataIndex: 'id',
+            key: 'id',
+        },
+        {
+            title: 'الاسم',
+            key: 'name',
+            dataIndex: 'full_name',
+        },
+        {
+            title: 'رقم الهاتف',
+            dataIndex: 'phone_number',
+            key: 'phone_number',
+        },
+        {
+            title: 'عدد المواعيد المتخلف عنها',
+            dataIndex: 'missed_appointment_count',
+            key: 'missed_appointment_count',
+        },
+        {
+            title: 'حالة الحساب',
+            key: 'status',
+            render: (record) =>
+                <div style={{ display: "flex", justifyContent: 'space-around' }}>
+                    <Typography>{record.verified ? "موثّق" : "غير موثّق"}</Typography>
+                    {record.verified ? <CheckCircleOutlined style={{ color: "green" }} />
+                        : <CloseCircleOutlined style={{ color: "red" }} />}
+                    <Typography>{!record.blocked ? "فعّال" : "غير فعّال"}</Typography>
+                    {!record.blocked ? <CheckCircleOutlined style={{ color: "green" }} />
+                        : <CloseCircleOutlined style={{ color: "red" }} />}
+                </div>
+        },
+    ];
 
     const handleReset = () => {
         setSearchValue("");
-        dispatch(getCustomers());
+        dispatch(getCustomers({ type: showAllCustomers }));
     }
 
     const handleSearch = () => {
-        console.log(searchValue);
-        dispatch(getCustomers({ name: searchValue }));
+        dispatch(getCustomers({ name: searchValue, type: showAllCustomers }));
     }
 
     return (
         <Spinner loading={loading}>
             <div>
+                <Button
+                    className="viewCustomersButton"
+                    onClick={() => setShowAllCustomers(!showAllCustomers)}
+                >
+                    {showAllCustomers ? "عرض المستفيدين المخالفين" : "عرض جميع المستفيدين"}
+                </Button>
                 <ServerSideSearchField
                     handleReset={handleReset}
                     handleSearch={handleSearch}
@@ -113,7 +159,7 @@ function ViewCustomers() {
                     setSearchValue={setSearchValue}
                 />
                 <Table
-                    columns={columns}
+                    columns={showAllCustomers ? allCustomersColumns : contrayCustomersColumns}
                     dataSource={customers}
                     rowKey='id'
                     scroll={{ x: 'max-content' }}

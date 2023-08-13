@@ -9,13 +9,19 @@ import { handleError } from '../utils/helpers';
 
 
 const getCustomers = (payload) => {
+    let url = "customer";
+
+    console.log(payload);
+    if (!payload?.type) {
+        url = "missed-Appointments-By-Customers";
+    }
     const params = new URLSearchParams();
 
     if (payload?.name) {
         params.append('name', payload.name);
     }
 
-    return AxiosInstance().get(`customer?${params.toString()}`);
+    return AxiosInstance().get(`${url}?${params.toString()}`);
 }
 
 const getEducationalLevels = (payload) => {
@@ -42,6 +48,7 @@ const createCustomer = (payload) => {
 function* getCustomersSaga({ payload }) {
     try {
         const response = yield call(getCustomers, payload);
+        console.log(response);
         yield put(getCustomersSuccess(response.data));
     }
     catch (error) {

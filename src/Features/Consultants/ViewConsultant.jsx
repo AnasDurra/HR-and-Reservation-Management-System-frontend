@@ -214,6 +214,7 @@ function ViewConsultant() {
                             </div>
                         </Slider>
                         <Button
+                            style={{marginTop: '60px'}}
                             onClick={() => navigate('/consultants')}
                         >
                             العودة

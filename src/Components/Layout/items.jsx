@@ -9,6 +9,7 @@ import {
   ReconciliationOutlined,
   OneToOneOutlined,
   TeamOutlined,
+  BellOutlined,
 } from "@ant-design/icons";
 
 import Permissions from "../AccessRoute/Permissions";
@@ -106,6 +107,12 @@ export const items = [
     text: "المستفيدين",
     icon: <TeamOutlined />,
     path: "/customers",
+    // access: [  ],
+  },
+  {
+    text: "الفعاليّات",
+    icon: <BellOutlined />,
+    path: "/events",
     // access: [  ],
   },
 ];
