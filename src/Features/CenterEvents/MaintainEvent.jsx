@@ -11,7 +11,9 @@ function MaintainEvent() {
 
     const event = useSelector(state => state.eventsReducer.event);
     const loading = useSelector(state => state.eventsReducer.loading);
-    const { custID: eventID } = useParams();
+    const { eventID } = useParams();
+
+    const IMAGE_URL = "url";
 
     const [form] = Form.useForm();
     const navigate = useNavigate();
@@ -26,10 +28,31 @@ function MaintainEvent() {
     useEffect(() => {
         if (event) {
             form.setFieldsValue({
-
+                title: event?.title,
+                address: event?.address,
+                description: event?.description,
+                start_date: dayjs(event?.start_date),
+                end_date: dayjs(event?.end_date),
+                link: event?.link,
+                side_address: event?.side_address,
             });
         }
     }, [event]);
+
+    const createFormData = (data) => {
+        const formData = new FormData();
+
+        formData.append('title', data.title);
+        formData.append('address', data.address);
+        formData.append('description', data.description);
+        formData.append('start_date', data.start_date);
+        formData.append('end_date', data.end_date);
+        formData.append('link', data.link);
+        formData.append('side_address', data.side_address);
+        formData.append('image', data.image ? data.image[0].originFileObj : null);
+
+        return formData;
+    }
 
     const onFinish = (data) => {
         console.log(data);
@@ -41,21 +64,26 @@ function MaintainEvent() {
     }
 
     const addEventFunction = (data) => {
-        data.date = dayjs(data.date.$d).format('YYYY-MM-DD');
+        data.start_date = dayjs(data.start_date.$d).format('YYYY-MM-DD');
         data.end_date = dayjs(data.end_date.$d).format('YYYY-MM-DD');
-        dispatch(addEvent({ data: data, succeed: addEventSuccessed }));
+        const formData = createFormData(data);
+        console.log(data);
+        dispatch(addEvent({ data: formData, succeed: addEventSuccessed }));
     }
 
     const updateEventFunction = (data) => {
-        data.id = eventID;
-        if (data.date) {
-            data.date = dayjs(data.date.$d).format('YYYY-MM-DD');
+        if (data.start_date) {
+            data.start_date = dayjs(data.start_date.$d).format('YYYY-MM-DD');
         }
         if (data.end_date) {
             data.end_date = dayjs(data.end_date.$d).format('YYYY-MM-DD');
         }
+        if (!data.image) {
+            delete data.image;
+        }
         console.log(data);
-        dispatch(updateEvent({ data: data, succeed: updateEventSuccessed }))
+        const formData = createFormData(data);
+        dispatch(updateEvent({ data: formData, id: eventID, succeed: updateEventSuccessed }))
     }
 
     const addEventSuccessed = () => {
@@ -102,7 +130,7 @@ function MaintainEvent() {
                             <Form.Item
                                 label="اسم الفعاليّة"
                                 required={false}
-                                name="name"
+                                name="title"
                                 rules={[
                                     {
                                         required: true,
@@ -136,7 +164,7 @@ function MaintainEvent() {
 
                         <Col span={11}>
                             <Form.Item
-                                name="date"
+                                name="start_date"
                                 label="تاريخ الفعاليّة"
                                 required={false}
                             >
@@ -190,15 +218,15 @@ function MaintainEvent() {
                                 getValueFromEvent={normFile}
                                 rules={[
                                     {
-                                        // required: ingredient ? false : true,
+                                        required: event ? false : true,
                                         message: 'الرجاء اختيار صورة',
                                     },
                                 ]}
                             >
                                 <Upload
-                                    // defaultFileList={ingredient ? [{
-                                    //     url: `${IMAGE_URL}${ingredient?.image}`,
-                                    // }] : []}
+                                    defaultFileList={event ? [{
+                                        url: `${IMAGE_URL}${event?.image}`,
+                                    }] : []}
                                     listType="picture-card"
                                     beforeUpload={() => false}
                                     name="image"
@@ -213,7 +241,7 @@ function MaintainEvent() {
                             <Form.Item
                                 label="العنوان الجانبي"
                                 required={false}
-                                name="subtitle"
+                                name="side_address"
                                 rules={[
                                     {
                                         required: true,

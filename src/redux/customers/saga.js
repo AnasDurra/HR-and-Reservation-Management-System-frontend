@@ -46,7 +46,7 @@ const createCustomer = (payload) => {
 }
 
 const customerAccountActivation = (payload) => {
-    return AxiosInstance().post('customer/add-by-emp', payload);
+    return AxiosInstance().put(`customer/toggle-status/${payload.id}`, payload);
 }
 
 

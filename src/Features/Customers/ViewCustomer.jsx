@@ -21,8 +21,6 @@ function ViewCustomer() {
         }
     }, []);
 
-    const [activeIndex, setActiveIndex] = useState(0);
-
     const data = [
         {
             name: 'العيادة النفسية',
@@ -76,10 +74,8 @@ function ViewCustomer() {
         }
     }, [customer]);
 
-    console.log(customer);
-
     const changeActiveState = () => {
-        dispatch(cahngeCustomerAccountActiveState({ state: !customer?.blocked }));
+        dispatch(cahngeCustomerAccountActiveState({ id: customer?.id }));
     };
 
     return (

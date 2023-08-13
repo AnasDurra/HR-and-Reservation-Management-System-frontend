@@ -15,23 +15,23 @@ const getEvents = (payload) => {
         params.append('name', payload.name);
     }
 
-    return AxiosInstance().get(`?${params.toString()}`);
+    return AxiosInstance().get(`events?${params.toString()}`);
 }
 
 const getEvent = (payload) => {
-    return AxiosInstance().get(`/${payload.id}`);
+    return AxiosInstance().get(`events/${payload.id}`);
 }
 
 const deleteEvent = (payload) => {
-    return AxiosInstance().delete(`/${payload.id}`, payload);
+    return AxiosInstance().delete(`events/${payload.id}`, payload);
 }
 
 const updateEvent = (payload) => {
-    return AxiosInstance().post(`/${payload.id}`, payload);
+    return AxiosInstance().post(`events/${payload.id}`, payload.data);
 }
 
 const createEvent = (payload) => {
-    return AxiosInstance().post('', payload);
+    return AxiosInstance().post('events', payload);
 }
 
 
@@ -67,7 +67,7 @@ function* deleteEventSaga({ payload }) {
 
 function* updateEventSaga({ payload }) {
     try {
-        const response = yield call(updateEvent, payload.data);
+        const response = yield call(updateEvent, payload);
         payload.succeed();
         yield put(updateEventSuccess(response.data.data));
     }
