@@ -2,7 +2,7 @@ import { Button, Descriptions, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { getCustomer } from "../../redux/customers/reducer";
+import { cahngeCustomerAccountActiveState, getCustomer } from "../../redux/customers/reducer";
 import Spinner from "../../Components/Spinner/Spinner";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
@@ -78,6 +78,10 @@ function ViewCustomer() {
 
     console.log(customer);
 
+    const changeActiveState = () => {
+        dispatch(cahngeCustomerAccountActiveState({ state: !customer?.blocked }));
+    };
+
     return (
         <Spinner loading={loading}>
             <div>
@@ -87,7 +91,7 @@ function ViewCustomer() {
                         {!customer?.verified ?
                             <div className="customerProfileActionButtons">
                                 <Button>توثيق الحساب</Button>
-                                <Button>{!customer?.blocked ? "إلغاء تفعيل" : "تفعيل"}</Button>
+                                <Button onClick={changeActiveState}>{!customer?.blocked ? "إلغاء تفعيل" : "تفعيل"}</Button>
                             </div>
                             : null}
                     </div>}>

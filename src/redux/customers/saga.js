@@ -5,6 +5,7 @@ import { addCustomerSuccess, addCustomerFailed } from "./reducer";
 import { deleteCustomerSuccess, deleteCustomerFailed } from "./reducer";
 import { updateCustomerSuccess, updateCustomerFailed } from "./reducer";
 import { getCustomerSuccess, getCustomerFailed } from "./reducer";
+import { cahngeCustomerAccountActiveStateSuccess, cahngeCustomerAccountActiveStateFailed } from "./reducer";
 import { handleError } from '../utils/helpers';
 
 
@@ -41,6 +42,10 @@ const updateCustomer = (payload) => {
 }
 
 const createCustomer = (payload) => {
+    return AxiosInstance().post('customer/add-by-emp', payload);
+}
+
+const customerAccountActivation = (payload) => {
     return AxiosInstance().post('customer/add-by-emp', payload);
 }
 
@@ -105,7 +110,6 @@ function* updateCustomerSaga({ payload }) {
 
 function* addCustomerSaga({ payload }) {
     try {
-        console.log(payload);
         const response = yield call(createCustomer, payload.data);
         payload.succeed();
         yield put(addCustomerSuccess(response.data.data));
@@ -117,6 +121,16 @@ function* addCustomerSaga({ payload }) {
             handleError("لقد تم استخدام رقم الهاتف الجوال المدخل من قبل");
         }
         yield put(addCustomerFailed(error));
+    }
+}
+
+function* changeCustomerActiveStateSaga({ payload }) {
+    try {
+        const response = yield call(customerAccountActivation, payload);
+        yield put(cahngeCustomerAccountActiveStateSuccess(response.data.data));
+    }
+    catch (error) {
+        yield put(cahngeCustomerAccountActiveStateFailed(error));
     }
 }
 
@@ -144,6 +158,9 @@ function* watchAddCustomer() {
     yield takeEvery('customersReducer/addCustomer', addCustomerSaga);
 }
 
+function* watchChangeCustomerActiveState() {
+    yield takeEvery('customersReducer/cahngeCustomerAccountActiveState', changeCustomerActiveStateSaga);
+}
 
 
 function* CustomersSaga() {
@@ -154,6 +171,7 @@ function* CustomersSaga() {
         fork(watchUpdateCustomer),
         fork(watchAddCustomer),
         fork(watchGetEducationalLevels),
+        fork(watchChangeCustomerActiveState),
     ]);
 }
 

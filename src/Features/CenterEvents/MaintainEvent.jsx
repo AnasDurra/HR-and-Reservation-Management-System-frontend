@@ -41,28 +41,19 @@ function MaintainEvent() {
     }
 
     const addEventFunction = (data) => {
-        // data.birth_date = dayjs(data.birth_date.$d).format('YYYY-MM-DD');
+        data.date = dayjs(data.date.$d).format('YYYY-MM-DD');
+        data.end_date = dayjs(data.end_date.$d).format('YYYY-MM-DD');
         dispatch(addEvent({ data: data, succeed: addEventSuccessed }));
     }
 
     const updateEventFunction = (data) => {
         data.id = eventID;
-        // if (data.email === customer?.email) {
-        //     console.log(data.email);
-        //     delete data.email;
-        // }
-        // if (data.phone_number === customer?.phone_number) {
-        //     delete data.phone_number;
-        // }
-        // if (data.phone === customer?.phone) {
-        //     delete data.phone;
-        // }
-        // if (data.birth_date) {
-        //     data.birth_date = dayjs(data.birth_date.$d).format('YYYY-MM-DD');
-        // }
-        // if (!data.national_number || data.national_number === customer?.national_number) {
-        //     delete data.national_number;
-        // }
+        if (data.date) {
+            data.date = dayjs(data.date.$d).format('YYYY-MM-DD');
+        }
+        if (data.end_date) {
+            data.end_date = dayjs(data.end_date.$d).format('YYYY-MM-DD');
+        }
         console.log(data);
         dispatch(updateEvent({ data: data, succeed: updateEventSuccessed }))
     }
@@ -155,7 +146,7 @@ function MaintainEvent() {
 
                         <Col span={11} offset={2}>
                             <Form.Item
-                                name="date"
+                                name="end_date"
                                 label="تاريخ انتهاء الإعلان"
                                 required={false}
                             >
