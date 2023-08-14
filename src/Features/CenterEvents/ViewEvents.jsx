@@ -115,7 +115,6 @@ function ViewEvents() {
     }
 
     const handleSearch = () => {
-        console.log(searchValue);
         dispatch(getEvents({ name: searchValue }));
     }
 

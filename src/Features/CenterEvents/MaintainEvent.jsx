@@ -56,7 +56,6 @@ function MaintainEvent() {
     }
 
     const onFinish = (data) => {
-        console.log(data);
         if (!event) {
             addEventFunction(data);
         } else {
@@ -68,7 +67,6 @@ function MaintainEvent() {
         data.start_date = dayjs(data.start_date.$d).format('YYYY-MM-DD');
         data.end_date = dayjs(data.end_date.$d).format('YYYY-MM-DD');
         const formData = createFormData(data);
-        console.log(data);
         dispatch(addEvent({ data: formData, succeed: addEventSuccessed }));
     }
 
@@ -82,7 +80,6 @@ function MaintainEvent() {
         if (!data.image) {
             delete data.image;
         }
-        console.log(data);
         const formData = createFormData(data);
         dispatch(updateEvent({ data: formData, id: eventID, succeed: updateEventSuccessed }))
     }

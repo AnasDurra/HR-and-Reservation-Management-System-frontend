@@ -31,7 +31,6 @@ function MaintainCustomer() {
 
     useEffect(() => {
         if (customer) {
-            console.log(customer);
             form.setFieldsValue({
                 first_name: customer?.first_name,
                 last_name: customer?.last_name,
@@ -49,7 +48,6 @@ function MaintainCustomer() {
     }, [customer]);
 
     const onFinish = (data) => {
-        console.log(data);
         if (!customer) {
             addCustomerFunction(data);
         } else {
@@ -65,7 +63,6 @@ function MaintainCustomer() {
     const updateCustomerFunction = (data) => {
         data.id = custID;
         if (data.email === customer?.email) {
-            console.log(data.email);
             delete data.email;
         }
         if (data.phone_number === customer?.phone_number) {
@@ -80,7 +77,6 @@ function MaintainCustomer() {
         if (!data.national_number || data.national_number === customer?.national_number) {
             delete data.national_number;
         }
-        console.log(data);
         dispatch(updateCustomer({ data: data, succeed: updateCustomerSuccessed }))
     }
 
