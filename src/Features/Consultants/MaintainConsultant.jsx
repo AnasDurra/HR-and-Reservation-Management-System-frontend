@@ -32,7 +32,6 @@ function MaintainConsultant() {
 
     useEffect(() => {
         if (consultant) {
-            console.log(consultant);
             form.setFieldsValue({
                 first_name: consultant?.first_name,
                 last_name: consultant?.last_name,
@@ -46,7 +45,6 @@ function MaintainConsultant() {
     }, [consultant]);
 
     const onFinish = (data) => {
-        console.log(data);
         if (!consultant) {
             addConsultantFunction(data);
         } else {
@@ -62,7 +60,6 @@ function MaintainConsultant() {
     const updateConsultantFunction = (data) => {
         data.id = consID;
         if (data.email === consultant?.user?.user_email) {
-            console.log(data.email);
             delete data.email;
         }
         if (data.phone_number === consultant?.phone_number) {
@@ -71,7 +68,6 @@ function MaintainConsultant() {
         if (data.birth_date) {
             data.birth_date = dayjs(data.birth_date.$d).format('YYYY-MM-DD');
         }
-        console.log(data);
         dispatch(updateConsultant({ data: data, succeed: updateConsultantSuccessed }))
     }
 

@@ -2,11 +2,9 @@ import { Button, Descriptions, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { getCustomer } from "../../redux/customers/reducer";
+import { cahngeCustomerAccountActiveState, getCustomer } from "../../redux/customers/reducer";
 import Spinner from "../../Components/Spinner/Spinner";
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-
-
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 function ViewCustomer() {
 
@@ -22,8 +20,6 @@ function ViewCustomer() {
             dispatch(getCustomer({ id: custID }));
         }
     }, []);
-
-    const [activeIndex, setActiveIndex] = useState(0);
 
     const data = [
         {
@@ -78,9 +74,9 @@ function ViewCustomer() {
         }
     }, [customer]);
 
-    console.log(customer);
-
-    console.log(customerFamilyState);
+    const changeActiveState = () => {
+        dispatch(cahngeCustomerAccountActiveState({ id: customer?.id }));
+    };
 
     return (
         <Spinner loading={loading}>
@@ -89,9 +85,14 @@ function ViewCustomer() {
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                         <Typography>بيانات المستفيد</Typography>
                         {!customer?.verified ?
-                            <Button>توثيق الحساب</Button> : null}
+                            <div className="customerProfileActionButtons">
+                                <Button>توثيق الحساب</Button>
+                                <Button onClick={changeActiveState}>{!customer?.blocked ? "إلغاء تفعيل" : "تفعيل"}</Button>
+                            </div>
+                            : null}
                     </div>}>
                     <Descriptions.Item label="المعرّف الشخصي">{customer?.id}</Descriptions.Item>
+                    <Descriptions.Item label="تاريخ التسجيل">{customer?.created_at?.substring(0, 10)}</Descriptions.Item>
                     <Descriptions.Item label="الاسم">{customer?.first_name}</Descriptions.Item>
                     <Descriptions.Item label="الكنية">{customer?.last_name}</Descriptions.Item>
                     <Descriptions.Item label="تاريخ الميلاد">{customer?.birth_date}</Descriptions.Item>

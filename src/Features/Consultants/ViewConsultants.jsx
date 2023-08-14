@@ -21,7 +21,6 @@ function ViewConsultants() {
         dispatch(getConsultants());
     }, [dispatch]);
 
-    console.log(consultants);
 
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [selectedConsultant, setSelectedConsultant] = useState(null);
@@ -93,7 +92,6 @@ function ViewConsultants() {
     }
 
     const handleSearch = () => {
-        console.log(searchValue);
         dispatch(getConsultants({ name: searchValue }));
     }
 

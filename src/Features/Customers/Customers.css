@@ -7,6 +7,14 @@
     justify-content: center;
 }
 
-#actions > * {
+#actions>* {
+    margin: 0px 5px;
+}
+
+.viewCustomersButton {
+    margin: 5px 0px;
+}
+
+.customerProfileActionButtons > * {
     margin: 0px 5px;
 }

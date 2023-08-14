@@ -2,6 +2,10 @@
     display: flex;
 }
 
-.serverSideSearchFieldContainer > *{
-    margin: 10px;
+.serverSideSearchFieldContainer>* {
+    margin: 10px 0px;
+}
+
+.serverSideSearchFieldContainer>button {
+    margin: 10px 5px;
 }

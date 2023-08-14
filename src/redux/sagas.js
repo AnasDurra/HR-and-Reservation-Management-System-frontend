@@ -16,6 +16,7 @@ import logSaga from "./Features/Log/saga";
 import ConsultantsSaga from "./consultants/saga";
 import ClinicsSaga from "./clinics/saga";
 import CustomersSaga from "./customers/saga";
+import CenterEventsSaga from "./centerEvents/saga";
 
 
 export default function* rootSaga() {
@@ -37,5 +38,6 @@ export default function* rootSaga() {
     ConsultantsSaga(),
     ClinicsSaga(),
     CustomersSaga(),
+    CenterEventsSaga(),
   ]);
 }

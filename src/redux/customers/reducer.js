@@ -97,6 +97,19 @@ export const customersReducer = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+
+        cahngeCustomerAccountActiveState: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        cahngeCustomerAccountActiveStateSuccess: (state, action) => {
+            state.customer = action.payload;
+            state.loading = false;
+        },
+        cahngeCustomerAccountActiveStateFailed: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
     }
 });
 
@@ -119,6 +132,9 @@ export const {
     getEducationalLevels,
     getEducationalLevelsSuccess,
     getEducationalLevelsFailed,
+    cahngeCustomerAccountActiveState,
+    cahngeCustomerAccountActiveStateSuccess,
+    cahngeCustomerAccountActiveStateFailed,
 } = customersReducer.actions;
 
 export default customersReducer.reducer;

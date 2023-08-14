@@ -36,6 +36,8 @@ import ViewConsultant from "./Features/Consultants/ViewConsultant";
 import ViewCustomers from "./Features/Customers/ViewCustomers";
 import MaintainCustomer from "./Features/Customers/MaintainCustomer";
 import ViewCustomer from "./Features/Customers/ViewCustomer";
+import ViewEvents from "./Features/CenterEvents/ViewEvents";
+import MaintainEvent from "./Features/CenterEvents/MaintainEvent";
 
 function App() {
 
@@ -159,6 +161,14 @@ function App() {
                 <Route path="add" element={<MaintainCustomer />} />
                 <Route path="update/:custID" element={<MaintainCustomer />} />
                 <Route path="view/:custID" element={<ViewCustomer />} />
+              </Route>
+              {/* </Route> */}
+
+              {/* <Route element={<AccessRoute allowedRoutes={[]} />}> */}
+              <Route path="events">
+                <Route index element={<ViewEvents />} />
+                <Route path="add" element={<MaintainEvent />} />
+                <Route path="update/:eventID" element={<MaintainEvent />} />
               </Route>
               {/* </Route> */}
 

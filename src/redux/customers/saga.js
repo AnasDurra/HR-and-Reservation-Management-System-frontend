@@ -5,17 +5,24 @@ import { addCustomerSuccess, addCustomerFailed } from "./reducer";
 import { deleteCustomerSuccess, deleteCustomerFailed } from "./reducer";
 import { updateCustomerSuccess, updateCustomerFailed } from "./reducer";
 import { getCustomerSuccess, getCustomerFailed } from "./reducer";
+import { cahngeCustomerAccountActiveStateSuccess, cahngeCustomerAccountActiveStateFailed } from "./reducer";
 import { handleError } from '../utils/helpers';
 
 
 const getCustomers = (payload) => {
+    let url = "customer";
+
+    console.log(payload);
+    if (!payload?.type) {
+        url = "missed-Appointments-By-Customers";
+    }
     const params = new URLSearchParams();
 
     if (payload?.name) {
         params.append('name', payload.name);
     }
 
-    return AxiosInstance().get(`customer?${params.toString()}`);
+    return AxiosInstance().get(`${url}?${params.toString()}`);
 }
 
 const getEducationalLevels = (payload) => {
@@ -38,10 +45,15 @@ const createCustomer = (payload) => {
     return AxiosInstance().post('customer/add-by-emp', payload);
 }
 
+const customerAccountActivation = (payload) => {
+    return AxiosInstance().put(`customer/toggle-status/${payload.id}`, payload);
+}
+
 
 function* getCustomersSaga({ payload }) {
     try {
         const response = yield call(getCustomers, payload);
+        console.log(response);
         yield put(getCustomersSuccess(response.data));
     }
     catch (error) {
@@ -98,7 +110,6 @@ function* updateCustomerSaga({ payload }) {
 
 function* addCustomerSaga({ payload }) {
     try {
-        console.log(payload);
         const response = yield call(createCustomer, payload.data);
         payload.succeed();
         yield put(addCustomerSuccess(response.data.data));
@@ -110,6 +121,16 @@ function* addCustomerSaga({ payload }) {
             handleError("لقد تم استخدام رقم الهاتف الجوال المدخل من قبل");
         }
         yield put(addCustomerFailed(error));
+    }
+}
+
+function* changeCustomerActiveStateSaga({ payload }) {
+    try {
+        const response = yield call(customerAccountActivation, payload);
+        yield put(cahngeCustomerAccountActiveStateSuccess(response.data.data));
+    }
+    catch (error) {
+        yield put(cahngeCustomerAccountActiveStateFailed(error));
     }
 }
 
@@ -137,6 +158,9 @@ function* watchAddCustomer() {
     yield takeEvery('customersReducer/addCustomer', addCustomerSaga);
 }
 
+function* watchChangeCustomerActiveState() {
+    yield takeEvery('customersReducer/cahngeCustomerAccountActiveState', changeCustomerActiveStateSaga);
+}
 
 
 function* CustomersSaga() {
@@ -147,6 +171,7 @@ function* CustomersSaga() {
         fork(watchUpdateCustomer),
         fork(watchAddCustomer),
         fork(watchGetEducationalLevels),
+        fork(watchChangeCustomerActiveState),
     ]);
 }
 

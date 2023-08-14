@@ -16,6 +16,7 @@ import logSlice from "./Features/Log/slice";
 import consultantsReducer from "./consultants/reducer";
 import clinicsReducer from "./clinics/reducer";
 import customersReducer from "./customers/reducer";
+import eventsReducer from "./centerEvents/reducer";
 
 export default {
   userReducer: userReducer,
@@ -35,4 +36,5 @@ export default {
   consultantsReducer: consultantsReducer,
   clinicsReducer: clinicsReducer,
   customersReducer: customersReducer,
+  eventsReducer: eventsReducer,
 };
