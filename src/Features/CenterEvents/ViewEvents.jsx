@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import ServerSideSearchField from "../../Components/ServerSideSearchField/ServerSideSearchField";
 import 'react-photo-view/dist/react-photo-view.css';
 import { PhotoProvider, PhotoView } from "react-photo-view";
+import { IMAGE_URL } from "../../redux/utils/constants";
 
 function ViewEvents() {
 
@@ -47,11 +48,8 @@ function ViewEvents() {
             key: 'image',
             render: (image) =>
                 <PhotoProvider>
-                    {/* <PhotoView src={IMAGE_URL.concat(image)} >
+                    <PhotoView src={IMAGE_URL.concat(image)} >
                         <img src={IMAGE_URL.concat(image)} width='80px' />
-                    </PhotoView> */}
-                    <PhotoView src={image} >
-                        <img src={image} width='80px' />
                     </PhotoView>
                 </PhotoProvider>
         },

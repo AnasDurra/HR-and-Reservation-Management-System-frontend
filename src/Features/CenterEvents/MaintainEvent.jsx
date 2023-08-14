@@ -6,14 +6,13 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import Spinner from "../../Components/Spinner/Spinner";
 import { PlusOutlined } from "@ant-design/icons";
+import { IMAGE_URL } from "../../redux/utils/constants";
 
 function MaintainEvent() {
 
     const event = useSelector(state => state.eventsReducer.event);
     const loading = useSelector(state => state.eventsReducer.loading);
     const { eventID } = useParams();
-
-    const IMAGE_URL = "url";
 
     const [form] = Form.useForm();
     const navigate = useNavigate();
@@ -49,7 +48,9 @@ function MaintainEvent() {
         formData.append('end_date', data.end_date);
         formData.append('link', data.link);
         formData.append('side_address', data.side_address);
-        formData.append('image', data.image ? data.image[0].originFileObj : null);
+        if (data.image) {
+            formData.append('image', data.image[0].originFileObj);
+        }
 
         return formData;
     }
