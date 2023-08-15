@@ -26,6 +26,11 @@ const getCustomers = (payload) => {
         params.append('page', payload.page);
     }
 
+    if (payload?.usingApp) {
+        params.append('usingApp', payload?.usingApp === 2 ? true : false);
+    }
+
+
     return AxiosInstance().get(`${url}?${params.toString()}`);
 }
 
@@ -54,7 +59,7 @@ const customerAccountActivation = (payload) => {
 }
 
 const getDetectResult = (payload) => {
-    return AxiosInstance().get(`customer`, payload);
+    return AxiosInstance().post(`customer-detection`, payload);
 }
 
 function* getCustomersSaga({ payload }) {
@@ -70,7 +75,6 @@ function* getCustomersSaga({ payload }) {
 function* getEducationaLevelsSaga({ payload }) {
     try {
         const response = yield call(getEducationalLevels, payload);
-        console.log(response);
         yield put(getEducationalLevelsSuccess(response.data));
     }
     catch (error) {

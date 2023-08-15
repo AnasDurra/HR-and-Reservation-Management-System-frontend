@@ -51,7 +51,6 @@ function* userLogOutSaga({ payload }) {
 function* getEmployeePermissionsSaga({ payload }) {
     try {
         const response = yield call(getEmployeePermissions);
-        console.log(response);
         yield put(getEmployeePermissionsSuccess(response.data.active_permissions));
     }
     catch (error) {

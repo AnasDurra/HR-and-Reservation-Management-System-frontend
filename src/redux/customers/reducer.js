@@ -14,11 +14,11 @@ export const customersReducer = createSlice({
     reducers: {
         getCustomers: (state) => {
             state.customer = null;
+            state.detectResult = null;
             state.loading = true;
             state.error = null;
         },
         getCustomersSuccess: (state, action) => {
-            console.log(action.payload);
             state.customers = action.payload.data;
             delete action.payload.data;
             state.metaData = action.payload.meta;
@@ -89,6 +89,7 @@ export const customersReducer = createSlice({
         },
 
         getCustomer: (state) => {
+            state.detectResult = null;
             state.loading = true;
             state.error = null;
         },
@@ -120,7 +121,7 @@ export const customersReducer = createSlice({
             state.error = null;
         },
         getDetectResultSuccess: (state, action) => {
-            state.detectResult = action.payload.data;
+            state.detectResult = action.payload;
             state.loading = false;
         },
         getDetectResultFailed: (state, action) => {
