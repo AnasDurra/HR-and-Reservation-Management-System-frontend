@@ -100,9 +100,10 @@ function ViewCustomer() {
     }
 
     const onFinish = (data) => {
-        data.id = custID;
-        console.log(data);
+        data.app_account_id = custID;
         dispatch(verifyAccount(data));
+        setOpenVerifyModal(false);
+        verifyForm.resetFields();
     }
 
     return (

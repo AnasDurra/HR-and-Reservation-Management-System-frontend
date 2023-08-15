@@ -136,6 +136,7 @@ export const customersReducer = createSlice({
             state.error = null;
         },
         verifyAccountSuccess: (state, action) => {
+            state.customer = action.payload;
             state.loading = false;
         },
         verifyAccountFailed: (state, action) => {

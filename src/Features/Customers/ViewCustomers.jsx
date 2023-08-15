@@ -79,8 +79,8 @@ function ViewCustomers() {
         },
         {
             title: 'طريقة التسجيل',
-            dataIndex: 'usingApp',
-            key: 'usingApp',
+            dataIndex: 'isUsingApp',
+            key: 'isUsingApp',
             render: (state) => <div style={{ display: "flex", alignItems: "center", justifyContent: "space-around" }}>
                 <Typography>
                     {state ? "التطبيق" : "لوحة التحكم"}
