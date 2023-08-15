@@ -18,12 +18,11 @@ function DetectCustomer() {
 
 
     const onFinish = (data) => {
-        console.log(data);
-        // dispatch(getDetectResult(data));
+        dispatch(getDetectResult(data));
     };
 
     const showResult = () => {
-        if (detectResult === 1) {
+        if (detectResult?.status === 1) {
             return (
                 <div>
                     <Typography.Title level={4}>النتيجة :</Typography.Title>
@@ -37,12 +36,15 @@ function DetectCustomer() {
                     <Button onClick={() => navigate('/customers/add')}>
                         إنشاء حساب مستفيد
                     </Button>
-                    <Button style={{ display: "block", marginTop: "15px" }}>
+                    <Button
+                        onClick={() => navigate('/customers')}
+                        style={{ display: "block", marginTop: "15px" }}
+                    >
                         توثيق حساب التطبيق بحال وجوده
                     </Button>
                 </div>
             );
-        } else if (detectResult === 2) {
+        } else if (detectResult?.status === 2) {
             return (
                 <div>
                     <Typography.Title level={4}>النتيجة :</Typography.Title>
@@ -53,15 +55,18 @@ function DetectCustomer() {
                     <Typography>تمّ تسجيل المستفيد عن طريق لوحة التحكم.</Typography>
                     <Typography.Title level={4}>الاقتراحات :</Typography.Title>
 
-                    <Button onClick={() => navigate('/customers/add')}>
+                    <Button onClick={() => navigate(`/customers/view/${detectResult?.customer_id}`)}>
                         استعراض الحساب
                     </Button>
-                    <Button style={{ display: "block", marginTop: "15px" }}>
+                    <Button
+                        onClick={() => navigate('/customers')}
+                        style={{ display: "block", marginTop: "15px" }}
+                    >
                         توثيق حساب التطبيق بحال وجوده
                     </Button>
                 </div>
             );
-        } else if (detectResult === 3) {
+        } else if (detectResult?.status === 3) {
             return (
                 <div>
                     <Typography.Title level={4}>النتيجة :</Typography.Title>
@@ -69,10 +74,10 @@ function DetectCustomer() {
                         <Typography>الرقم الوطني موجود بالنظام.</Typography>
                         <CheckCircleOutlined style={{ color: "green", marginRight: '5px' }} />
                     </div>
-                    <Typography>تمّ تسجيل المستفيد عن طريق تطبيق الهاتف.</Typography>
+                    <Typography>تمّ تسجيل المستفيد عن طريق تطبيق الهاتف و تمّ توثيق حسابه.</Typography>
                     <Typography.Title level={4}>الاقتراحات :</Typography.Title>
 
-                    <Button onClick={() => navigate('/customers/add')}>
+                    <Button onClick={() => navigate(`/customers/view/${detectResult?.customer_id}`)}>
                         استعراض الحساب
                     </Button>
                 </div>
@@ -85,7 +90,7 @@ function DetectCustomer() {
     return (
         <div>
             <Typography.Title level={4}>
-                إجراء عملية كشف عن حساب مستفيد
+                إجراء عملية الكشف عن حساب المستفيد
             </Typography.Title>
 
             <Form

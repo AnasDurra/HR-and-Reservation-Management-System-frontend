@@ -1,12 +1,12 @@
 import { Button, Table, Typography } from "antd";
 import { useEffect, useState } from "react";
-import { CheckCircleOutlined, CloseCircleOutlined, DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, CloseCircleOutlined, DeleteOutlined, DesktopOutlined, EditOutlined, EyeOutlined, TabletOutlined } from "@ant-design/icons";
 import DeleteModal from "../../Components/DeleteModal/DeleteModal";
 import Spinner from "../../Components/Spinner/Spinner";
 import { useSelector, useDispatch } from "react-redux";
 import { getCustomers, deleteCustomer } from "../../redux/customers/reducer";
 import './Customers.css';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ServerSideSearchField from "../../Components/ServerSideSearchField/ServerSideSearchField";
 
 function ViewCustomers() {
@@ -17,11 +17,13 @@ function ViewCustomers() {
     const error = useSelector(state => state.customersReducer.error);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [searchValue, setSearchValue] = useState("");
     const [showAllCustomers, setShowAllCustomers] = useState(1);
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [selectedCustomer, setSelectedCustomer] = useState(null);
+    const [filter, setFilter] = useState([1]);
 
     useEffect(() => {
         dispatch(getCustomers());
@@ -44,6 +46,21 @@ function ViewCustomers() {
         setOpenDeleteModal(false);
     }
 
+    const accountSoruce = [
+        {
+            id: 1,
+            name: "الكل",
+        },
+        // {
+        //     id: 2,
+        //     name: "لوحة التحكم",
+        // },
+        {
+            id: 2,
+            name: "التطبيق",
+        }
+    ];
+
     const allCustomersColumns = [
         {
             title: 'المعرّف الشخصي',
@@ -59,6 +76,23 @@ function ViewCustomers() {
             title: 'رقم الهاتف',
             dataIndex: 'phone_number',
             key: 'phone_number',
+        },
+        {
+            title: 'مصدر الحساب',
+            dataIndex: 'usingApp',
+            key: 'usingApp',
+            render: (state) => <div style={{ display: "flex", alignItems: "center", justifyContent: "space-around" }}>
+                <Typography>
+                    {state ? "التطبيق" : "لوحة التحكم"}
+                </Typography>
+                {state ? <TabletOutlined /> : <DesktopOutlined />}
+            </div>,
+            filters: accountSoruce.map((src) => ({
+                text: src.name,
+                value: src.id,
+            })),
+            filteredValue: filter,
+            filterMultiple: false,
         },
         {
             title: 'حالة الحساب',
@@ -142,9 +176,20 @@ function ViewCustomers() {
     }
 
     const handlePageChange = (page) => {
-        console.log(page);
         dispatch(getCustomers({ page: page, name: searchValue, type: showAllCustomers }));
     }
+
+    const onTableChange = (pagination, filters, sorter) => {
+        dispatch(
+            getCustomers({
+                usingApp: filters?.usingApp[0],
+                page: pagination.current,
+                type: showAllCustomers,
+                name: searchValue,
+            })
+        );
+        setFilter(filters.usingApp);
+    };
 
     return (
         <Spinner loading={loading}>
@@ -175,6 +220,7 @@ function ViewCustomers() {
                         total: metaData?.total,
                         onChange: handlePageChange,
                     }}
+                    onChange={onTableChange}
                 />
                 <Button
                     className="customersButton"

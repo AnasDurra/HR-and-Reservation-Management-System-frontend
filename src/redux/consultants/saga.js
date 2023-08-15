@@ -83,7 +83,6 @@ function* updateConsultantSaga({ payload }) {
 
 function* addConsultantSaga({ payload }) {
     try {
-        console.log(payload);
         const response = yield call(createConsultant, payload.data);
         payload.succeed();
         yield put(addConsultantSuccess(response.data.data));

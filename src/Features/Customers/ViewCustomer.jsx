@@ -96,12 +96,12 @@ function ViewCustomer() {
                 <Descriptions bordered column={2} title={
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                         <Typography>بيانات المستفيد</Typography>
-                        {!customer?.verified ?
-                            <div className="customerProfileActionButtons">
+                        <div className="customerProfileActionButtons">
+                            {!customer?.verified ?
                                 <Button>توثيق الحساب</Button>
-                                <Button onClick={changeActiveState}>{!customer?.blocked ? "إلغاء تفعيل" : "تفعيل"}</Button>
-                            </div>
-                            : null}
+                                : null}
+                            <Button onClick={changeActiveState}>{!customer?.blocked ? "إلغاء تفعيل" : "تفعيل"}</Button>
+                        </div>
                     </div>}>
                     <Descriptions.Item label="المعرّف الشخصي">{customer?.id}</Descriptions.Item>
                     <Descriptions.Item label="تاريخ التسجيل">{customer?.created_at?.substring(0, 10)}</Descriptions.Item>
