@@ -294,16 +294,21 @@ function MaintainCustomer() {
                             </Form.Item>
                         </Col>
 
-                        {customer ?
-                            <Col span={24}>
-                                <Form.Item
-                                    name="national_number"
-                                    label="الرقم الوطني"
-                                    required={false}
-                                >
-                                    <InputNumber style={{ width: '100%' }} placeholder='الرقم الوطني' />
-                                </Form.Item>
-                            </Col> : null}
+                        <Col span={24}>
+                            <Form.Item
+                                name="national_number"
+                                label="الرقم الوطني"
+                                required={false}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'الرجاء ادخال الرقم الوطني',
+                                    },
+                                ]}
+                            >
+                                <Input style={{ width: '100%' }} placeholder='الرقم الوطني' />
+                            </Form.Item>
+                        </Col>
 
 
                         <Form.Item>

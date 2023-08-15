@@ -6,13 +6,13 @@ import { deleteCustomerSuccess, deleteCustomerFailed } from "./reducer";
 import { updateCustomerSuccess, updateCustomerFailed } from "./reducer";
 import { getCustomerSuccess, getCustomerFailed } from "./reducer";
 import { cahngeCustomerAccountActiveStateSuccess, cahngeCustomerAccountActiveStateFailed } from "./reducer";
+import { getDetectResultSuccess, getDetectResultFailed } from "./reducer";
 import { handleError } from '../utils/helpers';
 
 
 const getCustomers = (payload) => {
     let url = "customer";
 
-    console.log(payload);
     if (!payload?.type) {
         url = "missed-Appointments-By-Customers";
     }
@@ -20,6 +20,10 @@ const getCustomers = (payload) => {
 
     if (payload?.name) {
         params.append('name', payload.name);
+    }
+
+    if (payload?.page) {
+        params.append('page', payload.page);
     }
 
     return AxiosInstance().get(`${url}?${params.toString()}`);
@@ -49,11 +53,13 @@ const customerAccountActivation = (payload) => {
     return AxiosInstance().put(`customer/toggle-status/${payload.id}`, payload);
 }
 
+const getDetectResult = (payload) => {
+    return AxiosInstance().get(`customer`, payload);
+}
 
 function* getCustomersSaga({ payload }) {
     try {
         const response = yield call(getCustomers, payload);
-        console.log(response);
         yield put(getCustomersSuccess(response.data));
     }
     catch (error) {
@@ -134,6 +140,16 @@ function* changeCustomerActiveStateSaga({ payload }) {
     }
 }
 
+function* getDetectResultSaga({ payload }) {
+    try {
+        const response = yield call(getDetectResult, payload);
+        yield put(getDetectResultSuccess(response.data.data));
+    }
+    catch (error) {
+        yield put(getDetectResultFailed(error));
+    }
+}
+
 function* watchGetCustomers() {
     yield takeEvery('customersReducer/getCustomers', getCustomersSaga);
 }
@@ -162,6 +178,10 @@ function* watchChangeCustomerActiveState() {
     yield takeEvery('customersReducer/cahngeCustomerAccountActiveState', changeCustomerActiveStateSaga);
 }
 
+function* watchGetDetectResult() {
+    yield takeEvery('customersReducer/getDetectResult', getDetectResultSaga);
+}
+
 
 function* CustomersSaga() {
     yield all([
@@ -172,6 +192,7 @@ function* CustomersSaga() {
         fork(watchAddCustomer),
         fork(watchGetEducationalLevels),
         fork(watchChangeCustomerActiveState),
+        fork(watchGetDetectResult),
     ]);
 }
 

@@ -18,3 +18,13 @@
 .customerProfileActionButtons > * {
     margin: 0px 5px;
 }
+
+.detectForm {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.detectSubmit {
+    margin-right: 10px;
+}

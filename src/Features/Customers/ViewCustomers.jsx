@@ -13,6 +13,7 @@ function ViewCustomers() {
 
     const customers = useSelector(state => state.customersReducer.customers);
     const loading = useSelector(state => state.customersReducer.loading);
+    const metaData = useSelector(state => state.customersReducer.metaData);
     const error = useSelector(state => state.customersReducer.error);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -140,6 +141,11 @@ function ViewCustomers() {
         dispatch(getCustomers({ name: searchValue, type: showAllCustomers }));
     }
 
+    const handlePageChange = (page) => {
+        console.log(page);
+        dispatch(getCustomers({ page: page, name: searchValue, type: showAllCustomers }));
+    }
+
     return (
         <Spinner loading={loading}>
             <div>
@@ -163,7 +169,12 @@ function ViewCustomers() {
                     dataSource={customers}
                     rowKey='id'
                     scroll={{ x: 'max-content' }}
-                    pagination={{ pageSize: 10 }}
+                    pagination={{
+                        current: metaData?.current_page,
+                        pageSize: metaData?.per_page,
+                        total: metaData?.total,
+                        onChange: handlePageChange,
+                    }}
                 />
                 <Button
                     className="customersButton"

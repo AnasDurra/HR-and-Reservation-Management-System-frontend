@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { cahngeCustomerAccountActiveState, getCustomer } from "../../redux/customers/reducer";
 import Spinner from "../../Components/Spinner/Spinner";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 
 function ViewCustomer() {
 
@@ -78,6 +79,17 @@ function ViewCustomer() {
         dispatch(cahngeCustomerAccountActiveState({ id: customer?.id }));
     };
 
+    const accountState = (
+        <div style={{ display: "flex", justifyContent: 'space-around' }}>
+            <Typography>{customer?.verified ? "موثّق" : "غير موثّق"}</Typography>
+            {customer?.verified ? <CheckCircleOutlined style={{ color: "green" }} />
+                : <CloseCircleOutlined style={{ color: "red" }} />}
+            <Typography>{!customer?.blocked ? "فعّال" : "غير فعّال"}</Typography>
+            {!customer?.blocked ? <CheckCircleOutlined style={{ color: "green" }} />
+                : <CloseCircleOutlined style={{ color: "red" }} />}
+        </div>
+    );
+
     return (
         <Spinner loading={loading}>
             <div>
@@ -104,6 +116,7 @@ function ViewCustomer() {
                     <Descriptions.Item label="العمل">{customer?.job}</Descriptions.Item>
                     <Descriptions.Item label="عدد الأولاد">{customer?.num_of_children}</Descriptions.Item>
                     <Descriptions.Item label="الحالة العائلية">{customerFamilyState?.name}</Descriptions.Item>
+                    <Descriptions.Item label="حالة الحساب">{accountState}</Descriptions.Item>
                 </Descriptions>
 
                 {show ?

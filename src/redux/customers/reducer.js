@@ -6,6 +6,7 @@ export const customersReducer = createSlice({
         customers: [],
         customer: null,
         educational_levels: [],
+        detectResult: 3,
         metaData: null,
         loading: false,
         error: null,
@@ -17,6 +18,7 @@ export const customersReducer = createSlice({
             state.error = null;
         },
         getCustomersSuccess: (state, action) => {
+            console.log(action.payload);
             state.customers = action.payload.data;
             delete action.payload.data;
             state.metaData = action.payload.meta;
@@ -28,6 +30,7 @@ export const customersReducer = createSlice({
         },
 
         getEducationalLevels: (state) => {
+            state.detectResult = null,
             state.loading = true;
             state.error = null;
         },
@@ -110,6 +113,20 @@ export const customersReducer = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+
+        getDetectResult: (state) => {
+            state.customer = null;
+            state.loading = true;
+            state.error = null;
+        },
+        getDetectResultSuccess: (state, action) => {
+            state.detectResult = action.payload.data;
+            state.loading = false;
+        },
+        getDetectResultFailed: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
     }
 });
 
@@ -135,6 +152,9 @@ export const {
     cahngeCustomerAccountActiveState,
     cahngeCustomerAccountActiveStateSuccess,
     cahngeCustomerAccountActiveStateFailed,
+    getDetectResult,
+    getDetectResultSuccess,
+    getDetectResultFailed,
 } = customersReducer.actions;
 
 export default customersReducer.reducer;
