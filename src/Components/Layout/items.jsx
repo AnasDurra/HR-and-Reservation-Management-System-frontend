@@ -106,8 +106,17 @@ export const items = [
   {
     text: "المستفيدين",
     icon: <TeamOutlined />,
-    path: "/customers",
     // access: [  ],
+    items: [
+      {
+        text: "جميع المستفيدين",
+        path: "/customers",
+      },
+      {
+        text: "إجراء عملية كشف",
+        path: "/customers/detect",
+      }
+    ],
   },
   {
     text: "الفعاليّات",
