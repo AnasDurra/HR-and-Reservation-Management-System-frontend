@@ -78,7 +78,7 @@ function ViewCustomers() {
             key: 'phone_number',
         },
         {
-            title: 'مصدر الحساب',
+            title: 'طريقة التسجيل',
             dataIndex: 'usingApp',
             key: 'usingApp',
             render: (state) => <div style={{ display: "flex", alignItems: "center", justifyContent: "space-around" }}>

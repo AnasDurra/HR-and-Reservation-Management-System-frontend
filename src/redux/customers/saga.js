@@ -1,6 +1,6 @@
 import { all, fork, takeEvery, call, put } from "redux-saga/effects";
 import AxiosInstance from "../utils/axiosInstance";
-import { getCustomersSuccess, getCustomersFailed, getEducationalLevelsSuccess, getEducationalLevelsFailed } from "./reducer";
+import { getCustomersSuccess, getCustomersFailed, getEducationalLevelsSuccess, getEducationalLevelsFailed, verifyAccountSuccess, verifyAccountFailed } from "./reducer";
 import { addCustomerSuccess, addCustomerFailed } from "./reducer";
 import { deleteCustomerSuccess, deleteCustomerFailed } from "./reducer";
 import { updateCustomerSuccess, updateCustomerFailed } from "./reducer";
@@ -60,6 +60,10 @@ const customerAccountActivation = (payload) => {
 
 const getDetectResult = (payload) => {
     return AxiosInstance().post(`customer-detection`, payload);
+}
+
+const verifyAccount = (payload) => {
+    return AxiosInstance().post(`customer-verify`, payload);
 }
 
 function* getCustomersSaga({ payload }) {
@@ -154,6 +158,16 @@ function* getDetectResultSaga({ payload }) {
     }
 }
 
+function* verifyAccountSaga({ payload }) {
+    try {
+        const response = yield call(verifyAccount, payload);
+        yield put(verifyAccountSuccess(response.data.data));
+    }
+    catch (error) {
+        yield put(verifyAccountFailed(error));
+    }
+}
+
 function* watchGetCustomers() {
     yield takeEvery('customersReducer/getCustomers', getCustomersSaga);
 }
@@ -186,6 +200,9 @@ function* watchGetDetectResult() {
     yield takeEvery('customersReducer/getDetectResult', getDetectResultSaga);
 }
 
+function* watchVerifyAccount() {
+    yield takeEvery('customersReducer/verifyAccount', verifyAccountSaga);
+}
 
 function* CustomersSaga() {
     yield all([
@@ -197,6 +214,7 @@ function* CustomersSaga() {
         fork(watchGetEducationalLevels),
         fork(watchChangeCustomerActiveState),
         fork(watchGetDetectResult),
+        fork(watchVerifyAccount),
     ]);
 }
 

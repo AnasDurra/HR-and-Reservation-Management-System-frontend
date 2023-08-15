@@ -1,4 +1,4 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Spin } from "antd";
 import Typography from "antd/es/typography/Typography";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +27,7 @@ function DetectCustomer() {
                 <div>
                     <Typography.Title level={4}>النتيجة :</Typography.Title>
                     <div style={{ display: "flex" }}>
-                        <Typography>.هذا الرقم الوطني غير موجود بالنظام</Typography>
+                        <Typography>الرقم الوطني غير موجود بالنظام.</Typography>
                         <CloseCircleOutlined style={{ color: "red", marginRight: '5px' }} />
                     </div>
 
@@ -81,6 +81,10 @@ function DetectCustomer() {
                         استعراض الحساب
                     </Button>
                 </div>
+            );
+        } else if (loading) {
+            return (
+                <Spin className="loadingSpinner" size="large" />
             );
         } else {
             return null;
