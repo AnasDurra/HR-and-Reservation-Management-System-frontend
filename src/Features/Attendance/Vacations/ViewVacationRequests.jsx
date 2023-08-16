@@ -67,6 +67,7 @@ function ViewVacationRequests() {
             title: 'التاريخ',
             dataIndex: 'start_date',
             key: 'start_date',
+            render: (date) => <Typography>{date.substring(0, 10)}</Typography>
         },
         {
             title: 'مدة الإجازة',

@@ -8,7 +8,17 @@ import { handleError } from '../utils/helpers';
 
 
 const getJobVacancies = (payload) => {
-    return AxiosInstance().get(`job-vacancies${payload ? `?page=${payload}` : ""}`);
+    const params = new URLSearchParams();
+
+    if (payload?.name) {
+        params.append('name', payload.name);
+    }
+
+    if (payload?.page) {
+        params.append('page', payload.page);
+    }
+
+    return AxiosInstance().get(`job-vacancies?${params.toString()}`);
 }
 
 const deleteJobVacancy = (payload) => {

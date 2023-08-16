@@ -17,7 +17,13 @@ import AxiosInstance from "../utils/axiosInstance";
 import { handleError } from "../utils/helpers";
 
 const getAll = (payload) => {
-  return AxiosInstance().get("departments", payload);
+  const params = new URLSearchParams();
+
+  if(payload?.name) {
+    params.append('name', payload.name);
+  }
+
+  return AxiosInstance().get(`departments?${params.toString()}`);
 };
 
 const destroyOne = (payload) => {

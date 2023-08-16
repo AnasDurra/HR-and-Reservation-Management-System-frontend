@@ -15,6 +15,10 @@ const getConsultants = (payload) => {
         params.append('name', payload.name);
     }
 
+    if (payload?.page) {
+        params.append('page', payload.page);
+    }
+
     return AxiosInstance().get(`consultant?${params.toString()}`);
 }
 

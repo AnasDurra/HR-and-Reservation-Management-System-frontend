@@ -43,7 +43,7 @@ export const items = [
         path: "/shifts",
       },
       {
-        text: "اجهزة البصمات",
+        text: "اجهزة البصمة",
         path: "/biometricDevices",
       },
       {
