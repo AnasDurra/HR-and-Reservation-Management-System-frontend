@@ -159,7 +159,7 @@ function ViewCustomer() {
                             </BarChart>
                         </ResponsiveContainer>
                         <Button
-                            onClick={() => navigate('/customers')}
+                            onClick={() => navigate(-1)}
                         >
                             العودة
                         </Button>

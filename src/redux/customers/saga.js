@@ -133,6 +133,10 @@ function* addCustomerSaga({ payload }) {
             handleError("لقد تم استخدام البريد الألكتروني المدخل من قبل");
         } else if (error?.response?.data?.errors?.phone_number) {
             handleError("لقد تم استخدام رقم الهاتف الجوال المدخل من قبل");
+        } else if (error?.response?.data?.errors?.birth_date) {
+            handleError("الرجاء التأكد من تاريخ الميلاد");
+        } else if (error?.response?.data?.errors?.national_number) {
+            handleError("لقد تم استخدام الرقم الوطني المدخل من قبل");
         }
         yield put(addCustomerFailed(error));
     }
@@ -154,6 +158,10 @@ function* getDetectResultSaga({ payload }) {
         yield put(getDetectResultSuccess(response.data.data));
     }
     catch (error) {
+        if (error?.response?.data?.errors?.national_number?.includes(
+            "The national number field must be 11 characters.")) {
+            handleError("الرجاء ادخال رقم وطني صالح.")
+        }
         yield put(getDetectResultFailed(error));
     }
 }
@@ -166,10 +174,12 @@ function* verifyAccountSaga({ payload }) {
     }
     catch (error) {
         console.log(error);
-        if(error?.response?.data?.errors?.national_number?.includes(
+        if (error?.response?.data?.errors?.national_number?.includes(
             "The national number field must be 11 characters.")) {
-                handleError("الرجاء ادخال رقم وطني صالح.")
-            }
+            handleError("الرجاء ادخال رقم وطني صالح.");
+        } else if (error?.response?.data?.error === "Customer already has verified application account") {
+            handleError("لا يمكن توثيق هذا الحساب, المستخدم يملك حساب موثّق");
+        }
         yield put(verifyAccountFailed(error));
     }
 }

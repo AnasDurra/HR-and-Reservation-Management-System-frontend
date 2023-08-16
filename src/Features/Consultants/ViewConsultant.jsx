@@ -215,7 +215,7 @@ function ViewConsultant() {
                         </Slider>
                         <Button
                             style={{marginTop: '60px'}}
-                            onClick={() => navigate('/consultants')}
+                            onClick={() => navigate(-1)}
                         >
                             العودة
                         </Button>
