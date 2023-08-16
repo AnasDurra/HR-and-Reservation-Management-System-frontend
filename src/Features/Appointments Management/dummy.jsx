@@ -1,59 +1,90 @@
-import React from 'react';
-import type { MenuProps } from 'antd';
-import { Button, Dropdown, Space } from 'antd';
+import React, { useMemo, useRef, useState } from 'react';
+import debounce from 'lodash/debounce';
+import { Select, Spin } from 'antd';
+import type { SelectProps } from 'antd/es/select';
 
-const items: MenuProps['items'] = [
-  {
-    key: '1',
-    label: (
-      <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-        1st menu item
-      </a>
-    ),
-  },
-  {
-    key: '2',
-    label: (
-      <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-        2nd menu item
-      </a>
-    ),
-  },
-  {
-    key: '3',
-    label: (
-      <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-        3rd menu item
-      </a>
-    ),
-  },
-];
+export interface DebounceSelectProps<ValueType = any>
+  extends Omit<SelectProps<ValueType | ValueType[]>, 'options' | 'children'> {
+  fetchOptions: (search: string) => Promise<ValueType[]>;
+  debounceTimeout?: number;
+}
 
-const App: React.FC = () => (
-  <Space direction="vertical">
-    <Space wrap>
-      <Dropdown menu={{ items }} placement="bottomLeft">
-        <Button>bottomLeft</Button>
-      </Dropdown>
-      <Dropdown menu={{ items }} placement="bottom">
-        <Button>bottom</Button>
-      </Dropdown>
-      <Dropdown menu={{ items }} placement="bottomRight">
-        <Button>bottomRight</Button>
-      </Dropdown>
-    </Space>
-    <Space wrap>
-      <Dropdown menu={{ items }} placement="topLeft">
-        <Button>topLeft</Button>
-      </Dropdown>
-      <Dropdown menu={{ items }} placement="top">
-        <Button>top</Button>
-      </Dropdown>
-      <Dropdown menu={{ items }} placement="topRight">
-        <Button>topRight</Button>
-      </Dropdown>
-    </Space>
-  </Space>
-);
+function DebounceSelect<
+  ValueType extends { key?: string; label: React.ReactNode; value: string | number } = any,
+>({ fetchOptions, debounceTimeout = 800, ...props }: DebounceSelectProps<ValueType>) {
+  const [fetching, setFetching] = useState(false);
+  const [options, setOptions] = useState<ValueType[]>([]);
+  const fetchRef = useRef(0);
+
+  const debounceFetcher = useMemo(() => {
+    const loadOptions = (value: string) => {
+      fetchRef.current += 1;
+      const fetchId = fetchRef.current;
+      setOptions([]);
+      setFetching(true);
+
+      fetchOptions(value).then((newOptions) => {
+        if (fetchId !== fetchRef.current) {
+          // for fetch callback order
+          return;
+        }
+
+        setOptions(newOptions);
+        setFetching(false);
+      });
+    };
+
+    return debounce(loadOptions, debounceTimeout);
+  }, [fetchOptions, debounceTimeout]);
+
+  return (
+    <Select
+      labelInValue
+      filterOption={false}
+      onSearch={debounceFetcher}
+      notFoundContent={fetching ? <Spin size="small" /> : null}
+      {...props}
+      options={options}
+    />
+  );
+}
+
+// Usage of DebounceSelect
+interface UserValue {
+  label: string;
+  value: string;
+}
+
+async function fetchUserList(username: string): Promise<UserValue[]> {
+  console.log('fetching user', username);
+
+  return fetch('https://randomuser.me/api/?results=5')
+    .then((response) => response.json())
+    .then((body) =>
+      body.results.map(
+        (user: { name: { first: string; last: string }; login: { username: string } }) => ({
+          label: `${user.name.first} ${user.name.last}`,
+          value: user.login.username,
+        }),
+      ),
+    );
+}
+
+const App: React.FC = () => {
+  const [value, setValue] = useState<UserValue[]>([]);
+
+  return (
+    <DebounceSelect
+      mode="multiple"
+      value={value}
+      placeholder="Select users"
+      fetchOptions={fetchUserList}
+      onChange={(newValue) => {
+        setValue(newValue as UserValue[]);
+      }}
+      style={{ width: '100%' }}
+    />
+  );
+};
 
 export default App;

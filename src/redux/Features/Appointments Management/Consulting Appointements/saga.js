@@ -3,6 +3,9 @@ import {
   createAppointments,
   createAppointmentsFail,
   createAppointmentsSuccess,
+  createPhoneReservation,
+  createPhoneReservationSuccess,
+  createPhoneReservationFail,
   getConsultantAppointments,
   getConsultantAppointmentsSuccess,
   getConsultantAppointmentsFail,
@@ -15,9 +18,12 @@ import {
   updateAppointment,
   updateAppointmentSuccess,
   updateAppointmentFail,
-  destroyAppointment,
-  destroyAppointmentSuccess,
-  destroyAppointmentFail,
+  cancelReservation,
+  cancelReservationSuccess,
+  cancelReservationFail,
+  cancelAppointment,
+  cancelAppointmentSuccess,
+  cancelAppointmentFail,
 } from './slice';
 import AxiosInstance from '../../../utils/axiosInstance';
 
@@ -44,6 +50,31 @@ function* watchCreateAppointments() {
   yield takeEvery(createAppointments, createAppointmentsSaga);
 }
 
+const phoneReservation = ({ id }) => {
+  return AxiosInstance().post(`smth/${id}`);
+};
+
+function* createPhoneReservationSaga({ payload }) {
+  try {
+    const response = yield call(phoneReservation, payload);
+    yield put(
+      createPhoneReservationSuccess({
+        appointment: response.data.data,
+      })
+    );
+  } catch (error) {
+    console.log(error);
+    yield put(
+      createPhoneReservationFail({
+        error: error,
+      })
+    );
+  }
+}
+function* watchCreatePhoneReservation() {
+  yield takeEvery(createPhoneReservation, createPhoneReservationSaga);
+}
+
 const update = ({ appointment_id, customer_id }) => {
   return AxiosInstance().put(`book-by-employee/${appointment_id}/${customer_id}`);
 };
@@ -52,7 +83,7 @@ function* updateAppointmentSaga({ payload }) {
     const response = yield call(update, payload);
     yield put(
       updateAppointmentSuccess({
-        Appointments: response.data.data,
+        appointment: response.data.data,
       })
     );
   } catch (error) {
@@ -167,38 +198,67 @@ function* watchGetCancelledConsultingAppointments() {
   yield takeEvery(getCancelledConsultingAppointments, getCancelledConsultingAppointmentsSaga);
 }
 
-const destroy = ({ id }) => {
-  return AxiosInstance().delete(`smth/${id}`);
+const cancelReserve = ({ id }) => {
+  return AxiosInstance().post(`cancel-reservation-by-employee/${id}`);
 };
 
-function* destroyAppointmentSaga({ payload }) {
+function* cancelReservationSaga({ payload }) {
   try {
-    const response = yield call(destroy, payload);
+    const response = yield call(cancelReserve, payload);
     yield put(
-      destroyAppointmentSuccess({
-        deletedAppointments: response.data.data,
+      cancelReservationSuccess({
+        appointment: response.data.data,
       })
     );
   } catch (error) {
+    console.log(error);
     yield put(
-      destroyAppointmentFail({
+      cancelReservationFail({
         error: error,
       })
     );
   }
 }
-function* watchDestroyAppointment() {
-  yield takeEvery(destroyAppointment, destroyAppointmentSaga);
+function* watchCancelReservation() {
+  yield takeEvery(cancelReservation, cancelReservationSaga);
+}
+
+const cancel = ({ id, isConsultant, isEmployee }) => {
+  if (isConsultant) return AxiosInstance().put(`cancel-appointment/${id}`);
+  else if (isEmployee) return AxiosInstance().post(`cancel-appointment-by-employee/${id}`);
+};
+
+function* cancelAppointmentSaga({ payload }) {
+  try {
+    const response = yield call(cancel, payload);
+    yield put(
+      cancelAppointmentSuccess({
+        appointment: response.data.data,
+      })
+    );
+  } catch (error) {
+    console.log(error);
+    yield put(
+      cancelAppointmentFail({
+        error: error,
+      })
+    );
+  }
+}
+function* watchCancelAppointment() {
+  yield takeEvery(cancelAppointment, cancelAppointmentSaga);
 }
 
 function* ConsultingAppointmentsSaga() {
   yield all([
     fork(watchCreateAppointments),
+    fork(watchCreatePhoneReservation),
     fork(watchGetAppointments),
     fork(watchGetConsultantAppointments),
     fork(watchGetCancelledConsultingAppointments),
     fork(watchUpdateAppointment),
-    fork(watchDestroyAppointment),
+    fork(watchCancelReservation),
+    fork(watchCancelAppointment),
   ]);
 }
 

@@ -81,7 +81,7 @@ function* destroyTimeScheduleSaga({ payload }) {
     const response = yield call(destroy, payload);
     yield put(
       destroyTimeScheduleSuccess({
-        deletedTimeSchedule: response.data.data,
+        timeSchedule: response.data.data,
       })
     );
 

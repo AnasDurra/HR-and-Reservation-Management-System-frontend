@@ -23,6 +23,19 @@ export const consultingAppointmentsSlice = createSlice({
       state.error = action.payload.error;
     },
 
+    createPhoneReservation: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    createPhoneReservationSuccess: (state, action) => {
+      state.loading = false;
+      state.appointments.push(action.payload.appointments);
+    },
+    createPhoneReservationFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+
     getConsultantAppointments: (state) => {
       state.loading = true;
       state.error = null;
@@ -81,15 +94,38 @@ export const consultingAppointmentsSlice = createSlice({
       state.error = action.payload.error;
     },
 
-    destroyAppointment: (state) => {
+    cancelReservation: (state) => {
       state.loading = true;
       state.error = null;
     },
-    destroyAppointmentSuccess: (state, action) => {
+    cancelReservationSuccess: (state, action) => {
       state.loading = false;
-      state.appointments = state.appointments.filter((app) => app.id != action.payload.appointment.id);
+      const appointmentIndex = state.appointments.findIndex(
+        (appointment) => appointment.id === action.payload.appointment.id
+      );
+      if (appointmentIndex != -1) {
+        state.appointments[appointmentIndex] = action.payload.appointment;
+      }
     },
-    destroyAppointmentFail: (state, action) => {
+    cancelReservationFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+
+    cancelAppointment: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    cancelAppointmentSuccess: (state, action) => {
+      state.loading = false;
+      const appointmentIndex = state.appointments.findIndex(
+        (appointment) => appointment.id === action.payload.appointment.id
+      );
+      if (appointmentIndex != -1) {
+        state.appointments[appointmentIndex] = action.payload.appointment;
+      }
+    },
+    cancelAppointmentFail: (state, action) => {
       state.loading = false;
       state.error = action.payload.error;
     },
@@ -100,6 +136,10 @@ export const {
   createAppointments,
   createAppointmentsSuccess,
   createAppointmentsFail,
+
+  createPhoneReservation,
+  createPhoneReservationSuccess,
+  createPhoneReservationFail,
 
   getConsultantAppointments,
   getConsultantAppointmentsSuccess,
@@ -117,9 +157,13 @@ export const {
   updateAppointmentSuccess,
   updateAppointmentFail,
 
-  destroyAppointment,
-  destroyAppointmentSuccess,
-  destroyAppointmentFail,
+  cancelReservation,
+  cancelReservationSuccess,
+  cancelReservationFail,
+
+  cancelAppointment,
+  cancelAppointmentSuccess,
+  cancelAppointmentFail,
 } = consultingAppointmentsSlice.actions;
 
 export default consultingAppointmentsSlice.reducer;

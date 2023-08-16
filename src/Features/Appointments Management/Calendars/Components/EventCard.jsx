@@ -6,6 +6,7 @@ import {
   DropboxOutlined,
   ExclamationCircleFilled,
   FormOutlined,
+  PhoneOutlined,
   SmileOutlined,
   UserAddOutlined,
   UserDeleteOutlined,
@@ -16,14 +17,21 @@ import Meta from 'antd/es/card/Meta';
 import SelectCustomerModal from './SelectCustomerModal';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateAppointment } from '../../../../redux/Features/Appointments Management/Consulting Appointements/slice';
+import {
+  cancelAppointment,
+  cancelReservation,
+  updateAppointment,
+} from '../../../../redux/Features/Appointments Management/Consulting Appointements/slice';
 import confirm from 'antd/es/modal/confirm';
 import CaseNoteModal from './CaseNoteModal';
+import PhoneReservationModal from './PhoneReservationModal';
 
+//TODO color title based on status & reorder actions
 function EventCard({ event, editable }) {
   const dispatch = useDispatch();
   const [isSelectCustomerModalOpen, setIsSelectCustomerModalOpen] = useState(false);
   const [isCaseNoteModalOpen, setIsCaseNoteModalOpen] = useState(false);
+  const [isPhoneReservationModalOpen, setIsPhoneReservationModalOpen] = useState(false);
 
   const showCancelAppointmentConfirm = () => {
     Modal.confirm({
@@ -34,7 +42,24 @@ function EventCard({ event, editable }) {
       okType: 'danger',
       cancelText: 'لا',
       onOk() {
-        //TODO dispatch cancel
+        if (editable) dispatch(cancelAppointment({ id: event.id, isEmployee: true }));
+        else dispatch(cancelAppointment({ id: event.id, isConsultant: true }));
+      },
+      onCancel() {},
+    });
+  };
+
+  const showCancelReservationConfirm = () => {
+    Modal.confirm({
+      title: 'تأكيد إلغاء الحجز',
+      icon: <ExclamationCircleFilled />,
+      content: 'هل أنت متأكد من رغبتك بإلغاء الحجز',
+      okText: 'نعم',
+      okType: 'danger',
+      cancelText: 'لا',
+      onOk() {
+        //TODO check if it's working after employee login
+        dispatch(cancelReservation({ id: event.id }));
       },
       onCancel() {},
     });
@@ -71,41 +96,59 @@ function EventCard({ event, editable }) {
       <Card
         actions={[
           <Dropdown
+            key={'attendance'}
             menu={{ items: attendanceItems }}
             placement='bottomRight'
           >
             <DownCircleOutlined />
           </Dropdown>,
+
           <UserAddOutlined
+            key={'reservation'}
             onClick={() => setIsSelectCustomerModalOpen(true)}
             style={{ fontSize: '135%' }}
           />,
+
+          <PhoneOutlined
+            key={'phoneReservation'}
+            onClick={() => setIsPhoneReservationModalOpen(true)}
+            style={{ fontSize: '135%' }}
+          />,
+
           <UserDeleteOutlined
-            onClick={showCancelAppointmentConfirm}
+            key={'cancelReservation'}
+            onClick={showCancelReservationConfirm}
             style={{ fontSize: '135%' }}
           />,
-          <CloseCircleFilled
-            onClick={showCancelAppointmentConfirm}
-            style={{ fontSize: '135%' }}
-          />,
+
           //TODO different icon if case not is set
           <FormOutlined
+            key={'caseNote'}
             onClick={() => setIsCaseNoteModalOpen(true)}
             style={{ fontSize: '135%' }}
           />,
-        ].filter((_, index) => {
-          switch (index) {
-            case 0:
+
+          <CloseCircleFilled
+            key={'cancelAppointment'}
+            onClick={showCancelAppointmentConfirm}
+            style={{ fontSize: '135%' }}
+          />,
+        ].filter((element, index) => {
+          console.log('elemets', element);
+          switch (element.key) {
+            case 'attendance':
               // return true;
               return editable && event?.status?.name == 'محجوز' ? true : false;
-            case 1:
+            case 'reservation':
               return editable && !event?.customer_id && event?.status?.name == 'متاح' ? true : false;
-            case 2:
+            case 'phoneReservation':
+              return editable && !event?.customer_id && event?.status?.name == 'متاح' ? true : false;
+            case 'cancelReservation':
               return editable && event?.customer_id ? true : false;
-            case 3:
+            case 'cancelAppointment':
               return true;
-            case 4:
-              //TODO add the appointment status condition ( it should be completed)
+            case 'caseNote':
+              //TODO add the appointment status condition ( it should be completed) & employee cant edit casenote
               return editable && event?.customer_id ? true : false;
 
             default:
@@ -166,8 +209,7 @@ function EventCard({ event, editable }) {
       <SelectCustomerModal
         isModalOpen={isSelectCustomerModalOpen}
         onSelect={(id) => {
-          //TODO
-          dispatch(updateAppointment({ appointment_id: 17, customer_id: 1 }));
+          dispatch(updateAppointment({ appointment_id: event?.id, customer_id: id }));
         }}
         onClose={() => setIsSelectCustomerModalOpen(false)}
       />
@@ -176,6 +218,12 @@ function EventCard({ event, editable }) {
         appointment_id={2}
         isModalOpen={isCaseNoteModalOpen}
         onClose={() => setIsCaseNoteModalOpen(false)}
+      />
+
+      <PhoneReservationModal
+        appointment_id={event.id}
+        isModalOpen={isPhoneReservationModalOpen}
+        onClose={() => setIsPhoneReservationModalOpen(false)}
       />
     </>
   );

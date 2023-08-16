@@ -1,17 +1,19 @@
 import { Modal, Select } from 'antd';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { getCustomers } from '../../../../redux/customers/reducer';
 
 function SelectCustomerModal({ onSelect, isModalOpen, onClose }) {
   const dispatch = useDispatch();
+  const customers = useSelector((state) => state.customersReducer?.customers);
   const [selectedCustomerId, setSelectedCustomerId] = useState(null);
 
   const handleChange = (id) => setSelectedCustomerId(id);
 
   useEffect(() => {
-    //TODO get customers
-    //dispatch(getTimeSchedules());
-  }, []);
+    if (isModalOpen) dispatch(getCustomers({ type: true }));
+  }, [isModalOpen]);
+
   return (
     <Modal
       title='اختيار مستفيد'
@@ -24,6 +26,7 @@ function SelectCustomerModal({ onSelect, isModalOpen, onClose }) {
       }}
       onOk={() => {
         onSelect(selectedCustomerId);
+        onClose();
       }}
     >
       <Select
@@ -34,16 +37,10 @@ function SelectCustomerModal({ onSelect, isModalOpen, onClose }) {
         }}
         value={selectedCustomerId}
         onChange={handleChange}
-        options={[
-          {
-            label: 'test',
-            value: 1,
-          },
-        ]}
-        /* options={timeSchedules?.map((ts) => ({
-          label: `(${ts.id}) ${ts.name} `,
-          value: ts.id,
-        }))}*/
+        options={customers?.map((c) => ({
+          label: `(${c.id}) ${c.full_name} `,
+          value: c.id,
+        }))}
         // onSearch={onRelativesSearch}
         //showSearch
         //    filterOption={false}
