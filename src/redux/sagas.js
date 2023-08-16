@@ -14,7 +14,11 @@ import EmployeesAbsencesSaga from './absences/saga';
 import TimeShiftsSaga from './timeShifts/saga';
 import logSaga from './Features/Log/saga';
 import ConsultantTimeSchedulesSaga from './Features/Appointments Management/Consultant Time Schedules/saga';
-import ConsultingAppointmentsSaga from './Features/Appointments Management/Consulting Appointements/saga';
+import ConsultingAppointmentsSaga from './Features/Appointments Management/Consulting Appointements/saga';import ConsultantsSaga from "./consultants/saga";
+import ClinicsSaga from "./clinics/saga";
+import CustomersSaga from "./customers/saga";
+import CenterEventsSaga from "./centerEvents/saga";
+
 
 export default function* rootSaga() {
   yield all([
@@ -32,6 +36,10 @@ export default function* rootSaga() {
     EmployeesAbsencesSaga(),
     TimeShiftsSaga(),
     logSaga(),
+    ConsultantsSaga(),
+    ClinicsSaga(),
+    CustomersSaga(),
+    CenterEventsSaga(),,
     ConsultantTimeSchedulesSaga(),
     ConsultingAppointmentsSaga(),
   ]);

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import Spinner from "../Spinner/Spinner";
 
-const AccessRoute = ({ allowedRoutes }) => {
+const AccessRoute = ({ allowedRoutes, userType }) => {
 
     const user = getUser();
     const permissionsReducer = useSelector(state => state.userReducer.permissions);
@@ -13,13 +13,16 @@ const AccessRoute = ({ allowedRoutes }) => {
 
     const location = useLocation();
 
+    if (Number(user?.user_type) !== Number(userType)) {
+        <Navigate to="/unauthorized" state={{ from: location }} replace />
+    }
     if (location.pathname === '/login') {
         return user ? <Navigate to="/" replace /> : <Outlet />;
     }
     if (!allowedRoutes) {
         return user ? <Outlet /> : <Navigate to="/login" state={{ from: location }} replace />;
     }
-    if (permissions.length === 0) {
+    if (permissions.length === 0 && user?.user_type === 1) {
         return <Spinner loading={true} />
     }
 

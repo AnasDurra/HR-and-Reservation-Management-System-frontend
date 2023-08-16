@@ -1,0 +1,39 @@
+.customersButton {
+    margin-top: 30px;
+}
+
+#actions {
+    display: flex;
+    justify-content: center;
+}
+
+#actions>* {
+    margin: 0px 5px;
+}
+
+.viewCustomersButton {
+    margin: 5px 0px;
+}
+
+.customerProfileActionButtons > * {
+    margin: 0px 5px;
+}
+
+.detectForm {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.detectSubmit {
+    margin-right: 10px;
+}
+
+.verifyAccountModal {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.verifyAccountModal > button {
+    margin: 0px 8px 0px 0px;
+}

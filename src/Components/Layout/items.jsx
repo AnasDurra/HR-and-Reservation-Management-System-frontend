@@ -7,7 +7,10 @@ import {
   ProfileOutlined,
   ContainerOutlined,
   ReconciliationOutlined,
-} from '@ant-design/icons';
+  OneToOneOutlined,
+  TeamOutlined,
+  BellOutlined,
+} from "@ant-design/icons";
 
 import Permissions from '../AccessRoute/Permissions';
 
@@ -116,5 +119,32 @@ export const items = [
         path: '/appointments/cancelled',
       },
     ],
+  },
+  {
+    text: "الاستشاريين",
+    icon: <OneToOneOutlined />,
+    path: "/consultants",
+    // access: [  ],
+  },
+  {
+    text: "المستفيدين",
+    icon: <TeamOutlined />,
+    // access: [  ],
+    items: [
+      {
+        text: "جميع المستفيدين",
+        path: "/customers",
+      },
+      {
+        text: "إجراء عملية كشف",
+        path: "/customers/detect",
+      }
+    ],
+  },
+  {
+    text: "الفعاليّات",
+    icon: <BellOutlined />,
+    path: "/events",
+    // access: [  ],
   },
 ];

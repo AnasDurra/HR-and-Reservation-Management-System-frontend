@@ -6,11 +6,11 @@ import { loginSuccess, loginFailed, logoutSuccess, logoutFailed, getEmployeePerm
 import { handleError } from "../utils/helpers";
 
 const userLogIn = (payload) => {
-    return AxiosInstance().post('employees/login', payload);
+    return AxiosInstance().post('login', payload);
 }
 
 const userLogOut = () => {
-    return AxiosInstance().post('employees/logout');
+    return AxiosInstance().post('logout');
 }
 
 const getEmployeePermissions = () => {
