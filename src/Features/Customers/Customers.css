@@ -28,3 +28,12 @@
 .detectSubmit {
     margin-right: 10px;
 }
+
+.verifyAccountModal {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.verifyAccountModal > button {
+    margin: 0px 8px 0px 0px;
+}

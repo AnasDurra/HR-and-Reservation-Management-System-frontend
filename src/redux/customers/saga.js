@@ -1,13 +1,13 @@
 import { all, fork, takeEvery, call, put } from "redux-saga/effects";
 import AxiosInstance from "../utils/axiosInstance";
-import { getCustomersSuccess, getCustomersFailed, getEducationalLevelsSuccess, getEducationalLevelsFailed } from "./reducer";
+import { getCustomersSuccess, getCustomersFailed, getEducationalLevelsSuccess, getEducationalLevelsFailed, verifyAccountSuccess, verifyAccountFailed } from "./reducer";
 import { addCustomerSuccess, addCustomerFailed } from "./reducer";
 import { deleteCustomerSuccess, deleteCustomerFailed } from "./reducer";
 import { updateCustomerSuccess, updateCustomerFailed } from "./reducer";
 import { getCustomerSuccess, getCustomerFailed } from "./reducer";
 import { cahngeCustomerAccountActiveStateSuccess, cahngeCustomerAccountActiveStateFailed } from "./reducer";
 import { getDetectResultSuccess, getDetectResultFailed } from "./reducer";
-import { handleError } from '../utils/helpers';
+import { handleError, handleResponse } from '../utils/helpers';
 
 
 const getCustomers = (payload) => {
@@ -60,6 +60,10 @@ const customerAccountActivation = (payload) => {
 
 const getDetectResult = (payload) => {
     return AxiosInstance().post(`customer-detection`, payload);
+}
+
+const verifyAccount = (payload) => {
+    return AxiosInstance().post(`customer-verification`, payload);
 }
 
 function* getCustomersSaga({ payload }) {
@@ -129,6 +133,10 @@ function* addCustomerSaga({ payload }) {
             handleError("لقد تم استخدام البريد الألكتروني المدخل من قبل");
         } else if (error?.response?.data?.errors?.phone_number) {
             handleError("لقد تم استخدام رقم الهاتف الجوال المدخل من قبل");
+        } else if (error?.response?.data?.errors?.birth_date) {
+            handleError("الرجاء التأكد من تاريخ الميلاد");
+        } else if (error?.response?.data?.errors?.national_number) {
+            handleError("لقد تم استخدام الرقم الوطني المدخل من قبل");
         }
         yield put(addCustomerFailed(error));
     }
@@ -150,7 +158,29 @@ function* getDetectResultSaga({ payload }) {
         yield put(getDetectResultSuccess(response.data.data));
     }
     catch (error) {
+        if (error?.response?.data?.errors?.national_number?.includes(
+            "The national number field must be 11 characters.")) {
+            handleError("الرجاء ادخال رقم وطني صالح.")
+        }
         yield put(getDetectResultFailed(error));
+    }
+}
+
+function* verifyAccountSaga({ payload }) {
+    try {
+        const response = yield call(verifyAccount, payload);
+        handleResponse("تمّ تم توثيق الحساب بنجاح.")
+        yield put(verifyAccountSuccess(response.data.data));
+    }
+    catch (error) {
+        console.log(error);
+        if (error?.response?.data?.errors?.national_number?.includes(
+            "The national number field must be 11 characters.")) {
+            handleError("الرجاء ادخال رقم وطني صالح.");
+        } else if (error?.response?.data?.error === "Customer already has verified application account") {
+            handleError("لا يمكن توثيق هذا الحساب, المستخدم يملك حساب موثّق");
+        }
+        yield put(verifyAccountFailed(error));
     }
 }
 
@@ -186,6 +216,9 @@ function* watchGetDetectResult() {
     yield takeEvery('customersReducer/getDetectResult', getDetectResultSaga);
 }
 
+function* watchVerifyAccount() {
+    yield takeEvery('customersReducer/verifyAccount', verifyAccountSaga);
+}
 
 function* CustomersSaga() {
     yield all([
@@ -197,6 +230,7 @@ function* CustomersSaga() {
         fork(watchGetEducationalLevels),
         fork(watchChangeCustomerActiveState),
         fork(watchGetDetectResult),
+        fork(watchVerifyAccount),
     ]);
 }
 

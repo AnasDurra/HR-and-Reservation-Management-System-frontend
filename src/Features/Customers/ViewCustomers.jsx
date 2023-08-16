@@ -78,9 +78,9 @@ function ViewCustomers() {
             key: 'phone_number',
         },
         {
-            title: 'مصدر الحساب',
-            dataIndex: 'usingApp',
-            key: 'usingApp',
+            title: 'طريقة التسجيل',
+            dataIndex: 'isUsingApp',
+            key: 'isUsingApp',
             render: (state) => <div style={{ display: "flex", alignItems: "center", justifyContent: "space-around" }}>
                 <Typography>
                     {state ? "التطبيق" : "لوحة التحكم"}

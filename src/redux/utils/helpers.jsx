@@ -18,6 +18,7 @@ export const handleError = (msg, error) => {
         style: {
             marginTop: '10vh',
             fontFamily: 'cairo',
+            zIndex: "5000"
         },
     });
 }

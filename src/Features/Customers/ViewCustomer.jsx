@@ -1,11 +1,12 @@
-import { Button, Descriptions, Typography } from "antd";
+import { Button, Descriptions, Form, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { cahngeCustomerAccountActiveState, getCustomer } from "../../redux/customers/reducer";
+import { cahngeCustomerAccountActiveState, getCustomer, verifyAccount } from "../../redux/customers/reducer";
 import Spinner from "../../Components/Spinner/Spinner";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import VerifyAccountModal from "./VerifyAccountModal";
 
 function ViewCustomer() {
 
@@ -90,6 +91,21 @@ function ViewCustomer() {
         </div>
     );
 
+    const [openVerifyModal, setOpenVerifyModal] = useState(false);
+    const [verifyForm] = Form.useForm();
+
+    const handleCancel = () => {
+        verifyForm.resetFields();
+        setOpenVerifyModal(false);
+    }
+
+    const onFinish = (data) => {
+        data.app_account_id = custID;
+        dispatch(verifyAccount(data));
+        setOpenVerifyModal(false);
+        verifyForm.resetFields();
+    }
+
     return (
         <Spinner loading={loading}>
             <div>
@@ -98,7 +114,7 @@ function ViewCustomer() {
                         <Typography>بيانات المستفيد</Typography>
                         <div className="customerProfileActionButtons">
                             {!customer?.verified ?
-                                <Button>توثيق الحساب</Button>
+                                <Button onClick={() => setOpenVerifyModal(true)}>توثيق الحساب</Button>
                                 : null}
                             <Button onClick={changeActiveState}>{!customer?.blocked ? "إلغاء تفعيل" : "تفعيل"}</Button>
                         </div>
@@ -143,12 +159,19 @@ function ViewCustomer() {
                             </BarChart>
                         </ResponsiveContainer>
                         <Button
-                            onClick={() => navigate('/customers')}
+                            onClick={() => navigate(-1)}
                         >
                             العودة
                         </Button>
                     </div>
                     : null}
+
+                <VerifyAccountModal
+                    form={verifyForm}
+                    handleCancel={handleCancel}
+                    onFinish={onFinish}
+                    open={openVerifyModal}
+                />
 
             </div>
         </Spinner>
