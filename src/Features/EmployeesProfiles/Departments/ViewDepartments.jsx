@@ -6,6 +6,7 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import DeleteModal from "../../../Components/DeleteModal/DeleteModal";
 import DepartmentModal from "./DepartmentModal";
 import Spinner from "../../../Components/Spinner/Spinner";
+import ServerSideSearchField from '../../../Components/ServerSideSearchField/ServerSideSearchField';
 import {
   destroyDepartment,
   getDepartments,
@@ -121,9 +122,29 @@ function ViewDepartments(props) {
     },
   ];
 
+  const [searchValue, setSearchValue] = useState("");
+
+  const handleReset = () => {
+      setSearchValue("");
+      dispatch(getDepartments());
+  }
+
+  const handleSearch = () => {
+      dispatch(getDepartments({ name: searchValue }));
+  }
+
   return (
     <Spinner loading={departmentsSlice?.loading}>
       <div>
+        <ServerSideSearchField
+          handleReset={handleReset}
+          handleSearch={handleSearch}
+          placeholder="البحث عن قسم"
+          resetBtnText="إعادة"
+          searchBtnText="البحث"
+          searchValue={searchValue}
+          setSearchValue={setSearchValue} 
+        />
         <Table
           columns={columns}
           dataSource={departmentsSlice?.departments}

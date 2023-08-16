@@ -5,6 +5,7 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import DeleteModal from "../../../Components/DeleteModal/DeleteModal";
 import JobVacancyModal from "./JobVacancyModal";
 import Spinner from "../../../Components/Spinner/Spinner";
+import ServerSideSearchField from '../../../Components/ServerSideSearchField/ServerSideSearchField';
 import { useDispatch, useSelector } from "react-redux";
 import { addJobVacancy, getJobVacancies, updateJobVacancy, deleteJobVacancy } from "../../../redux/jobVacancies/reducer";
 
@@ -123,12 +124,32 @@ function ViewJobVacancies() {
     ];
 
     const handlePageChange = (page) => {
-        dispatch(getJobVacancies(page));
+        dispatch(getJobVacancies({ page: page, name: searchValue }));
+    }
+
+    const [searchValue, setSearchValue] = useState("");
+
+    const handleReset = () => {
+        setSearchValue("");
+        dispatch(getJobVacancies());
+    }
+
+    const handleSearch = () => {
+        dispatch(getJobVacancies({ name: searchValue }));
     }
 
     return (
         <Spinner loading={loading}>
             <div>
+                <ServerSideSearchField
+                    handleReset={handleReset}
+                    handleSearch={handleSearch}
+                    searchValue={searchValue}
+                    setSearchValue={setSearchValue}
+                    placeholder="البحث عن شاغر وظيفي"
+                    resetBtnText="إعادة"
+                    searchBtnText="البحث"
+                />
                 <Table
                     columns={columns}
                     dataSource={jobVacancies}

@@ -20,7 +20,13 @@ import {
 import { handleError } from "../utils/helpers";
 
 const getAllRoles = (payload) => {
-  return AxiosInstance().get("job-titles", payload);
+  const params = new URLSearchParams();
+
+  if(payload?.name) {
+    params.append('name', payload.name);
+  }
+
+  return AxiosInstance().get(`job-titles?${params.toString()}`, payload);
 };
 
 const getAllPermissions = (payload) => {

@@ -3,6 +3,7 @@ import DeleteModal from "../../Components/DeleteModal/DeleteModal";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";
 import Spinner from "../../Components/Spinner/Spinner";
+import ServerSideSearchField from "../../Components/ServerSideSearchField/ServerSideSearchField";
 import "./ViewRoles.css";
 import RoleModal from "./RoleModal";
 import {
@@ -162,9 +163,29 @@ function ViewRoles() {
     },
   ];
 
+  const [searchValue, setSearchValue] = useState("");
+
+  const handleReset = () => {
+      setSearchValue("");
+      dispatch(getRoles());
+  }
+
+  const handleSearch = () => {
+      dispatch(getRoles({ name: searchValue }));
+  }
+
   return (
     <Spinner loading={rolesSlice.loading}>
       <div>
+        <ServerSideSearchField
+          handleReset={handleReset}
+          handleSearch={handleSearch}
+          placeholder="البحث عن مسمّى وظيفي"
+          resetBtnText="إعادة"
+          searchBtnText="البحث"
+          searchValue={searchValue}
+          setSearchValue={setSearchValue} 
+        />
         <Table
           columns={columns}
           dataSource={roles}

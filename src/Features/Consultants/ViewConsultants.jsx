@@ -13,6 +13,7 @@ function ViewConsultants() {
 
     const consultants = useSelector(state => state.consultantsReducer.consultants);
     const loading = useSelector(state => state.consultantsReducer.loading);
+    const metaData = useSelector(state => state.consultantsReducer.metaData);
     const error = useSelector(state => state.consultantsReducer.error);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -95,6 +96,10 @@ function ViewConsultants() {
         dispatch(getConsultants({ name: searchValue }));
     }
 
+    const handlePageChange = (page) => {
+        dispatch(getCustomers({ page: page, name: searchValue }));
+    }
+
     return (
         <Spinner loading={loading}>
             <div>
@@ -113,6 +118,12 @@ function ViewConsultants() {
                     rowKey='id'
                     scroll={{ x: 'max-content' }}
                     pagination={{ pageSize: 10 }}
+                // pagination={{
+                //     current: metaData?.current_page,
+                //     pageSize: metaData?.per_page,
+                //     total: metaData?.total,
+                //     onChange: handlePageChange,
+                // }}
                 />
                 <Button
                     className="consultantsButton"
