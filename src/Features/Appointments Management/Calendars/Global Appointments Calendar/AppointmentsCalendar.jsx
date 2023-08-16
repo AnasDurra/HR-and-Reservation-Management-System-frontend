@@ -5,7 +5,6 @@ import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 import arLocale from '@fullcalendar/core/locales/ar';
 import { createRef, useState } from 'react';
-
 import EventCard from '../Components/EventCard';
 
 function renderEventContent(eventInfo) {
@@ -13,7 +12,7 @@ function renderEventContent(eventInfo) {
   return (
     <>
       <EventCard
-        customerName={'انس ريش'}
+        customerName={'anas'}
         startTime={'11:30'}
         endTime={'12:30'}
         eventStatus={'متاح'}

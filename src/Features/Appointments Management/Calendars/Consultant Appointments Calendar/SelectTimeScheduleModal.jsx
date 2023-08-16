@@ -14,7 +14,7 @@ function SelectTimeScheduleModal({ onSelect, isModalOpen, onClose }) {
   const handleChange = (id) => setSelectedTimeScheduleId(id);
 
   useEffect(() => {
-    //dispatch(getTimeSchedules());
+    dispatch(getTimeSchedules());
   }, []);
   return (
     <Modal
@@ -38,20 +38,10 @@ function SelectTimeScheduleModal({ onSelect, isModalOpen, onClose }) {
         }}
         value={selectedTimeScheduleId}
         onChange={handleChange}
-        options={[
-          {
-            value: 0,
-            label: 'Jack (100)',
-          },
-          {
-            value: 1,
-            label: 'Lucy (101)',
-          },
-        ]}
-        /*  options={relatives?.map((emp) => ({
-          label: `(${emp.emp_id}) ${emp.full_name} `,
-          value: emp.emp_id,
-        }))} */
+        options={timeSchedules?.map((ts) => ({
+          label: `(${ts.id}) ${ts.name} `,
+          value: ts.id,
+        }))}
         // onSearch={onRelativesSearch}
         //showSearch
         //    filterOption={false}

@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const ConsultingAppointments = createSlice({
+export const consultingAppointmentsSlice = createSlice({
   name: 'consulting appointments',
   initialState: {
     appointments: [],
+    cancelledAppointments: [],
+    meta: null,
     loading: false,
     error: null,
   },
@@ -17,6 +19,33 @@ export const ConsultingAppointments = createSlice({
       state.appointments.push(action.payload.appointments);
     },
     createAppointmentsFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+
+    getConsultantAppointments: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    getConsultantAppointmentsSuccess: (state, action) => {
+      state.loading = false;
+      state.appointments = action.payload.appointments;
+    },
+    getConsultantAppointmentsFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+
+    getCancelledConsultingAppointments: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    getCancelledConsultingAppointmentsSuccess: (state, action) => {
+      state.loading = false;
+      state.cancelledAppointments = action.payload.appointments;
+      state.meta = action.payload.meta;
+    },
+    getCancelledConsultingAppointmentsFail: (state, action) => {
       state.loading = false;
       state.error = action.payload.error;
     },
@@ -72,6 +101,14 @@ export const {
   createAppointmentsSuccess,
   createAppointmentsFail,
 
+  getConsultantAppointments,
+  getConsultantAppointmentsSuccess,
+  getConsultantAppointmentsFail,
+
+  getCancelledConsultingAppointments,
+  getCancelledConsultingAppointmentsSuccess,
+  getCancelledConsultingAppointmentsFail,
+
   getAppointments,
   getAppointmentsSuccess,
   getAppointmentsFail,
@@ -83,6 +120,6 @@ export const {
   destroyAppointment,
   destroyAppointmentSuccess,
   destroyAppointmentFail,
-} = ConsultingAppointments.actions;
+} = consultingAppointmentsSlice.actions;
 
-export default ConsultingAppointments.reducer;
+export default consultingAppointmentsSlice.reducer;

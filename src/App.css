@@ -30,3 +30,12 @@
   background-color: #5c73c7 !important;
   color: #ffffff !important;
 }
+
+.fc .fc-button-primary {
+  background-color: #5c73c7 ;
+  border-color: whitesmoke
+}
+.fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:not(:disabled):active {
+  background-color: #000000;
+}

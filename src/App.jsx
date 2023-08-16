@@ -31,8 +31,9 @@ import getUser from './redux/utils/cookiesUtils';
 import PERMISSIONS from './Components/AccessRoute/Permissions';
 import Cookies from 'js-cookie';
 import TimeSchedules from './Features/Appointments Management/Time Schedules/TimeSchedules';
-import ConsultantCalendar from './Features/Appointments Management/Calendars/Consultant Calendar/ConsultantCalendar';
+import ConsultantCalendar from './Features/Appointments Management/Calendars/Consultant Appointments Calendar/ConsultantCalendar';
 import AppointmentsCalendar from './Features/Appointments Management/Calendars/Global Appointments Calendar/AppointmentsCalendar';
+import CancelledAppointments from './Features/Appointments Management/Cancelled Appointments/CancelledAppointments';
 
 function App() {
   const dispatch = useDispatch();
@@ -197,6 +198,11 @@ function App() {
                   index
                   path='calendar'
                   element={<AppointmentsCalendar />}
+                />
+
+                <Route
+                  path='cancelled'
+                  element={<CancelledAppointments />}
                 />
               </Route>
 

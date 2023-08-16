@@ -11,6 +11,7 @@ import {
   destroyTimeScheduleFail,
 } from './slice';
 import AxiosInstance from '../../../utils/axiosInstance';
+import { handleError, handleResponse } from '../../../utils/helpers';
 
 const create = (payload) => {
   return AxiosInstance().post('time-sheet', payload);
@@ -23,7 +24,12 @@ function* createTimeScheduleSaga({ payload }) {
         timeSchedule: response.data.data,
       })
     );
+    handleResponse('تم إضافة جدول دوام جديد بنجاح');
   } catch (error) {
+    if (error.response?.data?.message == 'The name is already EXISTS in the database.')
+      handleError('الاسم مستخدم سابقاَ');
+    else handleError('فشل اتمام العملية');
+
     yield put(
       createTimeScheduleFail({
         error: error,
@@ -78,7 +84,12 @@ function* destroyTimeScheduleSaga({ payload }) {
         deletedTimeSchedule: response.data.data,
       })
     );
+
+    handleResponse('تم الحذف بنجاح');
   } catch (error) {
+    handleError('فشل اتمام العملية');
+    console.log(error);
+
     yield put(
       destroyTimeScheduleFail({
         error: error,

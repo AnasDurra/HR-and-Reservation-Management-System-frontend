@@ -13,7 +13,8 @@ import vacationsReducer from './vacations/reducer';
 import employeesAbsencesReducer from './absences/reducer';
 import timeShiftsReducer from './timeShifts/reducer';
 import logSlice from './Features/Log/slice';
-import { consultantTimeScheduleSlice } from './Features/Appointments Management/Consultant Time Schedules/slice';
+import consultantTimeScheduleSlice from './Features/Appointments Management/Consultant Time Schedules/slice';
+import consultingAppointmentsSlice from './Features/Appointments Management/Consulting Appointements/slice';
 
 export default {
   userReducer: userReducer,
@@ -31,4 +32,5 @@ export default {
   timeShiftsReducer: timeShiftsReducer,
   logSlice: logSlice,
   consultantTimeScheduleSlice: consultantTimeScheduleSlice,
+  consultingAppointmentsSlice: consultingAppointmentsSlice,
 };

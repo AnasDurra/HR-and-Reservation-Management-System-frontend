@@ -100,16 +100,20 @@ export const items = [
 
     items: [
       {
-        text: 'جدول المواعيد',
-        path: '/appointments/calendar',
-      },
-      {
         text: 'جداول الدوام',
         path: '/consultant/timeSchedules',
       },
       {
+        text: 'جدول المواعيد',
+        path: '/appointments/calendar',
+      },
+      {
         text: 'جدول مواعيد المستشار',
         path: '/consultant/calendar',
+      },
+      {
+        text: 'المواعيد الملغاة',
+        path: '/appointments/cancelled',
       },
     ],
   },

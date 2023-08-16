@@ -12,6 +12,7 @@ import {
   Form,
   Input,
   Mentions,
+  Popconfirm,
   Row,
   Select,
   Space,
@@ -28,7 +29,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 import arLocale from '@fullcalendar/core/locales/ar';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   destroyTimeSchedule,
   getTimeSchedule,
@@ -39,7 +40,20 @@ const dataSource = [
   {
     key: '1',
     name: 'Mike',
-    schedule: <TimeSchedule />,
+    schedule: (
+      <TimeSchedule
+        periods={[
+          {
+            start_time: '02:00',
+            end_time: '04:00',
+          },
+          {
+            start_time: '05:00',
+            end_time: '06:00',
+          },
+        ]}
+      />
+    ),
     options: '10 Downing Street',
   },
   {
@@ -52,13 +66,14 @@ const dataSource = [
 
 function TimeSchedules() {
   const dispatch = useDispatch();
+  const timeSchedules = useSelector((state) => state?.consultantTimeScheduleSlice?.timeSchedules);
   const [isAddScheduleDrawerOpen, setIsAddScheduleDrawerOpen] = useState(false);
 
   const openAddScheduleDrawer = () => setIsAddScheduleDrawerOpen(true);
   const closeAddScheduleDrawer = () => setIsAddScheduleDrawerOpen(false);
 
   useEffect(() => {
-    //dispatch(getTimeSchedules());
+    dispatch(getTimeSchedules());
   }, []);
 
   const columns = [
@@ -70,23 +85,28 @@ function TimeSchedules() {
     },
     {
       title: <div className='table-header-title'>{'البرنامج'}</div>,
-      dataIndex: 'schedule',
+      dataIndex: 'periods',
       key: 'schedule',
-      render: (item) => <div className='table-cell-container'> {item}</div>,
+      render: (item) => (
+        <div className='table-cell-container'>
+          <TimeSchedule periods={item} />
+        </div>
+      ),
     },
     {
       title: <div className='table-header-title'>{'خيارات'}</div>,
-      dataIndex: 'options',
+      //dataIndex: 'options',
       key: 'options',
       render: (item) => (
         <div className='table-cell-container'>
-          <a
-            onClick={() => {
-              //  dispatch(destroyTimeSchedule({ id: item.id }));
+          <Popconfirm
+            title={'تأكيد الحذف'}
+            onConfirm={() => {
+              dispatch(destroyTimeSchedule({ id: item.id }));
             }}
           >
-            حذف
-          </a>
+            <a>حذف</a>
+          </Popconfirm>
         </div>
       ),
     },
@@ -104,7 +124,7 @@ function TimeSchedules() {
       </Space>
 
       <Table
-        dataSource={dataSource}
+        dataSource={timeSchedules}
         columns={columns}
         size='small'
       />

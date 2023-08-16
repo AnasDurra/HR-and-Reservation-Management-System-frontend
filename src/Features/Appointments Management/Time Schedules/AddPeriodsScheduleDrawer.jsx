@@ -12,6 +12,7 @@ import {
   Space,
   Table,
   TimePicker,
+  message,
 } from 'antd';
 import { useState } from 'react';
 import { PlusOutlined, MinusCircleFilled } from '@ant-design/icons';
@@ -19,8 +20,9 @@ import dayjs from 'dayjs';
 import TimeSchedule from './TimeSchedule';
 import { useForm } from 'antd/es/form/Form';
 import moment from 'moment';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createTimeSchedule } from '../../../redux/Features/Appointments Management/Consultant Time Schedules/slice';
+import { handleError } from '../../../redux/utils/helpers';
 
 function formatPeriods(array) {
   const result = [];
@@ -54,32 +56,95 @@ function formatPeriods(array) {
 
   return result;
 }
-
 function formatTime(time) {
   const hours = time.getHours() % 12 === 0 ? 12 : time.getHours() % 12;
   const minutes = time.getMinutes().toString().padStart(2, '0');
   const suffix = time.getHours() >= 12 ? 'pm' : 'am';
   return `${hours}:${minutes} ${suffix}`;
 }
+function checkOverlap(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    const current = arr[i];
+    for (let j = i + 1; j < arr.length; j++) {
+      const compare = arr[j];
+
+      // Extracting hours and minutes from time strings
+      const [currentStartHour, currentStartMin] = current.start_time.split(':');
+      const [currentEndHour, currentEndMin] = current.end_time.split(':');
+      const [compareStartHour, compareStartMin] = compare.start_time.split(':');
+      const [compareEndHour, compareEndMin] = compare.end_time.split(':');
+
+      // Converting extracted values to numbers
+      const currentStartTime = Number(currentStartHour) * 60 + Number(currentStartMin);
+      const currentEndTime =
+        Number(currentEndHour) < Number(currentStartHour)
+          ? (Number(currentEndHour) + 24) * 60 + Number(currentEndMin)
+          : Number(currentEndHour) * 60 + Number(currentEndMin);
+      const compareStartTime = Number(compareStartHour) * 60 + Number(compareStartMin);
+      const compareEndTime =
+        Number(compareEndHour) < Number(compareStartHour)
+          ? (Number(compareEndHour) + 24) * 60 + Number(compareEndMin)
+          : Number(compareEndHour) * 60 + Number(compareEndMin);
+
+      // Checking if the times overlap
+      if (
+        (currentStartTime <= compareEndTime && currentEndTime >= compareStartTime) ||
+        (compareStartTime <= currentEndTime && compareEndTime >= currentStartTime)
+      ) {
+        return true; // Times overlap
+      }
+    }
+  }
+
+  return false; // No overlap found
+}
+function isEndTimeBeforeStartTime(timeArray) {
+  for (let i = 0; i < timeArray.length; i++) {
+    const { start_time, end_time } = timeArray[i];
+    const startTime = new Date(`1970-01-01T${start_time}:00Z`);
+    const endTime = new Date(`1970-01-01T${end_time}:00Z`);
+
+    if (endTime < startTime) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 function AddPeriodsScheduleDrawer({ isOpen, close, open } = {}) {
   const dispatch = useDispatch();
+  const consultantTimeScheduleSlice = useSelector((state) => state.consultantTimeScheduleSlice);
   const [periods, setPeriods] = useState([]);
   const [isDefaultPeriods, setIsDefaultPeriods] = useState(false);
   const [defaultPeriod, setDefaultPeriod] = useState();
   const [form] = useForm();
 
   const updatePeriods = () => {
-    const unFormattedPeriods = form.getFieldsValue()['periods'];
+    const unFormattedPeriods = form
+      .getFieldsValue()
+      ['periods'].filter((item) => item != null && item.period != null && item.start_time != null);
+
     const sortedUnformattedPeriods = [...unFormattedPeriods].sort(
       (a, b) => new Date(a.start_time) - new Date(b.start_time)
     );
-    const formattedPeriods = formatPeriods(sortedUnformattedPeriods);
+
+    const formattedPeriods = sortedUnformattedPeriods.map((item) => {
+      const period = new Date(item.period);
+      const startTime = new Date(item.start_time);
+      const endTime = new Date(
+        startTime.getTime() + period.getHours() * 60 * 60 * 1000 + period.getMinutes() * 60 * 1000
+      );
+      return {
+        start_time: startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
+        end_time: endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
+      };
+    });
+
     setPeriods(formattedPeriods);
   };
 
   const onFinish = () => {
-    console.log(form.getFieldsValue()['periods']);
     const periods = form.getFieldsValue()['periods'].map((item) => {
       const period = new Date(item.period);
       const startTime = new Date(item.start_time);
@@ -91,14 +156,30 @@ function AddPeriodsScheduleDrawer({ isOpen, close, open } = {}) {
         end_time: endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
       };
     });
-    console.log(periods);
 
-    /*   dispatch(
-      createTimeSchedule({
-        name: form.getFieldValue(['name']),
-        periods,
-      })
-    ); */
+    console.log(periods);
+    if (checkOverlap(periods)) {
+      message.open({
+        type: 'error',
+        content: 'يوجد تضارب في الفترات المختارة ! ',
+      });
+    } else if (isEndTimeBeforeStartTime(periods)) {
+      message.open({
+        type: 'error',
+        content: 'لا يمكن لفترة أن تمتد ليومين!',
+      });
+    } else {
+      dispatch(
+        createTimeSchedule({
+          name: form.getFieldValue(['name']),
+          periods,
+        })
+      );
+      console.log(consultantTimeScheduleSlice);
+      if (consultantTimeScheduleSlice?.error == null) {
+        close();
+      }
+    }
   };
 
   return (
@@ -166,7 +247,6 @@ function AddPeriodsScheduleDrawer({ isOpen, close, open } = {}) {
                                 {...restField}
                                 label='توقيت الجلسة '
                                 name={[name, 'start_time']}
-                                rules={[{ required: true }]}
                               >
                                 <TimePicker
                                   format={'HH:mm'}
@@ -187,7 +267,7 @@ function AddPeriodsScheduleDrawer({ isOpen, close, open } = {}) {
                                       if (value) {
                                         return Promise.resolve();
                                       }
-                                      return Promise.reject('Please enter the session duration');
+                                      return Promise.reject('الرجاء ادخال مدة الجلسة');
                                     },
                                   }),
                                 ]}

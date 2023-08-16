@@ -10,37 +10,32 @@ import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/ico
 import Meta from 'antd/es/card/Meta';
 import EventCard from '../Components/EventCard';
 import SelectTimeScheduleModal from './SelectTimeScheduleModal';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  createAppointments,
+  getAppointments,
+  getConsultantAppointments,
+} from '../../../../redux/Features/Appointments Management/Consulting Appointements/slice';
 
 function renderEventContent(eventInfo) {
-  console.log(eventInfo.event);
+  //console.log('event', eventInfo.event.extendedProps);
   return (
     <>
-      <EventCard
-        customerName={'انس ريش'}
-        startTime={'11:30'}
-        endTime={'12:30'}
-        eventStatus={'متاح'}
-        onCustomerTagClick={() => {
-          console.log('customer clicked');
-        }}
-        onCancel={() => {
-          console.log('cancel', eventInfo.event);
-        }}
-      />
+      <EventCard editable event={eventInfo.event.extendedProps.appointment} />
     </>
   );
 }
 
 function ConsultantCalendar() {
   const dispatch = useDispatch();
+  const appointments = useSelector((state) => state.consultingAppointmentsSlice?.appointments);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSelectTimeScheduleModalOpen, setIsSelectTimeScheduleModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState();
   const calendarRef = createRef();
 
-  const onClose = () => setIsModalOpen(false);
-  const onOpen = () => setIsModalOpen(true);
+  const onClose = () => setIsSelectTimeScheduleModalOpen(false);
+  const onOpen = () => setIsSelectTimeScheduleModalOpen(true);
 
   return (
     <>
@@ -56,12 +51,26 @@ function ConsultantCalendar() {
           <SelectTimeScheduleModal
             onSelect={(timeScheduleId) => {
               console.log(timeScheduleId);
-              //send req
 
-              setIsModalOpen(false);
+              const startDate = new Date(selectedDate.startStr);
+              const endDate = new Date(selectedDate.endStr);
+
+              const dates = [];
+
+              while (startDate.getTime() < endDate.getTime()) {
+                const formattedDate = startDate.toISOString().split('T')[0];
+                dates.push({ date: formattedDate, shift_Id: timeScheduleId });
+                startDate.setDate(startDate.getDate() + 1);
+                console.log('start date', startDate.getTime());
+                console.log('enddate', endDate.getTime);
+              }
+
+              dispatch(createAppointments({ dates }));
+
+              setIsSelectTimeScheduleModalOpen(false);
             }}
             onClose={onClose}
-            isModalOpen={isModalOpen}
+            isModalOpen={isSelectTimeScheduleModalOpen}
           />
         </>
       )}
@@ -104,7 +113,8 @@ function ConsultantCalendar() {
         select={(date) => {
           console.log(date);
           setSelectedDate(date);
-          setIsModalOpen(true);
+          setIsSelectTimeScheduleModalOpen(true);
+          console.log(isSelectTimeScheduleModalOpen);
         }}
         selectAllow={(dateInfo) => {
           console.log(dateInfo);
@@ -121,7 +131,8 @@ function ConsultantCalendar() {
           }
           return true;
         }}
-        events={[
+        events={
+          /*  [
           {
             title: 'The Title', // a property!
             start: '2023-08-03T10:30:00', // a property!
@@ -137,7 +148,14 @@ function ConsultantCalendar() {
             start: '2023-08-04T10:30:00', // a property!
             end: '2023-08-04T11:30:00', // a property! ** see important note below about 'end' **
           },
-        ]}
+        ]
+        */
+          appointments.map((app) => ({
+            appointment: app,
+            start: new Date(`${app.date}T${app.start_time}`),
+            end: new Date(`${app.date}T${app.end_time}`),
+          }))
+        }
         eventContent={renderEventContent}
         eventMouseEnter={(arg) => {}}
         ref={calendarRef}
@@ -159,7 +177,14 @@ function ConsultantCalendar() {
         eventMaxStack={1}
         aspectRatio={2.33}
         datesSet={(dateInfo) => {
+          const startDate = new Date(dateInfo.start);
+          const endDate = new Date(dateInfo.end);
+
+          const formattedStartDate = startDate.toISOString().split('T')[0];
+          const formattedEndDate = endDate.toISOString().split('T')[0];
           console.log('changed!', dateInfo);
+
+          dispatch(getConsultantAppointments({ start_date: formattedStartDate, end_date: formattedEndDate }));
         }}
         //  contentHeight={550}
       />

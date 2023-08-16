@@ -1,7 +1,6 @@
 import React from 'react';
-import { DownOutlined, SmileOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Dropdown, Space } from 'antd';
+import { Button, Dropdown, Space } from 'antd';
 
 const items: MenuProps['items'] = [
   {
@@ -16,37 +15,45 @@ const items: MenuProps['items'] = [
     key: '2',
     label: (
       <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-        2nd menu item (disabled)
+        2nd menu item
       </a>
     ),
-    icon: <SmileOutlined />,
-    disabled: true,
   },
   {
     key: '3',
     label: (
       <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-        3rd menu item (disabled)
+        3rd menu item
       </a>
     ),
-    disabled: true,
-  },
-  {
-    key: '4',
-    danger: true,
-    label: 'a danger item',
   },
 ];
 
 const App: React.FC = () => (
-  <Dropdown menu={{ items }}>
-    <a onClick={(e) => e.preventDefault()}>
-      <Space>
-        Hover me
-        <DownOutlined />
-      </Space>
-    </a>
-  </Dropdown>
+  <Space direction="vertical">
+    <Space wrap>
+      <Dropdown menu={{ items }} placement="bottomLeft">
+        <Button>bottomLeft</Button>
+      </Dropdown>
+      <Dropdown menu={{ items }} placement="bottom">
+        <Button>bottom</Button>
+      </Dropdown>
+      <Dropdown menu={{ items }} placement="bottomRight">
+        <Button>bottomRight</Button>
+      </Dropdown>
+    </Space>
+    <Space wrap>
+      <Dropdown menu={{ items }} placement="topLeft">
+        <Button>topLeft</Button>
+      </Dropdown>
+      <Dropdown menu={{ items }} placement="top">
+        <Button>top</Button>
+      </Dropdown>
+      <Dropdown menu={{ items }} placement="topRight">
+        <Button>topRight</Button>
+      </Dropdown>
+    </Space>
+  </Space>
 );
 
 export default App;
