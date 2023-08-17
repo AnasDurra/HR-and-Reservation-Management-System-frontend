@@ -53,6 +53,10 @@ function DetectCustomer() {
                         <CheckCircleOutlined style={{ color: "green", marginRight: '5px' }} />
                     </div>
                     <Typography>تمّ تسجيل المستفيد عن طريق لوحة التحكم.</Typography>
+                    <div style={{display: "flex"}}>
+                        <Typography style={{marginLeft: '5px'}}>تاريخ التسجيل:</Typography>
+                        <Typography>{detectResult?.created_at}</Typography>
+                    </div>
                     <Typography.Title level={4}>الاقتراحات :</Typography.Title>
 
                     <Button onClick={() => navigate(`/customers/view/${detectResult?.customer_id}`)}>
@@ -75,6 +79,10 @@ function DetectCustomer() {
                         <CheckCircleOutlined style={{ color: "green", marginRight: '5px' }} />
                     </div>
                     <Typography>تمّ تسجيل المستفيد عن طريق تطبيق الهاتف و تمّ توثيق حسابه.</Typography>
+                    <div style={{display: "flex"}}>
+                        <Typography style={{marginLeft: '5px'}}>تاريخ التسجيل:</Typography>
+                        <Typography>{detectResult?.created_at}</Typography>
+                    </div>
                     <Typography.Title level={4}>الاقتراحات :</Typography.Title>
 
                     <Button onClick={() => navigate(`/customers/view/${detectResult?.customer_id}`)}>
@@ -90,6 +98,8 @@ function DetectCustomer() {
             return null;
         }
     };
+
+    console.log(detectResult);
 
     return (
         <div>
