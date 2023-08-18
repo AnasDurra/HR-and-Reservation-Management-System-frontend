@@ -2,7 +2,7 @@ import { Button, Carousel, Descriptions, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { getConsultant } from "../../redux/consultants/reducer";
+import { getConsultant, getConsultantAllAppointments, getConsultantYearAppointments } from "../../redux/consultants/reducer";
 import { getClinics } from "../../redux/clinics/reducer";
 import Spinner from "../../Components/Spinner/Spinner";
 import { PieChart, Pie, Sector, ResponsiveContainer, CartesianGrid, AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
@@ -14,6 +14,8 @@ import Slider from "react-slick";
 function ViewConsultant() {
 
     const consultant = useSelector(state => state.consultantsReducer.consultant);
+    const consultantYearAppointments = useSelector(state => state.consultantsReducer.consultantYearAppointments);
+    const consultantAllAppointments = useSelector(state => state.consultantsReducer.consultantAllAppointments);
     const loading = useSelector(state => state.consultantsReducer.loading);
     const clinics = useSelector(state => state.clinicsReducer.clinics);
     const dispatch = useDispatch();
@@ -23,9 +25,14 @@ function ViewConsultant() {
     useEffect(() => {
         dispatch(getClinics());
         if (consID) {
+            dispatch(getConsultantAllAppointments({id: consID}));
+            dispatch(getConsultantYearAppointments({id: consID}));
             dispatch(getConsultant({ id: consID }));
         }
     }, []);
+
+    console.log(consultantYearAppointments);
+    console.log(consultantAllAppointments);
 
     const [activeIndex, setActiveIndex] = useState(0);
 
@@ -170,7 +177,7 @@ function ViewConsultant() {
                 </Descriptions>
 
                 {show ?
-                    <div style={{paddingTop: '30px'}}>
+                    <div style={{ paddingTop: '30px' }}>
                         <Slider {...settings}>
                             <div>
                                 <ResponsiveContainer width={"100%"} height={500}>
@@ -210,11 +217,11 @@ function ViewConsultant() {
                                         <Area type="monotone" dataKey="عدد المواعيد" stroke="#8884d8" fill="#8884d8" />
                                     </AreaChart>
                                 </ResponsiveContainer>
-                                <Typography.Title level={4} style={{display: "flex", justifyContent: "center", alignItems: "center"}}>2023</Typography.Title>
+                                <Typography.Title level={4} style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>2023</Typography.Title>
                             </div>
                         </Slider>
                         <Button
-                            style={{marginTop: '60px'}}
+                            style={{ marginTop: '60px' }}
                             onClick={() => navigate(-1)}
                         >
                             العودة

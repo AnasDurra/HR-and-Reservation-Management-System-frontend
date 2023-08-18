@@ -7,6 +7,9 @@ const Permissions = {
     'MANAGE_EMPLOYEES': 6,
     'MANAGE_LOG': 7,
     'EXPORT_REPORTS': 8,
+    'MANAGE_CONSULTANTS': 9,
+    'MANAGE_CUSTOMERS': 10,
+    'MANAGE_EVENTS': 11,
 };
 
 export default Permissions;

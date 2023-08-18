@@ -5,6 +5,8 @@ export const consultantsReducer = createSlice({
     initialState: {
         consultants: [],
         consultant: null,
+        consultantYearAppointments: [],
+        consultantAllAppointments: [],
         metaData: null,
         loading: false,
         error: null,
@@ -84,6 +86,32 @@ export const consultantsReducer = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+
+        getConsultantYearAppointments: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        getConsultantYearAppointmentsSuccess: (state, action) => {
+            state.consultantYearAppointments = action.payload;
+            state.loading = false;
+        },
+        getConsultantYearAppointmentsFailed: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        getConsultantAllAppointments: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        getConsultantAllAppointmentsSuccess: (state, action) => {
+            state.consultantAllAppointments = action.payload;
+            state.loading = false;
+        },
+        getConsultantAllAppointmentsFailed: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
     }
 });
 
@@ -102,7 +130,13 @@ export const {
     updateConsultantFailed,
     getConsultant,
     getConsultantSuccess,
-    getConsultantFailed
+    getConsultantFailed,
+    getConsultantAllAppointments,
+    getConsultantAllAppointmentsSuccess,
+    getConsultantAllAppointmentsFailed,
+    getConsultantYearAppointments,
+    getConsultantYearAppointmentsSuccess,
+    getConsultantYearAppointmentsFailed,
 } = consultantsReducer.actions;
 
 export default consultantsReducer.reducer;

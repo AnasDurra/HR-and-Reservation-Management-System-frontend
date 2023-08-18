@@ -6,6 +6,7 @@ export const customersReducer = createSlice({
         customers: [],
         customer: null,
         educational_levels: [],
+        customerAppointmentsStatistics: [],
         detectResult: 3,
         metaData: null,
         loading: false,
@@ -143,6 +144,19 @@ export const customersReducer = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+
+        getCustomerAppointmentsStatistics: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        getCustomerAppointmentsStatisticsSuccess: (state, action) => {
+            state.customerAppointmentsStatistics = action.payload;
+            state.loading = false;
+        },
+        getCustomerAppointmentsStatisticsFailed: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
     }
 });
 
@@ -174,6 +188,9 @@ export const {
     verifyAccount,
     verifyAccountSuccess,
     verifyAccountFailed,
+    getCustomerAppointmentsStatistics,
+    getCustomerAppointmentsStatisticsSuccess,
+    getCustomerAppointmentsStatisticsFailed,
 } = customersReducer.actions;
 
 export default customersReducer.reducer;

@@ -5,6 +5,8 @@ import { addConsultantSuccess, addConsultantFailed } from "./reducer";
 import { deleteConsultantSuccess, deleteConsultantFailed } from "./reducer";
 import { updateConsultantSuccess, updateConsultantFailed } from "./reducer";
 import { getConsultantSuccess, getConsultantFailed } from "./reducer";
+import { getConsultantYearAppointmentsSuccess, getConsultantYearAppointmentsFailed } from "./reducer";
+import { getConsultantAllAppointmentsSuccess, getConsultantAllAppointmentsFailed } from "./reducer";
 import { handleError } from '../utils/helpers';
 
 
@@ -36,6 +38,14 @@ const updateConsultant = (payload) => {
 
 const createConsultant = (payload) => {
     return AxiosInstance().post('consultant', payload);
+}
+
+const getConsultantYearAppointments = (payload) => {
+    return AxiosInstance().get(`consultant/${payload.id}`);
+}
+
+const getConsultantAllAppointments = (payload) => {
+    return AxiosInstance().get(`consultant/${payload.id}`);
 }
 
 
@@ -101,6 +111,26 @@ function* addConsultantSaga({ payload }) {
     }
 }
 
+function* getConsultantYearAppointmentsSaga({ payload }) {
+    try {
+        const response = yield call(getConsultantYearAppointments, payload);
+        yield put(getConsultantYearAppointmentsSuccess(response.data.data));
+    }
+    catch (error) {
+        yield put(getConsultantYearAppointmentsFailed(error));
+    }
+}
+
+function* getConsultantAllAppointmentsSaga({ payload }) {
+    try {
+        const response = yield call(getConsultantAllAppointments, payload);
+        yield put(getConsultantAllAppointmentsSuccess(response.data.data));
+    }
+    catch (error) {
+        yield put(getConsultantAllAppointmentsFailed(error));
+    }
+}
+
 function* watchGetConsultants() {
     yield takeEvery('consultantsReducer/getConsultants', getConsultantsSaga);
 }
@@ -121,6 +151,14 @@ function* watchAddConsultant() {
     yield takeEvery('consultantsReducer/addConsultant', addConsultantSaga);
 }
 
+function* watchGetConsultantYearAppointments() {
+    yield takeEvery('consultantsReducer/getConsultantYearAppointments', getConsultantYearAppointmentsSaga);
+}
+
+function* watchGetConsultantAllAppointments() {
+    yield takeEvery('consultantsReducer/getConsultantAllAppointments', getConsultantAllAppointmentsSaga);
+}
+
 
 
 function* ConsultantsSaga() {
@@ -130,6 +168,8 @@ function* ConsultantsSaga() {
         fork(watchDeleteConsultant),
         fork(watchUpdateConsultant),
         fork(watchAddConsultant),
+        fork(watchGetConsultantYearAppointments),
+        fork(watchGetConsultantAllAppointments),
     ]);
 }
 
