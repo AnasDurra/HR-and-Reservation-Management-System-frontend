@@ -44,7 +44,7 @@ export default function JobVacancyModal({ open, onFinish, handleCancel, jobVacan
                 </Form.Item>
 
                 <Form.Item
-                    name="department_id"
+                    name="dep_id"
                     rules={[
                         {
                             required: true,
@@ -69,7 +69,7 @@ export default function JobVacancyModal({ open, onFinish, handleCancel, jobVacan
 
                 <Form.Item
                     style={{ width: '50%' }}
-                    name="employees_count"
+                    name="count"
                     rules={[
                         {
                             required: true,
