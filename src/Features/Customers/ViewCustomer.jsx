@@ -2,7 +2,7 @@ import { Button, Descriptions, Form, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { cahngeCustomerAccountActiveState, getCustomer, verifyAccount } from "../../redux/customers/reducer";
+import { cahngeCustomerAccountActiveState, getCustomer, getCustomerAppointmentsStatistics, verifyAccount } from "../../redux/customers/reducer";
 import Spinner from "../../Components/Spinner/Spinner";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
@@ -11,6 +11,7 @@ import VerifyAccountModal from "./VerifyAccountModal";
 function ViewCustomer() {
 
     const customer = useSelector(state => state.customersReducer.customer);
+    const statis = useSelector(state => state.customersReducer.customerAppointmentsStatistics);
     const loading = useSelector(state => state.customersReducer.loading);
     const dispatch = useDispatch();
     const { custID } = useParams();
@@ -19,9 +20,12 @@ function ViewCustomer() {
 
     useEffect(() => {
         if (custID) {
+            dispatch(getCustomerAppointmentsStatistics({id: custID}));
             dispatch(getCustomer({ id: custID }));
         }
     }, []);
+
+    console.log(statis);
 
     const data = [
         {

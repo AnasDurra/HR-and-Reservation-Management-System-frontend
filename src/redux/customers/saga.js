@@ -7,6 +7,7 @@ import { updateCustomerSuccess, updateCustomerFailed } from "./reducer";
 import { getCustomerSuccess, getCustomerFailed } from "./reducer";
 import { cahngeCustomerAccountActiveStateSuccess, cahngeCustomerAccountActiveStateFailed } from "./reducer";
 import { getDetectResultSuccess, getDetectResultFailed } from "./reducer";
+import { getCustomerAppointmentsStatisticsSuccess, getCustomerAppointmentsStatisticsFailed } from "./reducer";
 import { handleError, handleResponse } from '../utils/helpers';
 
 
@@ -64,6 +65,10 @@ const getDetectResult = (payload) => {
 
 const verifyAccount = (payload) => {
     return AxiosInstance().post(`customer-verification`, payload);
+}
+
+const getCustomerAppointmentsStatistics = (payload) => {
+    return AxiosInstance().get(`customer/statistics/${payload.id}`);
 }
 
 function* getCustomersSaga({ payload }) {
@@ -184,6 +189,16 @@ function* verifyAccountSaga({ payload }) {
     }
 }
 
+function* getCustomerAppointmentsStatisticsSaga({ payload }) {
+    try {
+        const response = yield call(getCustomerAppointmentsStatistics, payload);
+        yield put(getCustomerAppointmentsStatisticsSuccess(response.data.data));
+    }
+    catch (error) {
+        yield put(getCustomerAppointmentsStatisticsFailed(error));
+    }
+}
+
 function* watchGetCustomers() {
     yield takeEvery('customersReducer/getCustomers', getCustomersSaga);
 }
@@ -220,6 +235,10 @@ function* watchVerifyAccount() {
     yield takeEvery('customersReducer/verifyAccount', verifyAccountSaga);
 }
 
+function* watchGetCustomerAppointmentsStatistics() {
+    yield takeEvery('customersReducer/getCustomerAppointmentsStatistics', getCustomerAppointmentsStatisticsSaga);
+}
+
 function* CustomersSaga() {
     yield all([
         fork(watchGetCustomers),
@@ -231,6 +250,7 @@ function* CustomersSaga() {
         fork(watchChangeCustomerActiveState),
         fork(watchGetDetectResult),
         fork(watchVerifyAccount),
+        fork(watchGetCustomerAppointmentsStatistics),
     ]);
 }
 
