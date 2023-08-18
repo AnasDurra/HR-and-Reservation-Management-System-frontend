@@ -107,11 +107,12 @@ function ViewJobVacancies() {
                             setOpenDeleteModal(true);
                         }} />
                         <EditOutlined onClick={() => {
+                            console.log(record);
                             setSelectedJobVacancy(record);
                             form.setFieldsValue({
                                 name: record.name,
-                                department_id: record.department_id,
-                                employees_count: record.count,
+                                dep_id: record.department_id,
+                                count: record.count,
                                 description: record.description
                             })
                             setOpenJobVacancyModal(true);
