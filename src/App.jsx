@@ -87,65 +87,65 @@ function App() {
             <Route path="/unauthorized" element={<Unauthorized />} />
 
 
-            <Route element={<AccessRoute />}>
-              <Route element={<AccessRoute allowedRoutes={[PERMISSIONS.MANAGE_DEPARTMENTS]} userType={1} />}>
+            {/* <Route element={<AccessRoute />}> */}
+              {/* <Route element={<AccessRoute allowedRoutes={[PERMISSIONS.MANAGE_DEPARTMENTS]} userType={1} />}> */}
                 <Route path="/departments" element={<ViewDepartments />} />
-              </Route>
+              {/* </Route> */}
 
-              <Route element={<AccessRoute allowedRoutes={[PERMISSIONS.MANAGE_JOB_VACANCIES]} userType={1} />}>
+              {/* <Route element={<AccessRoute allowedRoutes={[PERMISSIONS.MANAGE_JOB_VACANCIES]} userType={1} />}> */}
                 <Route path="/jobVacancies" element={<ViewJobVacancies />} />
-              </Route>
+              {/* </Route> */}
 
               <Route path="employees">
 
-                <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_EMPLOYEES]} userType={1} />}>
+                {/* <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_EMPLOYEES]} userType={1} />}> */}
                   <Route index element={<ViewEmployeesProfiles />} />
                   <Route path="profile" element={<ViewEmployeeProfile />} />
-                </Route>
+                {/* </Route> */}
 
-                <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_ATTENDANCE]} userType={1} />}>
+                {/* <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_ATTENDANCE]} userType={1} />}> */}
                   <Route path="vacations">
                     <Route index element={<EmployeesVacations />} />
                     <Route path="requests" element={<ViewVacationRequests />} />
                   </Route>
                   <Route path="timeShiftRequests" element={<ViewTimeShiftRequests />} />
                   <Route path="absences" element={<EmployeesAbsences />} />
-                </Route>
+                {/* </Route> */}
 
-                <Route element={<AccessRoute allowedRoutes={[Permissions.EXPORT_REPORTS]} userType={1} />}>
+                {/* <Route element={<AccessRoute allowedRoutes={[Permissions.EXPORT_REPORTS]} userType={1} />}> */}
                   <Route path="reports" element={<EmployeesReports />} />
-                </Route>
+                {/* </Route> */}
               </Route>
 
 
-              <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_JOB_APPLICATIONS]} userType={1} />}>
+              {/* <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_JOB_APPLICATIONS]} userType={1} />}> */}
                 <Route path="jobApplications">
                   <Route index element={<ViewJobApplications />} />
                   <Route path="add" element={<JobApplicationMultiStepForm />} />
                   <Route path="jobApplication" element={<ViewJobApplication />} />
                 </Route>
-              </Route>
+              {/* </Route> */}
 
 
-              <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_LOG]} userType={1} />}>
+              {/* <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_LOG]} userType={1} />}> */}
                 <Route path="log">
                   <Route index element={<Log />} />
                 </Route>
-              </Route>
+              {/* </Route> */}
 
 
-              <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_ROLES]} userType={1} />}>
+              {/* <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_ROLES]} userType={1} />}> */}
                 <Route path="/roles" element={<ViewRoles />} />
-              </Route>
+              {/* </Route> */}
 
-              <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_ATTENDANCE]} userType={1} />}>
+              {/* <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_ATTENDANCE]} userType={1} />}> */}
                 <Route path="/shifts" element={<ViewShifts />} />
                 <Route
                   path="/biometricDevices"
                   element={<ViewBiometricDevices />}
                 />
                 <Route path="/timeSheetLog" element={<ViewTimeSheetLog />} />
-              </Route>
+              {/* </Route> */}
 
               {/* <Route element={<AccessRoute allowedRoutes={[]} />}> */}
               <Route path="consultants">
@@ -175,7 +175,7 @@ function App() {
               {/* </Route> */}
 
               <Route path="*" element={<Navigate to="/" />} />
-            </Route>
+            {/* </Route> */}
           </Routes>
         </Layout>
       </ConfigProvider>
