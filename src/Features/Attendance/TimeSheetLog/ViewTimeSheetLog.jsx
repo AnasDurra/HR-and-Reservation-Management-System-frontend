@@ -74,6 +74,8 @@ function ViewTimeSheetLog() {
         dispatch(getTimeSheetLog({ page: page, name: searchValue }));
     }
 
+    console.log(timeSheetLog);
+
     const columns = [
         {
             title: 'التاريخ',
@@ -92,9 +94,15 @@ function ViewTimeSheetLog() {
         },
         {
             title: 'بداية الدوام',
-            dataIndex: ['employee', 'schedule', 'time_in'],
             key: 'time_in',
-            render: (time) => <Tag color="purple">{time}</Tag>
+            render: (record) => <div style={{ display: 'flex', justifyContent: 'flexStart', alignItems: 'center' }}>
+                <Tag color="purple">{record?.employee?.schedule?.time_in}</Tag>
+                {record['shift.new_time_in'] ?
+                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                        <Tag color="lime" style={{ marginBottom: '3px' }}>إزاحة دوام</Tag>
+                        <Tag color="lime">{record['shift.new_time_in']}</Tag>
+                    </div> : null}
+            </div>
         },
         {
             title: 'وقت الدخول',
@@ -120,9 +128,15 @@ function ViewTimeSheetLog() {
         },
         {
             title: 'نهاية الدوام',
-            dataIndex: ['employee', 'schedule', 'time_out'],
             key: 'time_out',
-            render: (time) => <Tag color="blue">{time}</Tag>
+            render: (record) => <div style={{ display: 'flex', justifyContent: 'flexStart', alignItems: 'center' }}>
+                <Tag color="purple">{record?.employee?.schedule?.time_out}</Tag>
+                {record['shift.new_time_in'] ?
+                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                        <Tag color="lime" style={{ marginBottom: '3px' }}>إزاحة دوام</Tag>
+                        <Tag color="lime">{record['shift.new_time_out']}</Tag>
+                    </div> : null}
+            </div>
         },
         {
             title: 'وقت الخروج',

@@ -65,6 +65,7 @@ function ViewTimeShiftRequests() {
             title: 'التاريخ',
             dataIndex: 'start_date',
             key: 'start_date',
+            render: (date) => <Typography>{date.substring(0, 10)}</Typography>
         },
         {
             title: 'المدة',
@@ -88,7 +89,7 @@ function ViewTimeShiftRequests() {
             title: 'سبب الطلب',
             dataIndex: 'description',
             key: 'description',
-            width: '600px'
+            // width: '600px'
         },
         {
             title: 'حالة الطلب',
