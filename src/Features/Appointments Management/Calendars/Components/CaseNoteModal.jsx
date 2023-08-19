@@ -2,15 +2,27 @@ import { Col, Form, Input, Modal, Row, Select } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+  createCaseNote,
+  getCaseNote,
+  updateCaseNote,
+} from '../../../../redux/Features/Appointments Management/Consulting Appointements/slice';
 
 function CaseNoteModal({ appointment_id, isModalOpen, onClose }) {
   const dispatch = useDispatch();
+  const caseNote = useSelector((state) => state.consultingAppointmentsSlice.caseNote);
+  const [isFooterVisible, setIsFooterVisible] = useState(false);
   const [form] = useForm();
 
   useEffect(() => {
-    //TODO get customers
-    //dispatch(getTimeSchedules());
-  }, []);
+    if (isModalOpen) {
+      dispatch(getCaseNote({ appointment_id }));
+      console.log('casenote', caseNote);
+      form.setFieldValue(['title'], caseNote?.title);
+      form.setFieldValue(['description'], caseNote?.description);
+    }
+  }, [isModalOpen]);
+
   return (
     <Modal
       title='المعاينة'
@@ -19,17 +31,29 @@ function CaseNoteModal({ appointment_id, isModalOpen, onClose }) {
       onCancel={() => {
         onClose();
       }}
-      onOk={() => {}}
+      onOk={() => {
+        form.submit();
+      }}
       okText={'حفظ التعديلات'}
       cancelText={'إلفاء'}
-      // TODO if changes are made render footer
-      footer={undefined}
+      footer={isFooterVisible ? undefined : null}
       closable
     >
       <Form
         form={form}
-        onFinish={() => {}}
+        onFinish={(values) => {
+          dispatch(updateCaseNote({ appointment_id, title: values?.title, description: values?.description }));
+          onClose();
+        }}
         style={{ margin: '1rem' }}
+        onFieldsChange={() => {
+          if (
+            caseNote?.title != form.getFieldValue(['title']) ||
+            caseNote?.description != form.getFieldValue(['description'])
+          )
+            setIsFooterVisible(true);
+          else setIsFooterVisible(false);
+        }}
       >
         <Row>
           <Col span={24}>

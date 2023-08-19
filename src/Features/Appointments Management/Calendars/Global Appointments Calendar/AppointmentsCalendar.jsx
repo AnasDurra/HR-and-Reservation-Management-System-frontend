@@ -4,35 +4,28 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 import arLocale from '@fullcalendar/core/locales/ar';
-import { createRef, useState } from 'react';
+import { createRef, useEffect, useState } from 'react';
 import EventCard from '../Components/EventCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAppointments } from '../../../../redux/Features/Appointments Management/Consulting Appointements/slice';
 
 function renderEventContent(eventInfo) {
-  console.log(eventInfo.event);
+  //console.log("eventInfo",eventInfo.event);
   return (
     <>
       <EventCard
-        customerName={'anas'}
-        startTime={'11:30'}
-        endTime={'12:30'}
-        eventStatus={'متاح'}
-        onCustomerTagClick={() => {
-          console.log('customer clicked');
-        }}
-        onCancel={() => {
-          console.log('cancel', eventInfo.event);
-        }}
         editable
+        event={eventInfo.event.extendedProps.appointment}
       />
     </>
   );
 }
 
 function AppointmentsCalendar() {
+  const dispatch = useDispatch();
   const calendarRef = createRef();
 
-  const onClose = () => setIsModalOpen(false);
-  const onOpen = () => setIsModalOpen(true);
+  const appointments = useSelector((state) => state.consultingAppointmentsSlice?.appointments);
 
   return (
     <>
@@ -43,25 +36,20 @@ function AppointmentsCalendar() {
           right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
         }}
         selectable={false}
-        events={[
-          {
-            title: 'The Title', // a property!
-            start: '2023-08-03T10:30:00', // a property!
-            end: '2023-08-03T11:30:00', // a property! ** see important note below about 'end' **
-          },
-          {
-            title: 'The Title', // a property!
-            start: '2023-08-03T11:10:00', // a property!
-            end: '2023-08-03T12:30:00', // a property! ** see important note below about 'end' **
-          },
-          {
-            title: 'The Title', // a property!
-            start: '2023-08-04T10:30:00', // a property!
-            end: '2023-08-04T11:30:00', // a property! ** see important note below about 'end' **
-          },
-        ]}
+        events={appointments.map((app) => ({
+          appointment: app,
+          start: new Date(`${app.date}T${app.start_time}`),
+          end: new Date(`${app.date}T${app.end_time}`),
+        }))}
         datesSet={(dateInfo) => {
+          const startDate = new Date(dateInfo.start);
+          const endDate = new Date(dateInfo.end);
+
+          const formattedStartDate = startDate.toISOString().split('T')[0];
+          const formattedEndDate = endDate.toISOString().split('T')[0];
           console.log('changed!', dateInfo);
+
+          dispatch(getAppointments({ start_date: formattedStartDate, end_date: formattedEndDate }));
         }}
         eventContent={renderEventContent}
         eventMouseEnter={(arg) => {}}

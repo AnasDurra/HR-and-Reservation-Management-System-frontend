@@ -10,11 +10,17 @@ import {
   OneToOneOutlined,
   TeamOutlined,
   BellOutlined,
-} from "@ant-design/icons";
+  HomeOutlined,
+} from '@ant-design/icons';
 
 import Permissions from '../AccessRoute/Permissions';
 
 export const items = [
+  {
+    text: 'الرئيسيّة',
+    icon: <HomeOutlined />,
+    path: '/main',
+  },
   {
     text: 'الأقسام',
     icon: <ApartmentOutlined />,
@@ -121,30 +127,30 @@ export const items = [
     ],
   },
   {
-    text: "الاستشاريين",
+    text: 'الاستشاريين',
     icon: <OneToOneOutlined />,
-    path: "/consultants",
+    path: '/consultants',
     // access: [  ],
   },
   {
-    text: "المستفيدين",
+    text: 'المستفيدين',
     icon: <TeamOutlined />,
     // access: [  ],
     items: [
       {
-        text: "جميع المستفيدين",
-        path: "/customers",
+        text: 'جميع المستفيدين',
+        path: '/customers',
       },
       {
-        text: "إجراء عملية كشف",
-        path: "/customers/detect",
-      }
+        text: 'إجراء عملية كشف',
+        path: '/customers/detect',
+      },
     ],
   },
   {
-    text: "الفعاليّات",
+    text: 'الفعاليّات',
     icon: <BellOutlined />,
-    path: "/events",
+    path: '/events',
     // access: [  ],
   },
 ];

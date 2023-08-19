@@ -18,6 +18,7 @@ import timeShiftsReducer from './timeShifts/reducer';
 import logSlice from './Features/Log/slice';
 import consultantTimeScheduleSlice from './Features/Appointments Management/Consultant Time Schedules/slice';
 import consultingAppointmentsSlice from './Features/Appointments Management/Consulting Appointements/slice';
+import dashboardSlice from './Dashboard/slice';
 
 export default {
   userReducer: userReducer,
@@ -40,4 +41,5 @@ export default {
   eventsReducer: eventsReducer,
   consultantTimeScheduleSlice: consultantTimeScheduleSlice,
   consultingAppointmentsSlice: consultingAppointmentsSlice,
+  dashboardSlice: dashboardSlice,
 };

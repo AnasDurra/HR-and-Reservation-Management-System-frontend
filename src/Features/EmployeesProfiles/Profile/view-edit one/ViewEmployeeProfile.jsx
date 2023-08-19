@@ -6,20 +6,7 @@ import {
   updateEmployeeStatus,
 } from '../../../../redux/Features/Employee Profile/Employee/slice';
 import { useEffect, useState } from 'react';
-import {
-  Form,
-  Image,
-  Typography,
-  List,
-  Divider,
-  Dropdown,
-  Space,
-  Button,
-  Card,
-  Row,
-  Col,
-  Avatar,
-} from 'antd';
+import { Form, Image, Typography, List, Divider, Dropdown, Space, Button, Card, Row, Col, Avatar } from 'antd';
 import { ArrowLeftOutlined, SettingOutlined } from '@ant-design/icons';
 import ViewEditJobApplicationForm from './components/forms/ViewEditJobApplicationForm';
 import EmployeeInfoCard from './components/EmployeeInfoCard';
@@ -49,23 +36,17 @@ const ViewEmployeeProfile = (props) => {
   const navigate = useNavigate();
   const [searchParam, setSearchParam] = useSearchParams();
 
-  const [isEditMode, setIsEditMode] = useState(false);
-
   const [isAccountDrawerOpen, setIsAccountDrawerOpen] = useState(false);
   const [isDepartmentDrawerOpen, setIsDepartmentDrawerOpen] = useState(false);
   const [isRoleDrawerOpen, setIsRoleDrawerOpen] = useState(false);
   const [isScheduleDrawerOpen, setIsScheduleDrawerOpen] = useState(false);
 
-  const [isDepartmentsHistoryModalOpen, setIsDepartmentsHistoryModalOpen] =
-    useState(false);
-  const [isJobTitlesHistoryModalOpen, setIsJobTitlesHistoryModalOpen] =
-    useState(false);
+  const [isDepartmentsHistoryModalOpen, setIsDepartmentsHistoryModalOpen] = useState(false);
+  const [isJobTitlesHistoryModalOpen, setIsJobTitlesHistoryModalOpen] = useState(false);
   const [isAbsencesModalOpen, setIsAbsencesModalOpen] = useState(false);
 
   const employee = useSelector((state) => state.employeesSlice.employee);
-  const employeeLogs = useSelector(
-    (state) => state.employeesSlice.employeeLogs
-  );
+  const employeeLogs = useSelector((state) => state.employeesSlice.employeeLogs);
 
   useEffect(() => {
     dispatch(getEmployee(searchParam.get('id')));
@@ -80,7 +61,6 @@ const ViewEmployeeProfile = (props) => {
     } */
   }, [employee]);
 
-  const toggleEditMode = () => setIsEditMode(!isEditMode);
   const openAccountDrawer = () => setIsAccountDrawerOpen(true);
   const closeAccountDrawer = () => setIsAccountDrawerOpen(false);
   const openRoleDrawer = () => setIsRoleDrawerOpen(true);
@@ -89,13 +69,10 @@ const ViewEmployeeProfile = (props) => {
   const closeDepartmentDrawer = () => setIsDepartmentDrawerOpen(false);
   const openScheduleDrawer = () => setIsScheduleDrawerOpen(true);
   const closeScheduleDrawer = () => setIsScheduleDrawerOpen(false);
-  const openDepartmentsHistoryModal = () =>
-    setIsDepartmentsHistoryModalOpen(true);
-  const closeDepartmentsHistoryModal = () =>
-    setIsDepartmentsHistoryModalOpen(false);
+  const openDepartmentsHistoryModal = () => setIsDepartmentsHistoryModalOpen(true);
+  const closeDepartmentsHistoryModal = () => setIsDepartmentsHistoryModalOpen(false);
   const openJobTitlesHistoryModal = () => setIsJobTitlesHistoryModalOpen(true);
-  const closeJobTitlesHistoryModal = () =>
-    setIsJobTitlesHistoryModalOpen(false);
+  const closeJobTitlesHistoryModal = () => setIsJobTitlesHistoryModalOpen(false);
   const openAbsencesModal = () => setIsAbsencesModalOpen(true);
   const closeAbsencesModal = () => setIsAbsencesModalOpen(false);
 
@@ -114,10 +91,6 @@ const ViewEmployeeProfile = (props) => {
         {
           label: <div onClick={openAccountDrawer}>الحساب</div>,
           key: '0-0',
-        },
-        {
-          label: <div onClick={toggleEditMode}>البيانات</div>,
-          key: '0-1',
         },
         {
           label: <div onClick={openRoleDrawer}>المسمى الوظيفي & الصلاحيات</div>,
@@ -147,7 +120,8 @@ const ViewEmployeeProfile = (props) => {
                         emp_status_id: 1,
                       })
                     )
-                  }>
+                  }
+                >
                   {' '}
                   يعمل
                 </div>
@@ -166,7 +140,8 @@ const ViewEmployeeProfile = (props) => {
                         emp_status_id: 2,
                       })
                     )
-                  }>
+                  }
+                >
                   {' '}
                   إجازة
                 </div>
@@ -184,7 +159,8 @@ const ViewEmployeeProfile = (props) => {
                         emp_status_id: 3,
                       })
                     )
-                  }>
+                  }
+                >
                   استقالة
                 </div>
               ),
@@ -201,7 +177,8 @@ const ViewEmployeeProfile = (props) => {
                         emp_status_id: 4,
                       })
                     )
-                  }>
+                  }
+                >
                   إيقاف مؤقت
                 </div>
               ),
@@ -227,19 +204,20 @@ const ViewEmployeeProfile = (props) => {
             justifyContent: 'space-between',
             alignItems: 'start',
             width: '90%',
-          }}>
-          {!isEditMode && (
-            <Dropdown
-              menu={{ items }}
-              trigger={['click']}>
-              <Space>
-                <Button type='link'>
-                  <SettingOutlined style={{ fontSize: '150%' }} />
-                </Button>
-              </Space>
-            </Dropdown>
-          )}
-
+          }}
+        >
+          
+          <Dropdown
+            menu={{ items }}
+            trigger={['click']}
+          >
+            <Space>
+              <Button type='link'>
+                <SettingOutlined style={{ fontSize: '150%' }} />
+              </Button>
+            </Space>
+          </Dropdown>
+          
           <div
             style={{
               width: '100%',
@@ -248,7 +226,8 @@ const ViewEmployeeProfile = (props) => {
               gap: '1px',
               justifyContent: 'space-between',
               alignItems: 'center',
-            }}>
+            }}
+          >
             <div
               style={{
                 display: 'flex',
@@ -258,7 +237,8 @@ const ViewEmployeeProfile = (props) => {
                 marginBottom: '1rem',
                 marginLeft: '1rem',
                 textAlign: 'center',
-              }}>
+              }}
+            >
               <Image
                 style={{
                   borderRadius: '50%',
@@ -273,11 +253,9 @@ const ViewEmployeeProfile = (props) => {
 
               <Typography.Title
                 level={2}
-                style={{ margin: '1rem', color: '#1d39c4' }}>
-                {
-                  employee?.job_application?.employee_data?.personal_data
-                    ?.full_name
-                }
+                style={{ margin: '1rem', color: '#1d39c4' }}
+              >
+                {employee?.job_application?.employee_data?.personal_data?.full_name}
               </Typography.Title>
             </div>
 
@@ -285,25 +263,17 @@ const ViewEmployeeProfile = (props) => {
               <EmployeeInfoCard
                 address={`${employee?.job_application?.employee_data?.address?.city},${employee?.job_application?.employee_data?.address?.state},${employee?.job_application?.employee_data?.address?.street}`}
                 email={employee?.email}
-                departmentName={
-                  employee?.job_application?.job_application?.job_vacancy
-                    ?.department_name
-                }
-                employmentStatusId={
-                  employee?.current_employment_status?.emp_status_id
-                }
+                departmentName={employee?.current_department?.name}
+                employmentStatusId={employee?.current_employment_status?.emp_status_id}
                 joinDate={employee?.start_working_date}
                 scheduleName={employee?.schedule?.name}
                 jobTitleName={employee?.current_job_title?.name}
               />
             </div>
           </div>
-
           <Divider style={{ backgroundColor: '#1d39c4' }} />
-
           <div style={{ width: '100%' }}>
             <ViewEditJobApplicationForm
-              editMode={isEditMode}
               form={form}
               handleRemoveField={handleRemoveField}
               hidePersonalImg={true}
@@ -318,10 +288,12 @@ const ViewEmployeeProfile = (props) => {
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-            }}>
+            }}
+          >
             <Typography.Title
               level={4}
-              style={{ margin: '20px', color: '#1d39c4' }}>
+              style={{ margin: '20px', color: '#1d39c4' }}
+            >
               سجل النشاط
             </Typography.Title>
 
@@ -340,10 +312,9 @@ const ViewEmployeeProfile = (props) => {
                         avatar={
                           <Avatar
                             style={{
-                              backgroundColor: `${
-                                colorMapping[item.action.severity]
-                              }`,
-                            }}>
+                              backgroundColor: `${colorMapping[item.action.severity]}`,
+                            }}
+                          >
                             {statusMapping[item.action.severity]}
                           </Avatar>
                         }
@@ -368,14 +339,16 @@ const ViewEmployeeProfile = (props) => {
                         alignItems: 'center',
                       }}
                       onClick={openDepartmentsHistoryModal}
-                      hoverable>
+                      hoverable
+                    >
                       <div
                         style={{
                           display: 'flex',
                           justifyContent: 'center',
                           alignItems: 'center',
                           textAlign: 'center',
-                        }}>
+                        }}
+                      >
                         <ArrowLeftOutlined style={{ marginLeft: '1rem' }} />
                         <span>سجل الأقسام</span>
                       </div>
@@ -393,14 +366,16 @@ const ViewEmployeeProfile = (props) => {
                         alignItems: 'center',
                       }}
                       onClick={openJobTitlesHistoryModal}
-                      hoverable>
+                      hoverable
+                    >
                       <div
                         style={{
                           display: 'flex',
                           justifyContent: 'center',
                           alignItems: 'center',
                           textAlign: 'center',
-                        }}>
+                        }}
+                      >
                         <ArrowLeftOutlined style={{ marginLeft: '1rem' }} />
                         <span>سجل المسمّيات الوظيفية</span>
                       </div>
@@ -420,14 +395,16 @@ const ViewEmployeeProfile = (props) => {
                         alignItems: 'center',
                       }}
                       onClick={openAbsencesModal}
-                      hoverable>
+                      hoverable
+                    >
                       <div
                         style={{
                           display: 'flex',
                           justifyContent: 'center',
                           alignItems: 'center',
                           textAlign: 'center',
-                        }}>
+                        }}
+                      >
                         <ArrowLeftOutlined style={{ marginLeft: '1rem' }} />
                         <span>سجل الغياب</span>
                       </div>
@@ -450,9 +427,7 @@ const ViewEmployeeProfile = (props) => {
       />
 
       <EditEmployeeDepartmentDrawer
-        employeeName={
-          employee?.job_application?.employee_data?.personal_data?.full_name
-        }
+        employeeName={employee?.job_application?.employee_data?.personal_data?.full_name}
         emp_id={employee?.emp_id}
         dep_id={employee?.current_department?.dep_id}
         isOpen={isDepartmentDrawerOpen}
@@ -461,9 +436,7 @@ const ViewEmployeeProfile = (props) => {
 
       <ViewEditEmployeeScheduleDrawer
         emp_id={employee?.emp_id}
-        employeeName={
-          employee?.job_application?.employee_data?.personal_data?.full_name
-        }
+        employeeName={employee?.job_application?.employee_data?.personal_data?.full_name}
         schedule={employee?.schedule}
         isOpen={isScheduleDrawerOpen}
         onClose={closeScheduleDrawer}

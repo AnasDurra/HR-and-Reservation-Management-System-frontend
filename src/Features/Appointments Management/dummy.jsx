@@ -1,90 +1,37 @@
-import React, { useMemo, useRef, useState } from 'react';
-import debounce from 'lodash/debounce';
-import { Select, Spin } from 'antd';
-import type { SelectProps } from 'antd/es/select';
-
-export interface DebounceSelectProps<ValueType = any>
-  extends Omit<SelectProps<ValueType | ValueType[]>, 'options' | 'children'> {
-  fetchOptions: (search: string) => Promise<ValueType[]>;
-  debounceTimeout?: number;
+{
+  "data": {
+    "id": 2,
+    "name": "anas durra",
+    "phone_number": "0962962292",
+    "app": {
+      "id": 1,
+      "work_day_id": 2,
+      "status_id": 9,
+      "start_time": "2023-08-17 09:47:17",
+      "end_time": "2023-08-17 09:47:17",
+      "cancellation_reason": "asa",
+      "created_at": null
+    },
+  }
 }
 
-function DebounceSelect<
-  ValueType extends { key?: string; label: React.ReactNode; value: string | number } = any,
->({ fetchOptions, debounceTimeout = 800, ...props }: DebounceSelectProps<ValueType>) {
-  const [fetching, setFetching] = useState(false);
-  const [options, setOptions] = useState<ValueType[]>([]);
-  const fetchRef = useRef(0);
-
-  const debounceFetcher = useMemo(() => {
-    const loadOptions = (value: string) => {
-      fetchRef.current += 1;
-      const fetchId = fetchRef.current;
-      setOptions([]);
-      setFetching(true);
-
-      fetchOptions(value).then((newOptions) => {
-        if (fetchId !== fetchRef.current) {
-          // for fetch callback order
-          return;
-        }
-
-        setOptions(newOptions);
-        setFetching(false);
-      });
-    };
-
-    return debounce(loadOptions, debounceTimeout);
-  }, [fetchOptions, debounceTimeout]);
-
-  return (
-    <Select
-      labelInValue
-      filterOption={false}
-      onSearch={debounceFetcher}
-      notFoundContent={fetching ? <Spin size="small" /> : null}
-      {...props}
-      options={options}
-    />
-  );
+{
+  "data": {
+    "id": 1,
+    "work_day_id": 2,
+    "status_id": 9,
+    "start_time": "2023-08-17 09:47:17",
+    "end_time": "2023-08-17 09:47:17",
+    date: ,
+    "cancellation_reason": "asa",
+    "created_at": null
+    status:{
+      id: ,
+      status_name: ,
+      phone_number: ,
+      customer_name: ,
+      created_at: "2023-08-17_10:35:58"
+    },
+    
+  }
 }
-
-// Usage of DebounceSelect
-interface UserValue {
-  label: string;
-  value: string;
-}
-
-async function fetchUserList(username: string): Promise<UserValue[]> {
-  console.log('fetching user', username);
-
-  return fetch('https://randomuser.me/api/?results=5')
-    .then((response) => response.json())
-    .then((body) =>
-      body.results.map(
-        (user: { name: { first: string; last: string }; login: { username: string } }) => ({
-          label: `${user.name.first} ${user.name.last}`,
-          value: user.login.username,
-        }),
-      ),
-    );
-}
-
-const App: React.FC = () => {
-  const [value, setValue] = useState<UserValue[]>([]);
-
-  return (
-    <DebounceSelect
-      mode="multiple"
-      value={value}
-      placeholder="Select users"
-      fetchOptions={fetchUserList}
-      onChange={(newValue) => {
-        setValue(newValue as UserValue[]);
-      }}
-      style={{ width: '100%' }}
-    />
-  );
-};
-
-export default App;

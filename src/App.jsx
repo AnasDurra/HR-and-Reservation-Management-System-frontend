@@ -34,15 +34,16 @@ import TimeSchedules from './Features/Appointments Management/Time Schedules/Tim
 import ConsultantCalendar from './Features/Appointments Management/Calendars/Consultant Appointments Calendar/ConsultantCalendar';
 import AppointmentsCalendar from './Features/Appointments Management/Calendars/Global Appointments Calendar/AppointmentsCalendar';
 import CancelledAppointments from './Features/Appointments Management/Cancelled Appointments/CancelledAppointments';
-import ViewConsultants from "./Features/Consultants/ViewConsultants";
-import MaintainConsultant from "./Features/Consultants/MaintainConsultant";
-import ViewConsultant from "./Features/Consultants/ViewConsultant";
-import ViewCustomers from "./Features/Customers/ViewCustomers";
-import MaintainCustomer from "./Features/Customers/MaintainCustomer";
-import ViewCustomer from "./Features/Customers/ViewCustomer";
-import ViewEvents from "./Features/CenterEvents/ViewEvents";
-import MaintainEvent from "./Features/CenterEvents/MaintainEvent";
-import DetectCustomer from "./Features/Customers/DetectCustomer";
+import ViewConsultants from './Features/Consultants/ViewConsultants';
+import MaintainConsultant from './Features/Consultants/MaintainConsultant';
+import ViewConsultant from './Features/Consultants/ViewConsultant';
+import ViewCustomers from './Features/Customers/ViewCustomers';
+import MaintainCustomer from './Features/Customers/MaintainCustomer';
+import ViewCustomer from './Features/Customers/ViewCustomer';
+import ViewEvents from './Features/CenterEvents/ViewEvents';
+import MaintainEvent from './Features/CenterEvents/MaintainEvent';
+import DetectCustomer from './Features/Customers/DetectCustomer';
+import ViewHomePage from './Components/Home page/ViewHomePage';
 
 function App() {
   const dispatch = useDispatch();
@@ -99,25 +100,70 @@ function App() {
             />
 
             <Route element={<AccessRoute />}>
-              <Route element={<AccessRoute allowedRoutes={[PERMISSIONS.MANAGE_DEPARTMENTS]} userType={1} />}>
-                <Route path="/departments" element={<ViewDepartments />} />
+              <Route
+                element={
+                  <AccessRoute
+                    allowedRoutes={[PERMISSIONS.MANAGE_DEPARTMENTS]}
+                    userType={1}
+                  />
+                }
+              >
+                <Route
+                  path='/departments'
+                  element={<ViewDepartments />}
+                />
               </Route>
 
-              <Route element={<AccessRoute allowedRoutes={[PERMISSIONS.MANAGE_JOB_VACANCIES]} userType={1} />}>
-                <Route path="/jobVacancies" element={<ViewJobVacancies />} />
+              <Route
+                element={
+                  <AccessRoute
+                    allowedRoutes={[PERMISSIONS.MANAGE_JOB_VACANCIES]}
+                    userType={1}
+                  />
+                }
+              >
+                <Route
+                  path='/jobVacancies'
+                  element={<ViewJobVacancies />}
+                />
               </Route>
 
-              <Route path="employees">
-
-                <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_EMPLOYEES]} userType={1} />}>
-                  <Route index element={<ViewEmployeesProfiles />} />
-                  <Route path="profile" element={<ViewEmployeeProfile />} />
+              <Route path='employees'>
+                <Route
+                  element={
+                    <AccessRoute
+                      allowedRoutes={[Permissions.MANAGE_EMPLOYEES]}
+                      userType={1}
+                    />
+                  }
+                >
+                  <Route
+                    index
+                    element={<ViewEmployeesProfiles />}
+                  />
+                  <Route
+                    path='profile'
+                    element={<ViewEmployeeProfile />}
+                  />
                 </Route>
 
-                <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_ATTENDANCE]} userType={1} />}>
-                  <Route path="vacations">
-                    <Route index element={<EmployeesVacations />} />
-                    <Route path="requests" element={<ViewVacationRequests />} />
+                <Route
+                  element={
+                    <AccessRoute
+                      allowedRoutes={[Permissions.MANAGE_ATTENDANCE]}
+                      userType={1}
+                    />
+                  }
+                >
+                  <Route path='vacations'>
+                    <Route
+                      index
+                      element={<EmployeesVacations />}
+                    />
+                    <Route
+                      path='requests'
+                      element={<ViewVacationRequests />}
+                    />
                   </Route>
                   <Route
                     path='timeShiftRequests'
@@ -129,31 +175,87 @@ function App() {
                   />
                 </Route>
 
-                <Route element={<AccessRoute allowedRoutes={[Permissions.EXPORT_REPORTS]} userType={1} />}>
-                  <Route path="reports" element={<EmployeesReports />} />
+                <Route
+                  element={
+                    <AccessRoute
+                      allowedRoutes={[Permissions.EXPORT_REPORTS]}
+                      userType={1}
+                    />
+                  }
+                >
+                  <Route
+                    path='reports'
+                    element={<EmployeesReports />}
+                  />
                 </Route>
               </Route>
 
-              <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_JOB_APPLICATIONS]} userType={1} />}>
-                <Route path="jobApplications">
-                  <Route index element={<ViewJobApplications />} />
-                  <Route path="add" element={<JobApplicationMultiStepForm />} />
-                  <Route path="jobApplication" element={<ViewJobApplication />} />
+              <Route
+                element={
+                  <AccessRoute
+                    allowedRoutes={[Permissions.MANAGE_JOB_APPLICATIONS]}
+                    userType={1}
+                  />
+                }
+              >
+                <Route path='jobApplications'>
+                  <Route
+                    index
+                    element={<ViewJobApplications />}
+                  />
+                  <Route
+                    path='add'
+                    element={<JobApplicationMultiStepForm />}
+                  />
+                  <Route
+                    path='jobApplication'
+                    element={<ViewJobApplication />}
+                  />
                 </Route>
               </Route>
 
-              <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_LOG]} userType={1} />}>
-                <Route path="log">
-                  <Route index element={<Log />} />
+              <Route
+                element={
+                  <AccessRoute
+                    allowedRoutes={[Permissions.MANAGE_LOG]}
+                    userType={1}
+                  />
+                }
+              >
+                <Route path='log'>
+                  <Route
+                    index
+                    element={<Log />}
+                  />
                 </Route>
               </Route>
 
-              <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_ROLES]} userType={1} />}>
-                <Route path="/roles" element={<ViewRoles />} />
+              <Route
+                element={
+                  <AccessRoute
+                    allowedRoutes={[Permissions.MANAGE_ROLES]}
+                    userType={1}
+                  />
+                }
+              >
+                <Route
+                  path='/roles'
+                  element={<ViewRoles />}
+                />
               </Route>
 
-              <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_ATTENDANCE]} userType={1} />}>
-                <Route path="/shifts" element={<ViewShifts />} />
+              <Route
+                element={
+                  <AccessRoute
+                    allowedRoutes={[Permissions.MANAGE_ATTENDANCE]}
+                    userType={1}
+                  />
+                }
+              >
+                <Route
+                  path='/shifts'
+                  element={<ViewShifts />}
+                />
                 <Route
                   path='/biometricDevices'
                   element={<ViewBiometricDevices />}
@@ -188,34 +290,78 @@ function App() {
                 />
               </Route>
 
+              <Route
+                path='main'
+                element={<ViewHomePage />}
+              />
+
               {/* <Route element={<AccessRoute allowedRoutes={[]} />}> */}
-              <Route path="consultants">
-                <Route index element={<ViewConsultants />} />
-                <Route path="add" element={<MaintainConsultant />} />
-                <Route path="update/:consID" element={<MaintainConsultant />} />
-                <Route path="view/:consID" element={<ViewConsultant />} />
+              <Route path='consultants'>
+                <Route
+                  index
+                  element={<ViewConsultants />}
+                />
+                <Route
+                  path='add'
+                  element={<MaintainConsultant />}
+                />
+                <Route
+                  path='update/:consID'
+                  element={<MaintainConsultant />}
+                />
+                <Route
+                  path='view/:consID'
+                  element={<ViewConsultant />}
+                />
               </Route>
               {/* </Route> */}
 
               {/* <Route element={<AccessRoute allowedRoutes={[]} />}> */}
-              <Route path="customers">
-                <Route index element={<ViewCustomers />} />
-                <Route path="add" element={<MaintainCustomer />} />
-                <Route path="update/:custID" element={<MaintainCustomer />} />
-                <Route path="view/:custID" element={<ViewCustomer />} />
-                <Route path="detect" element={<DetectCustomer />} />
+              <Route path='customers'>
+                <Route
+                  index
+                  element={<ViewCustomers />}
+                />
+                <Route
+                  path='add'
+                  element={<MaintainCustomer />}
+                />
+                <Route
+                  path='update/:custID'
+                  element={<MaintainCustomer />}
+                />
+                <Route
+                  path='view/:custID'
+                  element={<ViewCustomer />}
+                />
+                <Route
+                  path='detect'
+                  element={<DetectCustomer />}
+                />
               </Route>
               {/* </Route> */}
 
               {/* <Route element={<AccessRoute allowedRoutes={[]} />}> */}
-              <Route path="events">
-                <Route index element={<ViewEvents />} />
-                <Route path="add" element={<MaintainEvent />} />
-                <Route path="update/:eventID" element={<MaintainEvent />} />
+              <Route path='events'>
+                <Route
+                  index
+                  element={<ViewEvents />}
+                />
+                <Route
+                  path='add'
+                  element={<MaintainEvent />}
+                />
+                <Route
+                  path='update/:eventID'
+                  element={<MaintainEvent />}
+                />
               </Route>
               {/* </Route> */}
 
-              <Route path="*" element={<Navigate to="/" />} />
+              <Route
+                path='*'
+                element={<Navigate to='/' />}
+              />
             </Route>
           </Routes>
         </Layout>

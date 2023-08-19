@@ -5,7 +5,7 @@ import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 import arLocale from '@fullcalendar/core/locales/ar';
 import { Alert, Avatar, Card, Modal, Popconfirm, Tag, message } from 'antd';
-import { createRef, useState } from 'react';
+import { createRef, useEffect, useState } from 'react';
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import Meta from 'antd/es/card/Meta';
 import EventCard from '../Components/EventCard';
@@ -21,7 +21,7 @@ function renderEventContent(eventInfo) {
   //console.log('event', eventInfo.event.extendedProps);
   return (
     <>
-      <EventCard editable event={eventInfo.event.extendedProps.appointment} />
+      <EventCard event={eventInfo.event.extendedProps.appointment} />
     </>
   );
 }
@@ -76,6 +76,57 @@ function ConsultantCalendar() {
       )}
 
       <FullCalendar
+        datesSet={(dateInfo) => {
+          const startDate = new Date(dateInfo.start);
+          const endDate = new Date(dateInfo.end);
+
+          const formattedStartDate = startDate.toISOString().split('T')[0];
+          const formattedEndDate = endDate.toISOString().split('T')[0];
+          console.log('changed!', dateInfo);
+
+          dispatch(getConsultantAppointments({ start_date: formattedStartDate, end_date: formattedEndDate }));
+        }}
+        select={(date) => {
+          setSelectedDate(date);
+          setIsSelectTimeScheduleModalOpen(true);
+        }}
+        selectAllow={(dateInfo) => {
+          const startDate = new Date(dateInfo.start);
+          const endDate = new Date(dateInfo.end);
+          const isInRange = appointments.some((app) => {
+            const date = new Date(app.date);
+            if (date >= startDate && date <= endDate) console.log('app', app);
+            return (
+              date >= startDate &&
+              date <= endDate &&
+              (app.status?.name == 'متاح' || app.status?.name == 'محجوز' || app.status?.name == 'هاتف')
+            );
+          });
+          if (isInRange) {
+            message.destroy();
+            message.open({
+              type: 'warning',
+              content: 'يجب إلغاء المواعيد النشطة قبل تحديد برنامج دوام جديد للأيام المختارة',
+            });
+            return false;
+          }
+
+          if (new Date().getTime() > startDate.getTime()) {
+            message.destroy();
+            message.open({
+              type: 'warning',
+              content: 'لايمكن اضافة مواعيد بالماضي',
+            });
+            return false;
+          }
+
+          return true;
+        }}
+        events={appointments.map((app) => ({
+          appointment: app,
+          start: new Date(`${app.date}T${app.start_time}`),
+          end: new Date(`${app.date}T${app.end_time}`),
+        }))}
         headerToolbar={
           isEditMode
             ? {
@@ -110,52 +161,6 @@ function ConsultantCalendar() {
               }
         }
         selectable={isEditMode}
-        select={(date) => {
-          console.log(date);
-          setSelectedDate(date);
-          setIsSelectTimeScheduleModalOpen(true);
-          console.log(isSelectTimeScheduleModalOpen);
-        }}
-        selectAllow={(dateInfo) => {
-          console.log(dateInfo);
-          if (dateInfo.start <= new Date('2023-08-03') && new Date('2023-08-03') <= dateInfo.end) {
-            message.config({
-              maxCount: 1,
-            });
-            message.open({
-              type: 'warning',
-              content: 'يوجد برنامج محدد لليوم المختار',
-            });
-
-            return false;
-          }
-          return true;
-        }}
-        events={
-          /*  [
-          {
-            title: 'The Title', // a property!
-            start: '2023-08-03T10:30:00', // a property!
-            end: '2023-08-03T11:30:00', // a property! ** see important note below about 'end' **
-          },
-          {
-            title: 'The Title', // a property!
-            start: '2023-08-03T11:10:00', // a property!
-            end: '2023-08-03T12:30:00', // a property! ** see important note below about 'end' **
-          },
-          {
-            title: 'The Title', // a property!
-            start: '2023-08-04T10:30:00', // a property!
-            end: '2023-08-04T11:30:00', // a property! ** see important note below about 'end' **
-          },
-        ]
-        */
-          appointments.map((app) => ({
-            appointment: app,
-            start: new Date(`${app.date}T${app.start_time}`),
-            end: new Date(`${app.date}T${app.end_time}`),
-          }))
-        }
         eventContent={renderEventContent}
         eventMouseEnter={(arg) => {}}
         ref={calendarRef}
@@ -176,16 +181,6 @@ function ConsultantCalendar() {
         dayMaxEventRows={1}
         eventMaxStack={1}
         aspectRatio={2.33}
-        datesSet={(dateInfo) => {
-          const startDate = new Date(dateInfo.start);
-          const endDate = new Date(dateInfo.end);
-
-          const formattedStartDate = startDate.toISOString().split('T')[0];
-          const formattedEndDate = endDate.toISOString().split('T')[0];
-          console.log('changed!', dateInfo);
-
-          dispatch(getConsultantAppointments({ start_date: formattedStartDate, end_date: formattedEndDate }));
-        }}
         //  contentHeight={550}
       />
     </>

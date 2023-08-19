@@ -4,6 +4,7 @@ import {
   DownCircleOutlined,
   DownOutlined,
   DropboxOutlined,
+  EllipsisOutlined,
   ExclamationCircleFilled,
   FormOutlined,
   PhoneOutlined,
@@ -25,6 +26,7 @@ import {
 import confirm from 'antd/es/modal/confirm';
 import CaseNoteModal from './CaseNoteModal';
 import PhoneReservationModal from './PhoneReservationModal';
+import { now } from 'moment/moment';
 
 //TODO color title based on status & reorder actions
 function EventCard({ event, editable }) {
@@ -68,41 +70,100 @@ function EventCard({ event, editable }) {
   const attendanceItems = [
     {
       key: '1',
-      label: <a onClick={() => {}}>تم تسجيل حضور الطرفين</a>,
+      label: (
+        <a
+          onClick={() => {
+            dispatch(updateAppointment({ appointment_id: event?.id, updateReservation: true, reservationType: 4 }));
+          }}
+        >
+          تم تسجيل حضور الطرفين
+        </a>
+      ),
     },
     {
       key: '2',
-      label: <a onClick={() => {}}>تسجيل غياب المستفيد</a>,
+      label: (
+        <a
+          onClick={() => {
+            dispatch(updateAppointment({ appointment_id: event?.id, updateReservation: true, reservationType: 7 }));
+          }}
+        >
+          تسجيل غياب المستفيد
+        </a>
+      ),
     },
     {
       key: '3',
-      label: <a onClick={() => {}}>تسجيل غياب المستشار</a>,
+      label: (
+        <a
+          onClick={() => {
+            dispatch(updateAppointment({ appointment_id: event?.id, updateReservation: true, reservationType: 8 }));
+          }}
+        >
+          تسجيل غياب المستشار
+        </a>
+      ),
+    },
+    {
+      key: '4',
+      label: (
+        <a
+          onClick={() => {
+            dispatch(updateAppointment({ appointment_id: event?.id, updateReservation: true, reservationType: 6 }));
+          }}
+        >
+          تعديل الموعد إلى متاح
+        </a>
+      ),
+    },
+    {
+      key: '5',
+      label: (
+        <a
+          onClick={() => {
+            //TODO لم يتم تسجيل الحضور
+            dispatch(updateAppointment({ appointment_id: event?.id, updateReservation: true, reservationType: 11 }));
+          }}
+        >
+          إزالة معلومات الحضور
+        </a>
+      ),
+    },
+  ];
+
+  const cancelAttendanceItems = [
+    {
+      key: '5',
+      disabled: new Date().getTime() > new Date(event?.date).getTime(),
+      label: (
+        <a
+          onClick={() => {
+            dispatch(updateAppointment({ appointment_id: event?.id, updateReservation: true, reservationType: 6 }));
+          }}
+        >
+          تعديل الموعد إلى متاح
+        </a>
+      ),
+    },
+    {
+      key: '6',
+      disabled: new Date().getTime() <= new Date(event?.date).getTime(),
+      label: (
+        <a
+          onClick={() => {
+            //TODO لم يتم تسجيل الحضور
+            dispatch(updateAppointment({ appointment_id: event?.id, updateReservation: true, reservationType: 11 }));
+          }}
+        >
+          إزالة معلومات الحضور
+        </a>
+      ),
     },
   ];
   return (
     <>
-      {/*   <Row gutter={35}>
-        <Col>
-          <Dropdown
-            menu={{ attendanceItems }}
-            placement='topLeft'
-          >
-            <DownOutlined />
-          </Dropdown>
-        </Col>
-        <Col></Col>
-      </Row> */}
-
       <Card
         actions={[
-          <Dropdown
-            key={'attendance'}
-            menu={{ items: attendanceItems }}
-            placement='bottomRight'
-          >
-            <DownCircleOutlined />
-          </Dropdown>,
-
           <UserAddOutlined
             key={'reservation'}
             onClick={() => setIsSelectCustomerModalOpen(true)}
@@ -133,24 +194,53 @@ function EventCard({ event, editable }) {
             onClick={showCancelAppointmentConfirm}
             style={{ fontSize: '135%' }}
           />,
+
+          <Dropdown
+            key={'attendance'}
+            menu={{ items: attendanceItems }}
+            placement='bottomRight'
+          >
+            <EllipsisOutlined />
+          </Dropdown>,
+          <Dropdown
+            key={'cancelAttendance'}
+            menu={{ items: cancelAttendanceItems }}
+            placement='bottomRight'
+          >
+            <EllipsisOutlined />
+          </Dropdown>,
         ].filter((element, index) => {
-          console.log('elemets', element);
+          const isEventInPast = new Date().getTime() > new Date(event?.date).getTime();
+
+          // console.log('elemets', element);
           switch (element.key) {
             case 'attendance':
               // return true;
-              return editable && event?.status?.name == 'محجوز' ? true : false;
+              return editable &&
+                (event?.status?.name == 'محجوز' ||
+                  event?.status?.status_name == 'هاتف' ||
+                  event?.status?.name == 'هاتف')
+                ? true
+                : false;
             case 'reservation':
-              return editable && !event?.customer_id && event?.status?.name == 'متاح' ? true : false;
+              return !isEventInPast && editable && event?.customer_id && event?.status?.name == 'متاح' ? true : false;
             case 'phoneReservation':
-              return editable && !event?.customer_id && event?.status?.name == 'متاح' ? true : false;
+              return !isEventInPast && editable && !event?.customer_id && event?.status?.name == 'متاح' ? true : false;
             case 'cancelReservation':
-              return editable && event?.customer_id ? true : false;
+              return !isEventInPast &&
+                editable &&
+                ((event?.customer_id && event?.status?.name == 'محجوز') ||
+                  event?.status?.status_name == 'هاتف' ||
+                  event?.status?.name == 'هاتف')
+                ? true
+                : false;
             case 'cancelAppointment':
-              return true;
+              return !isEventInPast && event?.status?.name == 'متاح';
             case 'caseNote':
               //TODO add the appointment status condition ( it should be completed) & employee cant edit casenote
-              return editable && event?.customer_id ? true : false;
-
+              return !editable && event?.status?.name == 'مكتمل' ? true : false;
+            case 'cancelAttendance':
+              return   event?.status?.name == 'مكتمل';
             default:
               return false;
           }
@@ -164,7 +254,8 @@ function EventCard({ event, editable }) {
                 alignItems: 'center',
               }}
             >
-              {event?.status.name}
+              {event?.status?.name}
+              {event?.status?.status_name}
             </div>
             <div
               style={{
@@ -198,8 +289,30 @@ function EventCard({ event, editable }) {
                   color='default'
                   onClick={() => {}}
                 >
-                  {event?.customer_id}
+                  {event?.customer_name}
                 </Tag>
+              )}
+
+              {event?.status?.status_id == 9 && (
+                <>
+                  <Tag
+                    className='user-tag'
+                    icon={<UserOutlined />}
+                    color='default'
+                    onClick={() => {}}
+                  >
+                    {event?.status?.customer_name}
+                  </Tag>
+                  <br />
+                  <Tag
+                    className='user-tag'
+                    icon={<PhoneOutlined />}
+                    color='default'
+                    onClick={() => {}}
+                  >
+                    {event?.status?.phone_number}
+                  </Tag>
+                </>
               )}
             </div>
           }
@@ -215,13 +328,13 @@ function EventCard({ event, editable }) {
       />
 
       <CaseNoteModal
-        appointment_id={2}
+        appointment_id={event?.id}
         isModalOpen={isCaseNoteModalOpen}
         onClose={() => setIsCaseNoteModalOpen(false)}
       />
 
       <PhoneReservationModal
-        appointment_id={event.id}
+        appointment_id={event?.id}
         isModalOpen={isPhoneReservationModalOpen}
         onClose={() => setIsPhoneReservationModalOpen(false)}
       />

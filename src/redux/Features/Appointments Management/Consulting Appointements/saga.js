@@ -6,6 +6,9 @@ import {
   createPhoneReservation,
   createPhoneReservationSuccess,
   createPhoneReservationFail,
+  createCaseNote,
+  createCaseNoteSuccess,
+  createCaseNoteFail,
   getConsultantAppointments,
   getConsultantAppointmentsSuccess,
   getConsultantAppointmentsFail,
@@ -15,9 +18,15 @@ import {
   getAppointments,
   getAppointmentsFail,
   getAppointmentsSuccess,
+  getCaseNote,
+  getCaseNoteSuccess,
+  getCaseNoteFail,
   updateAppointment,
   updateAppointmentSuccess,
   updateAppointmentFail,
+  updateCaseNote,
+  updateCaseNoteSuccess,
+  updateCaseNoteFail,
   cancelReservation,
   cancelReservationSuccess,
   cancelReservationFail,
@@ -35,7 +44,7 @@ function* createAppointmentsSaga({ payload }) {
     const response = yield call(create, payload);
     yield put(
       createAppointmentsSuccess({
-        Appointments: response.data.data,
+        appointments: response.data.data,
       })
     );
   } catch (error) {
@@ -50,8 +59,12 @@ function* watchCreateAppointments() {
   yield takeEvery(createAppointments, createAppointmentsSaga);
 }
 
-const phoneReservation = ({ id }) => {
-  return AxiosInstance().post(`smth/${id}`);
+const phoneReservation = ({ appointment_id, name, phone_number }) => {
+  return AxiosInstance().post(`book-un-registered-account`, {
+    app_id: appointment_id,
+    name,
+    phone_number,
+  });
 };
 
 function* createPhoneReservationSaga({ payload }) {
@@ -75,18 +88,50 @@ function* watchCreatePhoneReservation() {
   yield takeEvery(createPhoneReservation, createPhoneReservationSaga);
 }
 
-const update = ({ appointment_id, customer_id }) => {
-  return AxiosInstance().put(`book-by-employee/${appointment_id}/${customer_id}`);
+const newCaseNote = ({ appointment_id, title, description }) => {
+  return AxiosInstance().post(`case-note`, {
+    app_id: appointment_id,
+    title,
+    description,
+  });
 };
-function* updateAppointmentSaga({ payload }) {
+
+function* createCaseNoteSaga({ payload }) {
   try {
-    const response = yield call(update, payload);
+    const response = yield call(newCaseNote, payload);
     yield put(
-      updateAppointmentSuccess({
-        appointment: response.data.data,
+      createCaseNoteSuccess({
+        caseNote: response.data.data,
       })
     );
   } catch (error) {
+    console.log(error);
+    yield put(
+      createCaseNoteFail({
+        error: error,
+      })
+    );
+  }
+}
+function* watchCreateCaseNote() {
+  yield takeEvery(createCaseNote, createCaseNoteSaga);
+}
+
+const updateOneAppointment = ({ appointment_id, customer_id, updateReservation, reservationType }) => {
+  if (appointment_id && customer_id) return AxiosInstance().put(`book-by-employee/${appointment_id}/${customer_id}`);
+  if (appointment_id && updateReservation && reservationType)
+    return AxiosInstance().put(`attendance-modification/${appointment_id}/${reservationType}`);
+};
+function* updateAppointmentSaga({ payload }) {
+  try {
+    const response = yield call(updateOneAppointment, payload);
+    yield put(
+      updateAppointmentSuccess({
+        appointment: response?.data?.data,
+      })
+    );
+  } catch (error) {
+    console.log(error);
     yield put(
       updateAppointmentFail({
         error: error,
@@ -96,6 +141,37 @@ function* updateAppointmentSaga({ payload }) {
 }
 function* watchUpdateAppointment() {
   yield takeEvery(updateAppointment, updateAppointmentSaga);
+}
+
+const updateOneCaseNote = ({ appointment_id, title, description }) => {
+  const params = {
+    ...(title && { title }),
+    ...(description && { description }),
+  };
+  const queryString = Object.entries(params)
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&');
+
+  return AxiosInstance().put(`case-note/${appointment_id}${queryString ? `?${queryString}` : ''}`);
+};
+function* updateCaseNoteSaga({ payload }) {
+  try {
+    const response = yield call(updateOneCaseNote, payload);
+    yield put(
+      updateCaseNoteSuccess({
+        caseNote: response.data.data,
+      })
+    );
+  } catch (error) {
+    yield put(
+      updateCaseNoteFail({
+        error: error,
+      })
+    );
+  }
+}
+function* watchUpdateCaseNote() {
+  yield takeEvery(updateCaseNote, updateCaseNoteSaga);
 }
 
 const getAllConsultant = ({ start_date, end_date } = {}) => {
@@ -131,6 +207,30 @@ function* watchGetConsultantAppointments() {
   yield takeEvery(getConsultantAppointments, getConsultantAppointmentsSaga);
 }
 
+const getOneCaseNote = ({ appointment_id }) => {
+  return AxiosInstance().get(`case-note/${appointment_id}`);
+};
+
+function* getCaseNoteSaga({ payload }) {
+  try {
+    const response = yield call(getOneCaseNote, payload);
+    yield put(
+      getCaseNoteSuccess({
+        caseNote: response.data.data,
+      })
+    );
+  } catch (error) {
+    yield put(
+      getCaseNoteFail({
+        error: error,
+      })
+    );
+  }
+}
+function* watchGetCaseNote() {
+  yield takeEvery(getCaseNote, getCaseNoteSaga);
+}
+
 const getAll = ({ start_date, end_date } = {}) => {
   const params = {
     ...(start_date && { start_date }),
@@ -140,7 +240,7 @@ const getAll = ({ start_date, end_date } = {}) => {
     .map(([key, value]) => `${key}=${value}`)
     .join('&');
 
-  return AxiosInstance().get(`smth${queryString ? `?${queryString}` : ''}`);
+  return AxiosInstance().get(`appointment${queryString ? `?${queryString}` : ''}`);
 };
 
 function* getAppointmentsSaga({ payload }) {
@@ -253,10 +353,13 @@ function* ConsultingAppointmentsSaga() {
   yield all([
     fork(watchCreateAppointments),
     fork(watchCreatePhoneReservation),
+    fork(watchCreateCaseNote),
     fork(watchGetAppointments),
     fork(watchGetConsultantAppointments),
     fork(watchGetCancelledConsultingAppointments),
+    fork(watchGetCaseNote),
     fork(watchUpdateAppointment),
+    fork(watchUpdateCaseNote),
     fork(watchCancelReservation),
     fork(watchCancelAppointment),
   ]);

@@ -5,6 +5,7 @@ export const consultingAppointmentsSlice = createSlice({
   initialState: {
     appointments: [],
     cancelledAppointments: [],
+    caseNote: null,
     meta: null,
     loading: false,
     error: null,
@@ -16,7 +17,7 @@ export const consultingAppointmentsSlice = createSlice({
     },
     createAppointmentsSuccess: (state, action) => {
       state.loading = false;
-      state.appointments.push(action.payload.appointments);
+      state.appointments.push(...action.payload.appointments);
     },
     createAppointmentsFail: (state, action) => {
       state.loading = false;
@@ -29,9 +30,27 @@ export const consultingAppointmentsSlice = createSlice({
     },
     createPhoneReservationSuccess: (state, action) => {
       state.loading = false;
-      state.appointments.push(action.payload.appointments);
+      const appointmentIndex = state.appointments.findIndex(
+        (appointment) => appointment.id === action.payload.appointment.id
+      );
+      if (appointmentIndex != -1) {
+        state.appointments[appointmentIndex] = action.payload.appointment;
+      }
     },
     createPhoneReservationFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+
+    createCaseNote: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    createCaseNoteSuccess: (state, action) => {
+      state.loading = false;
+      state.caseNote = action.payload.caseNote;
+    },
+    createCaseNoteFail: (state, action) => {
       state.loading = false;
       state.error = action.payload.error;
     },
@@ -76,6 +95,19 @@ export const consultingAppointmentsSlice = createSlice({
       state.error = action.payload.error;
     },
 
+    getCaseNote: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    getCaseNoteSuccess: (state, action) => {
+      state.loading = false;
+      state.caseNote = action.payload.caseNote;
+    },
+    getCaseNoteFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+
     updateAppointment: (state) => {
       state.loading = true;
       state.error = null;
@@ -83,13 +115,26 @@ export const consultingAppointmentsSlice = createSlice({
     updateAppointmentSuccess: (state, action) => {
       state.loading = false;
       const appointmentIndex = state.appointments.findIndex(
-        (appointment) => appointment.id === action.payload.appointment.id
+        (appointment) => appointment.id === action.payload.appointment?.id
       );
       if (appointmentIndex != -1) {
         state.appointments[appointmentIndex] = action.payload.appointment;
       }
     },
     updateAppointmentFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+
+    updateCaseNote: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    updateCaseNoteSuccess: (state, action) => {
+      state.loading = false;
+      state.caseNote = action.payload.caseNote;
+    },
+    updateCaseNoteFail: (state, action) => {
       state.loading = false;
       state.error = action.payload.error;
     },
@@ -141,6 +186,10 @@ export const {
   createPhoneReservationSuccess,
   createPhoneReservationFail,
 
+  createCaseNote,
+  createCaseNoteSuccess,
+  createCaseNoteFail,
+
   getConsultantAppointments,
   getConsultantAppointmentsSuccess,
   getConsultantAppointmentsFail,
@@ -153,9 +202,17 @@ export const {
   getAppointmentsSuccess,
   getAppointmentsFail,
 
+  getCaseNote,
+  getCaseNoteSuccess,
+  getCaseNoteFail,
+
   updateAppointment,
   updateAppointmentSuccess,
   updateAppointmentFail,
+
+  updateCaseNote,
+  updateCaseNoteSuccess,
+  updateCaseNoteFail,
 
   cancelReservation,
   cancelReservationSuccess,

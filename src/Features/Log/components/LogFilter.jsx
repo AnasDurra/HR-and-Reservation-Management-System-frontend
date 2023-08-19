@@ -1,24 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Button,
-  Col,
-  Collapse,
-  DatePicker,
-  Form,
-  Input,
-  Row,
-  Select,
-} from 'antd';
+import { Button, Col, Collapse, DatePicker, Form, Input, Row, Select } from 'antd';
 import CollapsePanel from 'antd/es/collapse/CollapsePanel';
 import { CheckOutlined, ReloadOutlined } from '@ant-design/icons';
 import { useForm } from 'antd/es/form/Form';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getActionedUsers,
-  getActions,
-  getAffectedUsers,
-  getLogs,
-} from '../../../redux/Features/Log/slice';
+import { getActionedUsers, getActions, getAffectedUsers, getLogs } from '../../../redux/Features/Log/slice';
 import { debounce } from 'lodash';
 import moment from 'moment';
 const { Panel } = Collapse;
@@ -45,15 +31,9 @@ const LogFilter = () => {
     dispatch(getAffectedUsers());
   }, []);
 
-  const onActionedUsersSearch = debounce(
-    (data) => dispatch(getActionedUsers({ name: data })),
-    1000
-  );
+  const onActionedUsersSearch = debounce((data) => dispatch(getActionedUsers({ name: data })), 1000);
 
-  const onAffectedUsersSearch = debounce(
-    (data) => dispatch(getAffectedUsers({ name: data })),
-    1000
-  );
+  const onAffectedUsersSearch = debounce((data) => dispatch(getAffectedUsers({ name: data })), 1000);
 
   const resetFilters = () => form.resetFields();
 
@@ -82,18 +62,22 @@ const LogFilter = () => {
     <Collapse
       size='large'
       expandIconPosition='start'
-      defaultActiveKey={'panel-1'}>
+      defaultActiveKey={'panel-1'}
+    >
       <Panel
         header='الترشيح'
-        key='panel-1'>
+        key='panel-1'
+      >
         <Form
           form={form}
-          layout='vertical'>
+          layout='vertical'
+        >
           <Row>
             <Col span={24}>
               <Form.Item
                 name={'actioned_user'}
-                label={'القائمين بالحدث'}>
+                label={'القائمين بالحدث'}
+              >
                 <Select
                   mode='multiple'
                   showSearch
@@ -114,7 +98,8 @@ const LogFilter = () => {
             <Col span={24}>
               <Form.Item
                 name={['affected_user']}
-                label={'المتأثرين بالحدث'}>
+                label={'المتأثرين بالحدث'}
+              >
                 <Select
                   mode='multiple'
                   showSearch
@@ -135,7 +120,8 @@ const LogFilter = () => {
             <Col span={12}>
               <Form.Item
                 name={['action']}
-                label={'الأحداث'}>
+                label={'الأحداث'}
+              >
                 <Select
                   mode='multiple'
                   placeholder='انقر للاختيار'
@@ -151,7 +137,8 @@ const LogFilter = () => {
             <Col span={12}>
               <Form.Item
                 name={['action_severity']}
-                label={'الدرجة'}>
+                label={'الدرجة'}
+              >
                 <Select
                   mode='multiple'
                   placeholder='انقر للاختيار'
@@ -189,7 +176,7 @@ const LogFilter = () => {
                 noStyle
               />
 
-              <label htmlFor='end_date'>الأحداث بدءًا من</label>
+              <label htmlFor='end_date'>الأحداث قبل تاريخ</label>
               <DatePicker
                 style={{ marginTop: '0.4rem', marginBottom: '0.6rem' }}
                 id='end_date'
@@ -212,7 +199,8 @@ const LogFilter = () => {
             <Col span={7}>
               <Button
                 onClick={resetFilters}
-                type='primary'>
+                type='primary'
+              >
                 <ReloadOutlined />
               </Button>
             </Col>

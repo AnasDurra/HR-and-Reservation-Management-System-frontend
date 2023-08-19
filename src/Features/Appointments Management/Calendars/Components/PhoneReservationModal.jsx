@@ -16,16 +16,17 @@ function PhoneReservationModal({ appointment_id, isModalOpen, onClose }) {
       onCancel={() => {
         onClose();
       }}
-      onOk={() => {
-        // dispatch(createPhoneReservation({ id: appointment_id }));
-      }}
+      onOk={() => form.submit()}
       okText={'تأكيد'}
       cancelText={'إلفاء'}
       closable
     >
       <Form
         form={form}
-        onFinish={() => {}}
+        onFinish={(values) => {
+          console.log(values);
+          dispatch(createPhoneReservation({ appointment_id, phone_number: values?.phone, name: values?.name }));
+        }}
         style={{ margin: '1rem' }}
       >
         <Row>
@@ -33,6 +34,7 @@ function PhoneReservationModal({ appointment_id, isModalOpen, onClose }) {
             <Form.Item
               label='الاسم الكامل'
               name={'name'}
+              rules={[{ required: true }]}
             >
               <Input />
             </Form.Item>
@@ -44,8 +46,10 @@ function PhoneReservationModal({ appointment_id, isModalOpen, onClose }) {
               label='رقم الهاتف'
               name={'phone'}
               rules={[
-                { pattern: new RegExp(/^\+[0-9][0-9 -]+$/), message: 'يرجى إدخال رقم هاتف صالح' },
-                { max: 25, message: 'لا يمكن تجاوز 25 حرفًا' },
+                { pattern: new RegExp(/^\+*[0-9][0-9 -]+$/), message: 'يرجى إدخال رقم هاتف صالح' },
+                { max: 25 },
+                { min: 10 },
+                { required: true },
               ]}
             >
               <Input type='tel' />
