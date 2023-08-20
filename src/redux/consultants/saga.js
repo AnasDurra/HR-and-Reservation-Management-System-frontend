@@ -41,11 +41,11 @@ const createConsultant = (payload) => {
 }
 
 const getConsultantYearAppointments = (payload) => {
-    return AxiosInstance().get(`consultant/${payload.id}`);
+    return AxiosInstance().get(`consultant/monthly-statistics/${payload.id}`);
 }
 
 const getConsultantAllAppointments = (payload) => {
-    return AxiosInstance().get(`consultant/${payload.id}`);
+    return AxiosInstance().get(`consultant/statistics/${payload.id}`);
 }
 
 

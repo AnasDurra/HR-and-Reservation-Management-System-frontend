@@ -22,11 +22,14 @@ function ViewConsultant() {
     const { consID } = useParams();
     const navigate = useNavigate();
 
+    const [fetchedYear, setFetchedYear] = useState([]);
+    const [fetchedAll, setFetchedAll] = useState([]);
+
     useEffect(() => {
         dispatch(getClinics());
         if (consID) {
-            dispatch(getConsultantAllAppointments({id: consID}));
-            dispatch(getConsultantYearAppointments({id: consID}));
+            dispatch(getConsultantAllAppointments({ id: consID }));
+            dispatch(getConsultantYearAppointments({ id: consID }));
             dispatch(getConsultant({ id: consID }));
         }
     }, []);
@@ -36,11 +39,13 @@ function ViewConsultant() {
 
     const [activeIndex, setActiveIndex] = useState(0);
 
-    const data = [
+    const data =
+     
+    [
         { name: 'المواعيد المكتملة', value: 500 },
         { name: 'المواعيد الملغية(الاستشاري)', value: 300 },
         { name: 'المواعيد الملغية(المستفيد)', value: 300 },
-        { name: 'المواعيد غير المحجوزة', value: 200 },
+        { name: 'المواعيد غير المعلومة', value: 200 },
     ];
 
     const renderActiveShape = (props) => {
@@ -154,6 +159,8 @@ function ViewConsultant() {
         },
     ];
 
+
+
     const settings = {
         dots: true,
         infinite: true,
@@ -161,6 +168,17 @@ function ViewConsultant() {
         slidesToShow: 1,
         slidesToScroll: 1
     };
+
+    useEffect(() => {
+        if (consultantYearAppointments.length > 0) {
+            let d = data2;
+            for (let i = 0; i < d.length; i++) {
+                d[i]['عدد المواعيد'] = consultantYearAppointments[i]['عدد المواعيد'];
+            }
+
+            setFetchedYear(d);
+        }
+    }, [consultantYearAppointments]);
 
     return (
         <Spinner loading={loading}>
@@ -202,7 +220,7 @@ function ViewConsultant() {
                                     <AreaChart
                                         width={500}
                                         height={400}
-                                        data={data2}
+                                        data={fetchedYear}
                                         margin={{
                                             top: 10,
                                             right: 30,

@@ -18,6 +18,8 @@ function ViewCustomer() {
     const navigate = useNavigate();
     const [customerFamilyState, setCustomerFamilyState] = useState(null);
 
+    const [statistics, setStatistics] = useState([]);
+
     useEffect(() => {
         if (custID) {
             dispatch(getCustomerAppointmentsStatistics({id: custID}));
@@ -27,7 +29,9 @@ function ViewCustomer() {
 
     console.log(statis);
 
-    const data = [
+    const data =
+     
+    [
         {
             name: 'العيادة النفسية',
             ["المواعيد المكتملة"]: 20,

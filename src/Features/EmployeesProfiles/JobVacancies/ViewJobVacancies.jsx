@@ -94,7 +94,19 @@ function ViewJobVacancies() {
             title: 'حالة الشاعر',
             dataIndex: 'vacancy_status_name',
             key: 'vacancy_status',
-            render: (status) => <Tag>{status}</Tag>
+            render: (status) => {
+                let color = "green";
+                if (status === "مغلق") {
+                    color = "red";
+                } else if (status === "مؤرشف") {
+                    color = "blue";
+                }
+                return (
+                    <Tag color={color}>
+                        {status}
+                    </Tag>
+                );
+            }
         },
         {
             title: 'العمليات',

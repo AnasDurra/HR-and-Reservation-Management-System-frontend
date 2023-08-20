@@ -6,7 +6,7 @@ export const customersReducer = createSlice({
         customers: [],
         customer: null,
         educational_levels: [],
-        customerAppointmentsStatistics: [],
+        customerAppointmentsStatistics: null,
         detectResult: 3,
         metaData: null,
         loading: false,

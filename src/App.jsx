@@ -99,43 +99,43 @@ function App() {
               element={<Unauthorized />}
             />
 
-            <Route
+            {/* <Route
               element={
                 <AccessRoute
                   allowedRoutes={[PERMISSIONS.MANAGE_DEPARTMENTS]}
                   userType={1}
                 />
               }
-            >
+            > */}
               <Route
                 path='/departments'
                 element={<ViewDepartments />}
               />
-            </Route>
+            {/* </Route> */}
 
-            <Route
+            {/* <Route
               element={
                 <AccessRoute
                   allowedRoutes={[PERMISSIONS.MANAGE_JOB_VACANCIES]}
                   userType={1}
                 />
               }
-            >
+            > */}
               <Route
                 path='/jobVacancies'
                 element={<ViewJobVacancies />}
               />
-            </Route>
+            {/* </Route> */}
 
             <Route path='employees'>
-              <Route
+              {/* <Route
                 element={
                   <AccessRoute
                     allowedRoutes={[Permissions.MANAGE_EMPLOYEES]}
                     userType={1}
                   />
                 }
-              >
+              > */}
                 <Route
                   index
                   element={<ViewEmployeesProfiles />}
@@ -144,16 +144,16 @@ function App() {
                   path='profile'
                   element={<ViewEmployeeProfile />}
                 />
-              </Route>
+              {/* </Route> */}
 
-              <Route
+              {/* <Route
                 element={
                   <AccessRoute
                     allowedRoutes={[Permissions.MANAGE_ATTENDANCE]}
                     userType={1}
                   />
                 }
-              >
+              > */}
                 <Route path='vacations'>
                   <Route
                     index
@@ -172,31 +172,31 @@ function App() {
                   path='absences'
                   element={<EmployeesAbsences />}
                 />
-              </Route>
+              {/* </Route> */}
 
-              <Route
+              {/* <Route
                 element={
                   <AccessRoute
                     allowedRoutes={[Permissions.EXPORT_REPORTS]}
                     userType={1}
                   />
                 }
-              >
+              > */}
                 <Route
                   path='reports'
                   element={<EmployeesReports />}
                 />
               </Route>
-            </Route>
+            {/* </Route> */}
 
-            <Route
+            {/* <Route
               element={
                 <AccessRoute
                   allowedRoutes={[Permissions.MANAGE_JOB_APPLICATIONS]}
                   userType={1}
                 />
               }
-            >
+            > */}
               <Route path='jobApplications'>
                 <Route
                   index
@@ -211,18 +211,18 @@ function App() {
                   element={<ViewJobApplication />}
                 />
               </Route>
-            </Route>
+            {/* </Route> */}
 
             {/* </Route> */}
 
-            <Route
+            {/* <Route
               element={
                 <AccessRoute
                   allowedRoutes={[Permissions.MANAGE_LOG]}
                   userType={1}
                 />
               }
-            >
+            > */}
               <Route path='log'>
                 <Route
                   index
@@ -231,28 +231,28 @@ function App() {
               </Route>
               {/* </Route> */}
 
-              <Route
+              {/* <Route
                 element={
                   <AccessRoute
                     allowedRoutes={[Permissions.MANAGE_ROLES]}
                     userType={1}
                   />
                 }
-              >
+              > */}
                 <Route
                   path='/roles'
                   element={<ViewRoles />}
                 />
-              </Route>
+              {/* </Route> */}
 
-              <Route
+              {/* <Route
                 element={
                   <AccessRoute
                     allowedRoutes={[Permissions.MANAGE_ATTENDANCE]}
                     userType={1}
                   />
                 }
-              >
+              > */}
                 <Route
                   path='/shifts'
                   element={<ViewShifts />}
@@ -265,7 +265,7 @@ function App() {
                   path='/timeSheetLog'
                   element={<ViewTimeSheetLog />}
                 />
-              </Route>
+              {/* </Route> */}
 
               <Route path='appointments'>
                 <Route
@@ -363,7 +363,7 @@ function App() {
                 path='*'
                 element={<Navigate to='/' />}
               />
-            </Route>
+            {/* </Route> */}
           </Routes>
         </Layout>
       </ConfigProvider>
