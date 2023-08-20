@@ -27,7 +27,7 @@ const AccessRoute = ({ allowedRoutes, userType }) => {
     }
 
     const hasAllowedRole = permissions.some(role => allowedRoutes.includes(role));
-
+    
     return (
         hasAllowedRole
             ? <Outlet />

@@ -1,8 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  formatRequestAfterReceive,
-  formatRequestBeforeSend,
-} from "../../../../Features/EmployeesProfiles/Job Application/utils/helpers";
 
 export const jobApplicationsSlice = createSlice({
   name: "jobApplications",

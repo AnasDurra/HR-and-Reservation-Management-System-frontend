@@ -48,6 +48,7 @@ import { formatRequestAfterReceive } from '../../../../Features/EmployeesProfile
 import { message } from 'antd';
 
 const create = (payload) => {
+  console.log(payload)
   return AxiosInstance().post('employees', payload, {
     headers: {
       'Content-type': 'multipart/form-data',

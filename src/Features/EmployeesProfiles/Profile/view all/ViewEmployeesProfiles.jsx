@@ -8,16 +8,17 @@ import { getDepartments } from '../../../../redux/departments/slice';
 import { getRoles } from '../../../../redux/roles/slice';
 import './EmployessProfiles.css';
 
-
 const colorMapping = {
-  1: '#FF0000',
-  2: '#008000',
+  1: '#008000',
+  2: '#808080',
   3: '#808080',
+  4: '#FF0000',
 };
 const statusMapping = {
-  1: 'حرج',
-  2: 'متوسَط',
-  3: 'منخفض',
+  1: 'يعمل',
+  2: 'في عطلة',
+  3: 'مستقيل',
+  4: 'إيقاف مؤقت',
 };
 
 function ViewEmployeesProfiles(props) {
@@ -31,9 +32,7 @@ function ViewEmployeesProfiles(props) {
     schedule: [],
   });
   const employeeSlice = useSelector((state) => state.employeesSlice);
-  const departments = useSelector(
-    (state) => state.departmentsSlice.departments
-  );
+  const departments = useSelector((state) => state.departmentsSlice.departments);
   const roles = useSelector((state) => state.rolesSlice.roles);
   const shifts = useSelector((state) => state.shiftsReducer.shifts);
 
@@ -52,10 +51,7 @@ function ViewEmployeesProfiles(props) {
         title: filters.title,
         schedule: filters.schedule,
         page: pagination.current,
-        name:
-          filters.employee_name?.length > 0
-            ? filters.employee_name[0]
-            : undefined,
+        name: filters.employee_name?.length > 0 ? filters.employee_name[0] : undefined,
       })
     );
     setFilters(filters);
@@ -66,19 +62,12 @@ function ViewEmployeesProfiles(props) {
       title: 'الاسم',
       dataIndex: 'full_name',
       key: 'employee_name',
-      filterDropdown: ({
-        setSelectedKeys,
-        selectedKeys,
-        confirm,
-        clearFilters,
-      }) => (
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
         <div style={{ padding: 8 }}>
           <Input.Search
             placeholder='اسم الموظَف'
             value={selectedKeys[0]}
-            onChange={(e) =>
-              setSelectedKeys(e.target.value ? [e.target.value] : [])
-            }
+            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
             onPressEnter={confirm}
             onSearch={confirm}
             style={{ width: 188, marginBottom: 8, display: 'block' }}
@@ -119,20 +108,19 @@ function ViewEmployeesProfiles(props) {
     },
     {
       title: 'حالة الموظف',
-      dataIndex: 'status',
       key: 'status',
       filters: Object.entries(statusMapping).map(([value, text]) => ({
         text,
         value: parseInt(value),
       })),
-      render: (_, { status }) => (
-        <Tag
-          color={
-            colorMapping[employeeSlice?.employees?.current_employment_status]
-          }>
-          {statusMapping[employeeSlice?.employees?.current_employment_status]}
-        </Tag>
-      ),
+      render: (item) => {
+        console.log(item);
+        return (
+          <Tag color={colorMapping[item.current_employment_status?.emp_status_id]}>
+            {item.current_employment_status?.name}
+          </Tag>
+        );
+      },
       filteredValue: filters.status,
     },
   ];
@@ -161,7 +149,8 @@ function ViewEmployeesProfiles(props) {
           className='employeesButton'
           onClick={() => {
             navigate('/jobApplications/add');
-          }}>
+          }}
+        >
           إضافة موظف
         </Button>
       </div>

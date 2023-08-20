@@ -1,39 +1,31 @@
-import { useForm } from "antd/lib/form/Form";
-import ViewEditJobApplicationForm from "../../Profile/view-edit one/components/forms/ViewEditJobApplicationForm";
-import VacancyCard from "../components/VacancyCard";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useForm } from 'antd/lib/form/Form';
+import ViewEditJobApplicationForm from '../../Profile/view-edit one/components/forms/ViewEditJobApplicationForm';
+import VacancyCard from '../components/VacancyCard';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   destroyJobApplications,
   getJobApplication,
   updateJobApplication,
-} from "../../../../redux/Features/Employee Profile/Job application/slice";
-import Spinner from "../../../../Components/Spinner/Spinner";
-import { ExclamationCircleFilled, SettingOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Dropdown,
-  Modal,
-  Select,
-  Space,
-  Tag,
-  message,
-} from "antd";
-import CreateProfileDrawer from "../components/CreateProfileDrawer";
-import { getJobVacancies } from "../../../../redux/jobVacancies/reducer";
+} from '../../../../redux/Features/Employee Profile/Job application/slice';
+import Spinner from '../../../../Components/Spinner/Spinner';
+import { ExclamationCircleFilled, SettingOutlined } from '@ant-design/icons';
+import { Button, Dropdown, Modal, Select, Space, Tag, message } from 'antd';
+import CreateProfileDrawer from '../components/CreateProfileDrawer';
+import { getJobVacancies } from '../../../../redux/jobVacancies/reducer';
 
 const colorMapping = {
-  1: "#FFA500",
-  2: "#008000",
-  3: "#FF0000",
-  4: "#808080",
+  1: '#FFA500',
+  2: '#008000',
+  3: '#FF0000',
+  4: '#808080',
 };
 const statusMapping = {
-  1: "معلَق",
-  2: "مقبول",
-  3: "مرفوض",
-  4: "مؤرشف",
+  1: 'معلَق',
+  2: 'مقبول',
+  3: 'مرفوض',
+  4: 'مؤرشف',
 };
 
 const ViewJobApplication = () => {
@@ -45,16 +37,12 @@ const ViewJobApplication = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedVacancy, setSelectedVacancy] = useState(null);
   const [form] = useForm();
-  const jobApplication = useSelector(
-    (state) => state.jobApplicationsSlice.jobApplication
-  );
-  const jobApplicationsSlice = useSelector(
-    (state) => state.jobApplicationsSlice
-  );
+  const jobApplication = useSelector((state) => state.jobApplicationsSlice.jobApplication);
+  const jobApplicationsSlice = useSelector((state) => state.jobApplicationsSlice);
   const jobVacanciesSlice = useSelector((state) => state.jobVacanciesReducer);
 
   useEffect(() => {
-    dispatch(getJobApplication(searchParam.get("id")));
+    dispatch(getJobApplication(searchParam.get('id')));
   }, []);
 
   useEffect(() => {
@@ -76,7 +64,7 @@ const ViewJobApplication = () => {
     dispatch(
       updateJobApplication({
         form: form.getFieldsValue(),
-        id: searchParam.get("id"),
+        id: searchParam.get('id'),
       })
     );
     if (!jobApplicationsSlice.error) {
@@ -90,7 +78,7 @@ const ViewJobApplication = () => {
   };
   const handleModalOk = () => {
     if (selectedVacancy === null) {
-      message.warning("الرجاء اختيار الشاغر الوظيفي");
+      message.warning('الرجاء اختيار الشاغر الوظيفي');
     } else {
       dispatch(
         updateJobApplication({
@@ -99,7 +87,7 @@ const ViewJobApplication = () => {
               job_vacancy_id: selectedVacancy,
             },
           },
-          id: searchParam.get("id"),
+          id: searchParam.get('id'),
         })
       );
       setSelectedVacancy(null);
@@ -121,8 +109,7 @@ const ViewJobApplication = () => {
     form.setFieldsValue(fields);
   };
 
-  const deleteJobApplication = () =>
-    dispatch(destroyJobApplications([jobApplication.job_application?.id]));
+  const deleteJobApplication = () => dispatch(destroyJobApplications([jobApplication.job_application?.id]));
 
   const updateStatus = (newStatus) => {
     dispatch(
@@ -132,21 +119,21 @@ const ViewJobApplication = () => {
             app_status_id: newStatus,
           },
         },
-        id: searchParam.get("id"),
+        id: searchParam.get('id'),
       })
     );
   };
 
   const showDeleteConfirm = () => {
-    console.log("hi");
+    console.log('hi');
     console.log(jobApplication?.employee_data?.personal_data?.full_name);
     Modal.confirm({
-      title: "حذف طلب توظيف",
+      title: 'حذف طلب توظيف',
       icon: <ExclamationCircleFilled />,
       content: `هل أنت متأكد من رغبتك بحذف طلب توظيف ${jobApplication?.employee_data?.personal_data?.full_name}`,
-      okText: "نعم",
-      okType: "danger",
-      cancelText: "لا",
+      okText: 'نعم',
+      okType: 'danger',
+      cancelText: 'لا',
       onOk() {
         deleteJobApplication();
         navigate(-1);
@@ -157,23 +144,24 @@ const ViewJobApplication = () => {
 
   const items = [
     {
-      label: "تعديل",
-      key: "0",
+      label: 'تعديل',
+      key: '0',
       children: [
         {
           label: <div onClick={toggleEditMode}> البيانات</div>,
-          key: "0-0",
+          key: '0-0',
         },
         {
           label: <div onClick={showModal}> الشاغر</div>,
-          key: "0-1",
+          key: '0-1',
         },
         {
-          label: "حالة الطلب",
-          key: "0-2",
+          label: 'حالة الطلب',
+          key: '0-2',
+          disabled: jobApplication?.application_status?.app_status_id === 5,
           children: [
             {
-              key: "0-2-1",
+              key: '0-2-1',
               disabled: jobApplication?.application_status?.app_status_id === 1,
               label: (
                 <div
@@ -181,13 +169,13 @@ const ViewJobApplication = () => {
                     updateStatus(1);
                   }}
                 >
-                  {" "}
+                  {' '}
                   تعليق
                 </div>
               ),
             },
             {
-              key: "0-2-2",
+              key: '0-2-2',
               disabled: jobApplication?.application_status?.app_status_id === 2,
 
               label: (
@@ -196,13 +184,13 @@ const ViewJobApplication = () => {
                     updateStatus(2);
                   }}
                 >
-                  {" "}
+                  {' '}
                   قبول
                 </div>
               ),
             },
             {
-              key: "0-2-3",
+              key: '0-2-3',
               disabled: jobApplication?.application_status?.app_status_id === 3,
               label: (
                 <div
@@ -210,13 +198,13 @@ const ViewJobApplication = () => {
                     updateStatus(3);
                   }}
                 >
-                  {" "}
+                  {' '}
                   رفض
                 </div>
               ),
             },
             {
-              key: "0-2-4",
+              key: '0-2-4',
               disabled: jobApplication?.application_status?.app_status_id === 4,
               label: (
                 <div
@@ -224,7 +212,7 @@ const ViewJobApplication = () => {
                     updateStatus(4);
                   }}
                 >
-                  {" "}
+                  {' '}
                   أرشفة
                 </div>
               ),
@@ -237,19 +225,18 @@ const ViewJobApplication = () => {
       label: (
         <div
           onClick={() => {
-            jobApplication?.application_status?.app_status_id === 2 &&
-              openDrawer();
+            jobApplication?.application_status?.app_status_id === 2 && openDrawer();
           }}
         >
           إنشاء حساب موظَف
         </div>
       ),
-      key: "1",
+      key: '1',
       disabled: jobApplication?.application_status?.app_status_id !== 2,
     },
     {
       label: <div onClick={showDeleteConfirm}>حذف</div>,
-      key: "2",
+      key: '2',
       danger: true,
     },
   ];
@@ -258,24 +245,26 @@ const ViewJobApplication = () => {
     <Spinner loading={jobApplicationsSlice.loading}>
       <div
         style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "start",
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'start',
         }}
       >
-
         {!isEditMode && (
-          <Dropdown menu={{ items }} trigger={["click"]}>
+          <Dropdown
+            menu={{ items }}
+            trigger={['click']}
+          >
             <Space>
-              <Button type="link">
-                <SettingOutlined style={{ fontSize: "150%" }} />
+              <Button type='link'>
+                <SettingOutlined style={{ fontSize: '150%' }} />
               </Button>
             </Space>
           </Dropdown>
         )}
 
-        <div style={{ width: "60%" }}>
+        <div style={{ width: '60%' }}>
           <ViewEditJobApplicationForm
             editMode={isEditMode}
             form={form}
@@ -285,33 +274,27 @@ const ViewJobApplication = () => {
 
         <div
           style={{
-            width: "25%",
-            height: "20%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-start",
+            width: '25%',
+            height: '20%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
           }}
         >
-
           {!isEditMode && (
             <>
               <div
                 style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-evenly",
-                  alignItems: "start",
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-evenly',
+                  alignItems: 'start',
                 }}
               >
-
                 <h5 style={{ marginTop: 0, padding: 0 }}>حالة الطلب: </h5>
                 <Tag
-                  style={{ marginTop: "2%", padding: 0 }}
-                  color={
-                    colorMapping[
-                      jobApplication?.application_status?.app_status_id
-                    ]
-                  }
+                  style={{ marginTop: '2%', padding: 0 }}
+                  color={colorMapping[jobApplication?.application_status?.app_status_id]}
                 >
                   {jobApplication?.application_status?.name}
                 </Tag>
@@ -319,73 +302,62 @@ const ViewJobApplication = () => {
 
               <VacancyCard
                 vacancyName={jobApplication?.job_application?.job_vacancy?.name}
-                vacancyDescription={
-                  jobApplication?.job_application?.job_vacancy?.description
-                }
-                department={
-                  jobApplication?.job_application?.job_vacancy?.department_name
-                }
-                vacancyCount={
-                  jobApplication?.job_application?.job_vacancy?.count
-                }
+                vacancyDescription={jobApplication?.job_application?.job_vacancy?.description}
+                department={jobApplication?.job_application?.job_vacancy?.department_name}
+                vacancyCount={jobApplication?.job_application?.job_vacancy?.count}
               />
-
             </>
           )}
 
           {isEditMode && (
             <Space>
-
-              <Button type="primary" onClick={onSaveEdit}>
+              <Button
+                type='primary'
+                onClick={onSaveEdit}
+              >
                 حفظ
               </Button>
 
               <Button
-                type="ghost"
-                style={{ color: "red" }}
+                type='ghost'
+                style={{ color: 'red' }}
                 onClick={onCancelEdit}
               >
                 الغاء
               </Button>
-
             </Space>
           )}
         </div>
       </div>
 
       <Modal
-        title="تعديل الشاغر الوظيفي لطلب التوظيف"
+        title='تعديل الشاغر الوظيفي لطلب التوظيف'
         open={isModalOpen}
         onOk={handleModalOk}
         onCancel={handleModalCancel}
         centered
         maskClosable
       >
-
         <Spinner loading={jobVacanciesSlice.loading}>
           <div
             style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              margin: "5%",
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              margin: '5%',
             }}
           >
-
             <Select
-              size="large"
-              placeholder="انقر لاختيار الشاغر الجديد"
+              size='large'
+              placeholder='انقر لاختيار الشاغر الجديد'
               options={jobVacanciesSlice.jobVacancies.map((jv) => ({
                 value: jv.id,
                 label: jv.name,
               }))}
               //TODO search queries on API
               showSearch
-              onSelect={(selectedVacancy) =>
-                setSelectedVacancy(selectedVacancy)
-              }
+              onSelect={(selectedVacancy) => setSelectedVacancy(selectedVacancy)}
             />
-            
           </div>
         </Spinner>
       </Modal>

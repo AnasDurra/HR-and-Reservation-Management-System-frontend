@@ -142,8 +142,7 @@ export const employeesSlice = createSlice({
     updateEmployeeDepartmentSuccess: (state, action) => {
       state.loading = false;
       console.log('action:', action);
-      /*       state.employee = action.payload.employee;
-       */
+      state.employee.current_department = action.payload.department;
     },
     updateEmployeeDepartmentFail: (state, action) => {
       state.loading = false;
@@ -186,8 +185,7 @@ export const employeesSlice = createSlice({
     },
     updateEmployeeStatusSuccess: (state, action) => {
       state.loading = false;
-      state.employee.current_employment_status =
-        action.payload.current_employment_status;
+      state.employee.current_employment_status = action.payload.current_employment_status;
     },
     updateEmployeeStatusFail: (state, action) => {
       state.loading = false;
@@ -201,8 +199,7 @@ export const employeesSlice = createSlice({
     destroyEmployeesSuccess: (state, action) => {
       state.loading = false;
       state.employees = state.employees.filter(
-        (ja) =>
-          !action.payload.deletedEmployees.map((ja) => ja.id).includes(ja.id)
+        (ja) => !action.payload.deletedEmployees.map((ja) => ja.id).includes(ja.id)
       );
     },
     destroyEmployeesFail: (state, action) => {

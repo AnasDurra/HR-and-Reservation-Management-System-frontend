@@ -5,9 +5,7 @@ import { getEmployeeJobTitlesHistory } from '../../../../../../redux/Features/Em
 
 function EmployeeJobTitlesHistoryModal({ emp_id, isOpen, onClose }) {
   const dispatch = useDispatch();
-  const jobTitlesHistory = useSelector(
-    (state) => state.employeesSlice?.jobTitlesHistory
-  );
+  const jobTitlesHistory = useSelector((state) => state.employeesSlice?.jobTitlesHistory);
 
   useEffect(() => {
     if (isOpen) {
@@ -20,7 +18,8 @@ function EmployeeJobTitlesHistoryModal({ emp_id, isOpen, onClose }) {
       title='سجل المسمَيات الوظيفيَة'
       open={isOpen}
       onCancel={onClose}
-      footer={null}>
+      footer={null}
+    >
       <Timeline
         mode={'alternate'}
         items={jobTitlesHistory
@@ -29,22 +28,18 @@ function EmployeeJobTitlesHistoryModal({ emp_id, isOpen, onClose }) {
               label: his.start_date,
               children: (
                 <span>
-                  منح مسمّى
-                  <span style={{ fontWeight: 'bold', color: 'blue' }}>
-                    {`${his.job_title} (${his.job_title_id})`}
-                  </span>
+                  {'منح مسمّى '}
+                  <span style={{ fontWeight: 'bold', color: 'blue' }}>{`${his.job_title} (${his.job_title_id})`}</span>
                 </span>
               ),
               color: 'green',
             },
             {
-              label: his.end_date,
+              label: his.end_date == his.start_date ? null : his.end_date,
               children: (
                 <span>
-                  إزالة مسمّى
-                  <span style={{ fontWeight: 'bold', color: 'blue' }}>
-                    {`${his.job_title} (${his.job_title_id})`}
-                  </span>
+                  {'إزالة مسمّى '}
+                  <span style={{ fontWeight: 'bold', color: 'blue' }}>{`${his.job_title} (${his.job_title_id})`}</span>
                 </span>
               ),
               color: 'red',

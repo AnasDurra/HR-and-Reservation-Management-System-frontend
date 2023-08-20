@@ -10,118 +10,147 @@ import {
   OneToOneOutlined,
   TeamOutlined,
   BellOutlined,
-} from "@ant-design/icons";
+  HomeOutlined,
+} from '@ant-design/icons';
 
-import Permissions from "../AccessRoute/Permissions";
+import Permissions from '../AccessRoute/Permissions';
 
 export const items = [
   {
-    text: "الأقسام",
+    text: 'الرئيسيّة',
+    icon: <HomeOutlined />,
+    path: '/main',
+  },
+  {
+    text: 'الأقسام',
     icon: <ApartmentOutlined />,
-    path: "/departments",
-    access: [Permissions.MANAGE_DEPARTMENTS]
+    path: '/departments',
+    access: [Permissions.MANAGE_DEPARTMENTS],
   },
   {
-    text: "الشواغر الوظيفية",
+    text: 'الشواغر الوظيفية',
     icon: <ReconciliationOutlined />,
-    path: "/jobVacancies",
-    access: [Permissions.MANAGE_JOB_VACANCIES]
+    path: '/jobVacancies',
+    access: [Permissions.MANAGE_JOB_VACANCIES],
   },
   {
-    text: "المسميات الوظيفية",
+    text: 'المسميات الوظيفية',
     icon: <LockOutlined />,
-    path: "/roles",
-    access: [Permissions.MANAGE_ROLES]
+    path: '/roles',
+    access: [Permissions.MANAGE_ROLES],
   },
   {
-    text: "إدارة الدوام",
+    text: 'إدارة الدوام',
     icon: <ClockCircleOutlined />,
     access: [Permissions.MANAGE_ATTENDANCE],
     items: [
       {
-        text: "فترات العمل",
-        path: "/shifts",
+        text: 'فترات العمل',
+        path: '/shifts',
       },
       {
         text: "اجهزة البصمة",
         path: "/biometricDevices",
       },
       {
-        text: "سجل الدوام",
-        path: "/timeSheetLog",
+        text: 'سجل الدوام',
+        path: '/timeSheetLog',
       },
       {
-        text: "طلبات الإجازة",
-        path: "/employees/vacations/requests",
+        text: 'طلبات الإجازة',
+        path: '/employees/vacations/requests',
       },
       {
-        text: "إجازات الموظفين",
-        path: "/employees/vacations",
+        text: 'إجازات الموظفين',
+        path: '/employees/vacations',
       },
       {
-        text: "طلبات إزاحة الدوام",
-        path: "/employees/timeShiftRequests",
+        text: 'طلبات إزاحة الدوام',
+        path: '/employees/timeShiftRequests',
       },
       {
-        text: "غيابات الموظفين",
-        path: "/employees/absences",
+        text: 'غيابات الموظفين',
+        path: '/employees/absences',
       },
     ],
   },
   {
-    text: "طلبات التوظيف",
+    text: 'طلبات التوظيف',
     icon: <FileDoneOutlined />,
-    path: "/jobApplications",
-    access: [Permissions.MANAGE_JOB_APPLICATIONS]
+    path: '/jobApplications',
+    access: [Permissions.MANAGE_JOB_APPLICATIONS],
   },
   {
-    text: "الموظّفين",
+    text: 'الموظّفين',
     icon: <ProfileOutlined />,
-    path: "/employees",
-    access: [Permissions.MANAGE_EMPLOYEES]
+    path: '/employees',
+    access: [Permissions.MANAGE_EMPLOYEES],
   },
   {
-    text: "سجل الأحداث",
+    text: 'سجل الأحداث',
     icon: <HistoryOutlined />,
-    path: "/log",
-    access: [Permissions.MANAGE_LOG]
+    path: '/log',
+    access: [Permissions.MANAGE_LOG],
   },
   {
-    text: "التقارير",
+    text: 'التقارير',
     icon: <ContainerOutlined />,
-    access: [Permissions.EXPORT_REPORTS],
     items: [
       {
-        text: "تقارير الموظفين",
-        path: "/employees/reports",
+        text: 'تقارير الموظفين',
+        path: '/employees/reports',
+        access: [Permissions.EXPORT_REPORTS],
       },
     ],
   },
   {
-    text: "الاستشاريين",
+    text: 'إدارة المواعيد',
+    icon: <ContainerOutlined />,
+
+    items: [
+      {
+        text: 'جداول الدوام',
+        path: '/consultant/timeSchedules',
+      },
+      {
+        text: 'جدول المواعيد',
+        path: '/appointments/calendar',
+      },
+      {
+        text: 'جدول مواعيد المستشار',
+        path: '/consultant/calendar',
+      },
+      {
+        text: 'المواعيد الملغاة',
+        path: '/appointments/cancelled',
+      },
+    ],
+  },
+  {
+    text: 'الاستشاريين',
     icon: <OneToOneOutlined />,
-    path: "/consultants",
+    path: '/consultants',
     // access: [  ],
   },
   {
-    text: "المستفيدين",
+    text: 'المستفيدين',
     icon: <TeamOutlined />,
     // access: [  ],
     items: [
       {
-        text: "جميع المستفيدين",
-        path: "/customers",
+        text: 'جميع المستفيدين',
+        path: '/customers',
       },
       {
-        text: "إجراء عملية كشف",
-        path: "/customers/detect",
-      }
+        text: 'إجراء عملية كشف',
+        path: '/customers/detect',
+      },
     ],
   },
   {
-    text: "الفعاليّات",
+    text: 'الفعاليّات',
     icon: <BellOutlined />,
-    path: "/events",
+    path: '/events',
     // access: [  ],
   },
 ];
