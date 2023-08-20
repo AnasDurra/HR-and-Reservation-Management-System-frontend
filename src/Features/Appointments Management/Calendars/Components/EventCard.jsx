@@ -104,31 +104,6 @@ function EventCard({ event, editable }) {
         </a>
       ),
     },
-    {
-      key: '4',
-      label: (
-        <a
-          onClick={() => {
-            dispatch(updateAppointment({ appointment_id: event?.id, updateReservation: true, reservationType: 6 }));
-          }}
-        >
-          تعديل الموعد إلى متاح
-        </a>
-      ),
-    },
-    {
-      key: '5',
-      label: (
-        <a
-          onClick={() => {
-            //TODO لم يتم تسجيل الحضور
-            dispatch(updateAppointment({ appointment_id: event?.id, updateReservation: true, reservationType: 11 }));
-          }}
-        >
-          إزالة معلومات الحضور
-        </a>
-      ),
-    },
   ];
 
   const cancelAttendanceItems = [
@@ -202,6 +177,7 @@ function EventCard({ event, editable }) {
           >
             <EllipsisOutlined />
           </Dropdown>,
+
           <Dropdown
             key={'cancelAttendance'}
             menu={{ items: cancelAttendanceItems }}
@@ -223,9 +199,9 @@ function EventCard({ event, editable }) {
                 ? true
                 : false;
             case 'reservation':
-              return !isEventInPast && editable && event?.customer_id && event?.status?.name == 'متاح' ? true : false;
+              return !isEventInPast && editable && event?.status?.name == 'متاح';
             case 'phoneReservation':
-              return !isEventInPast && editable && !event?.customer_id && event?.status?.name == 'متاح' ? true : false;
+              return !isEventInPast && editable && !event?.customer_id && event?.status?.name == 'متاح';
             case 'cancelReservation':
               return !isEventInPast &&
                 editable &&
@@ -238,9 +214,9 @@ function EventCard({ event, editable }) {
               return !isEventInPast && event?.status?.name == 'متاح';
             case 'caseNote':
               //TODO add the appointment status condition ( it should be completed) & employee cant edit casenote
-              return !editable && event?.status?.name == 'مكتمل' ? true : false;
+              return !editable && event?.status?.name == 'مكتمل';
             case 'cancelAttendance':
-              return   event?.status?.name == 'مكتمل';
+              return event?.status?.name == 'مكتمل';
             default:
               return false;
           }
