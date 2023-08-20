@@ -220,6 +220,7 @@ function ViewConsultant() {
                                     <AreaChart
                                         width={500}
                                         height={400}
+                                        // data={data2}
                                         data={fetchedYear}
                                         margin={{
                                             top: 10,
