@@ -25,24 +25,24 @@ export const items = [
     text: 'الأقسام',
     icon: <ApartmentOutlined />,
     path: '/departments',
-    // access: [Permissions.MANAGE_DEPARTMENTS],
+    access: [Permissions.MANAGE_DEPARTMENTS],
   },
   {
     text: 'الشواغر الوظيفية',
     icon: <ReconciliationOutlined />,
     path: '/jobVacancies',
-    // access: [Permissions.MANAGE_JOB_VACANCIES],
+    access: [Permissions.MANAGE_JOB_VACANCIES],
   },
   {
     text: 'المسميات الوظيفية',
     icon: <LockOutlined />,
     path: '/roles',
-    // access: [Permissions.MANAGE_ROLES],
+    access: [Permissions.MANAGE_ROLES],
   },
   {
     text: 'إدارة الدوام',
     icon: <ClockCircleOutlined />,
-    // access: [Permissions.MANAGE_ATTENDANCE],
+    access: [Permissions.MANAGE_ATTENDANCE],
     items: [
       {
         text: 'فترات العمل',
@@ -78,19 +78,19 @@ export const items = [
     text: 'طلبات التوظيف',
     icon: <FileDoneOutlined />,
     path: '/jobApplications',
-    // access: [Permissions.MANAGE_JOB_APPLICATIONS],
+    access: [Permissions.MANAGE_JOB_APPLICATIONS],
   },
   {
     text: 'الموظّفين',
     icon: <ProfileOutlined />,
     path: '/employees',
-    // access: [Permissions.MANAGE_EMPLOYEES],
+    access: [Permissions.MANAGE_EMPLOYEES],
   },
   {
     text: 'سجل الأحداث',
     icon: <HistoryOutlined />,
     path: '/log',
-    // access: [Permissions.MANAGE_LOG],
+    access: [Permissions.MANAGE_LOG],
   },
   {
     text: 'التقارير',
@@ -99,7 +99,7 @@ export const items = [
       {
         text: 'تقارير الموظفين',
         path: '/employees/reports',
-        // access: [Permissions.EXPORT_REPORTS],
+        access: [Permissions.EXPORT_REPORTS],
       },
     ],
   },
