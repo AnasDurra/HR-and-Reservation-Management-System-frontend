@@ -14,6 +14,7 @@ export const customersReducer = createSlice({
     },
     reducers: {
         getCustomers: (state) => {
+            state.customers = [];
             state.customer = null;
             state.detectResult = null;
             state.loading = true;
@@ -157,6 +158,24 @@ export const customersReducer = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+
+        getConsultantCustomers: (state) => {
+            state.customers = [];
+            state.customer = null;
+            state.detectResult = null;
+            state.loading = true;
+            state.error = null;
+        },
+        getConsultantCustomersSuccess: (state, action) => {
+            state.customers = action.payload;
+            delete action.payload.data;
+            state.metaData = action.payload.meta;
+            state.loading = false;
+        },
+        getConsultantCustomersFailed: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
     }
 });
 
@@ -191,6 +210,9 @@ export const {
     getCustomerAppointmentsStatistics,
     getCustomerAppointmentsStatisticsSuccess,
     getCustomerAppointmentsStatisticsFailed,
+    getConsultantCustomers,
+    getConsultantCustomersSuccess,
+    getConsultantCustomersFailed,
 } = customersReducer.actions;
 
 export default customersReducer.reducer;

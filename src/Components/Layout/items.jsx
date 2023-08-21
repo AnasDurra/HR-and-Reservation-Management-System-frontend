@@ -133,6 +133,12 @@ export const items = [
     userType: 2,
   },
   {
+    text: 'المستفيدين',
+    icon: <TeamOutlined />,
+    path: '/consultant/customers',
+    userType: 2,
+  },
+  {
     text: 'الاستشاريين',
     icon: <OneToOneOutlined />,
     path: '/consultants',

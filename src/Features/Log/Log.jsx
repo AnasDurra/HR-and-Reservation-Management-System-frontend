@@ -231,6 +231,7 @@ const Log = () => {
     },
   ];
 
+  console.log(logSlice?.logs);
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <Table
