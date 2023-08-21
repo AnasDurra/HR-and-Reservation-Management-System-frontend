@@ -322,8 +322,6 @@ function EventCard({ event, editable }) {
                     }}
                   >
                     <Tag
-                      className='user-tag'
-                      icon={<UserOutlined />}
                       color='default'
                       onClick={() => {}}
                     >
