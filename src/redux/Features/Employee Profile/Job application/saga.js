@@ -32,13 +32,14 @@ const create = (payload) => {
 };
 function* createJobApplicationSaga({ payload }) {
   try {
-    const response = yield call(create, payload);
+    const response = yield call(create, payload.formData);
     yield put(
       createJobApplicationSuccess({
         jobApplication: response.data.data,
       })
     );
     handleResponse('تم حفظ الطلب بنجاح');
+    payload.navigate()
   } catch (error) {
     yield put(
       createJobApplicationFail({

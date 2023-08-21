@@ -28,6 +28,7 @@ import confirm from 'antd/es/modal/confirm';
 import CaseNoteModal from './CaseNoteModal';
 import PhoneReservationModal from './PhoneReservationModal';
 import { now } from 'moment/moment';
+import { useNavigate } from 'react-router-dom';
 
 const statusColorsMap = new Map([
   [1, '#ffccc7'],
@@ -38,7 +39,7 @@ const statusColorsMap = new Map([
   [6, '#bae0ff'],
   [7, '#ffd8bf'],
   [8, '#ffd8bf'],
-  [9, ' #ffffb8 '],
+  [9, '#ffffb8'],
   [10, ' #b5f5ec '],
   [11, ' #efdbff'],
 ]);
@@ -46,6 +47,7 @@ const statusColorsMap = new Map([
 //TODO color title based on status & reorder actions
 function EventCard({ event, editable }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isSelectCustomerModalOpen, setIsSelectCustomerModalOpen] = useState(false);
   const [isCaseNoteModalOpen, setIsCaseNoteModalOpen] = useState(false);
   const [isPhoneReservationModalOpen, setIsPhoneReservationModalOpen] = useState(false);
@@ -134,7 +136,7 @@ function EventCard({ event, editable }) {
               updateAppointment({
                 appointment_id: event?.id,
                 updateReservation: true,
-                reservationType: isEventInPast ? 11 : 5,
+                reservationType: isEventInPast ? 11 : event?.customer_id ? 5 : 9,
               })
             );
           }}
@@ -282,23 +284,42 @@ function EventCard({ event, editable }) {
                   alignItems: 'center',
                 }}
               >
-                {`م.${event?.consultant_name}`}
+                <span
+                  style={{ color: 'black', fontWeight: 'bold', cursor: 'pointer' }}
+                  onClick={() => navigate(`/consultants/view/${event?.consultant_id}`)}
+                >{`م.${event?.consultant_name}`}</span>
               </div>
+
               <Divider />
-              <div style={{}}>
-                {event?.customer_id && (
+
+              {event?.customer_id && (
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
                   <Tag
                     className='user-tag'
                     icon={<UserOutlined />}
                     color='default'
-                    onClick={() => {}}
+                    onClick={() => navigate(`/customers/view/${event?.customer_id}`)}
                   >
                     {event?.customer_name}
                   </Tag>
-                )}
+                </div>
+              )}
 
-                {event?.status?.customer_name && (
-                  <>
+              {event?.status?.customer_name && (
+                <>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
                     <Tag
                       className='user-tag'
                       icon={<UserOutlined />}
@@ -307,7 +328,16 @@ function EventCard({ event, editable }) {
                     >
                       {event?.status?.customer_name}
                     </Tag>
-                    <br />
+                  </div>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      margin: '0.5rem 0',
+                    }}
+                  >
                     <Tag
                       className='user-tag'
                       icon={<PhoneOutlined />}
@@ -316,9 +346,9 @@ function EventCard({ event, editable }) {
                     >
                       {event?.status?.phone_number}
                     </Tag>
-                  </>
-                )}
-              </div>
+                  </div>
+                </>
+              )}
             </>
           }
         />

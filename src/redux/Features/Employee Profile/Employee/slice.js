@@ -155,10 +155,9 @@ export const employeesSlice = createSlice({
     },
     updateEmployeeCredentialsSuccess: (state, action) => {
       state.loading = false;
-      console.log('action:', action);
-      //TODO update state
-      /*       state.employee = action.payload.employee;
-       */
+      
+      state.employee.email = action.payload.credentials?.email;
+      state.employee.username = action.payload.credentials?.username;
     },
     updateEmployeeCredentialsFail: (state, action) => {
       state.loading = false;
@@ -186,7 +185,7 @@ export const employeesSlice = createSlice({
     updateEmployeeRolesAndPermissionsSuccess: (state, action) => {
       state.loading = false;
       //TODO update status
-     // state.employee.schedule = action.payload.schedule;
+      // state.employee.schedule = action.payload.schedule;
     },
     updateEmployeeRolesAndPermissionsFail: (state, action) => {
       state.loading = false;

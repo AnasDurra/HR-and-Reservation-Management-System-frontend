@@ -17,7 +17,7 @@ function ViewEditEmployeeAccountDrawer({
 }) {
   const [form] = useForm();
   const dispatch = useDispatch();
-  const [isSaveBtnDisabled, setIsSaveBtnDisabled] = useState(true);
+
   const sliceError = useSelector((state) => state.employeesSlice.error);
 
   useEffect(() => {
@@ -27,7 +27,6 @@ function ViewEditEmployeeAccountDrawer({
       emp_id,
       email,
     });
-    updateSaveBtn();
   }, [isOpen]);
 
   const editAccount = () =>
@@ -42,16 +41,10 @@ function ViewEditEmployeeAccountDrawer({
             email: form.getFieldValue(['email']),
           })
         );
-        console.log('slll', sliceError);
+
         if (sliceError === null) onClose();
       })
       .catch((_) => {});
-
-  const updateSaveBtn = () =>
-    setIsSaveBtnDisabled(
-      form.getFieldValue(['username']) === username
-      // &&  form.getFieldValue(["password"]) === password
-    );
 
   return (
     <Drawer
@@ -62,19 +55,13 @@ function ViewEditEmployeeAccountDrawer({
       footer={
         <Space>
           <Button onClick={onClose}>إلغاء</Button>
-          <Tooltip
-            title={'لا يوجد تغييرات لحفظها'}
-            trigger={isSaveBtnDisabled ? 'hover' : ''}
-            popupVisible={isSaveBtnDisabled}
+
+          <Button
+            type='primary'
+            onClick={() => form.submit()}
           >
-            <Button
-              type='primary'
-              onClick={editAccount}
-              disabled={isSaveBtnDisabled}
-            >
-              حفظ
-            </Button>
-          </Tooltip>
+            حفظ
+          </Button>
         </Space>
       }
       height={'60%'}
@@ -82,6 +69,9 @@ function ViewEditEmployeeAccountDrawer({
       <Form
         form={form}
         layout='vertical'
+        onFinish={() => {
+          editAccount();
+        }}
       >
         <Form.Item
           name={['emp_id']}
@@ -96,10 +86,7 @@ function ViewEditEmployeeAccountDrawer({
               //</Col> help="قم بإدخال اسم مستخدم غير موجود مسبقاَ في النظام"
               rules={validationRules.username}
             >
-              <Input
-                prefix={<UserOutlined />}
-                onChange={updateSaveBtn}
-              />
+              <Input prefix={<UserOutlined />} />
             </Form.Item>
           </Col>
           <Col span={8}>
@@ -108,10 +95,7 @@ function ViewEditEmployeeAccountDrawer({
               rules={validationRules.password}
               label='كلمة السر'
             >
-              <Input.Password
-                prefix={<LockOutlined />}
-                onChange={updateSaveBtn}
-              />
+              <Input.Password prefix={<LockOutlined />} />
             </Form.Item>
           </Col>
         </Row>

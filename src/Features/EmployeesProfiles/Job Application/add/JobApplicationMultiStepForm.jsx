@@ -60,7 +60,7 @@ const JobApplicationMultiStepForm = () => {
       additionalForm.getFieldsValue()
     );
 
-    dispatch(createJobApplication(formData));
+    dispatch(createJobApplication({ formData, navigate: (employee_id) => navigate('/jobApplications') }));
   };
   useEffect(() => {
     window.scrollTo(0, 0);

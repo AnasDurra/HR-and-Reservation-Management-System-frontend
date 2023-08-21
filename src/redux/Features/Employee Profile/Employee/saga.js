@@ -316,12 +316,12 @@ function* updateEmployeeCredentialsSaga({ payload }) {
     const response = yield call(updateCredentials, payload);
     yield put(
       updateEmployeeCredentialsSuccess({
-        Credentials: response.data.data,
+        credentials: response.data.data,
       })
     );
-    handleResponse("تم الحفظ")
+    handleResponse('تم الحفظ');
   } catch (error) {
-    console.log(error);
+    handleError('فشل العملية');
     yield put(
       updateEmployeeCredentialsFail({
         error: error,
