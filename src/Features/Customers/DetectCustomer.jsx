@@ -99,8 +99,6 @@ function DetectCustomer() {
         }
     };
 
-    console.log(detectResult);
-
     return (
         <div>
             <Typography.Title level={4}>

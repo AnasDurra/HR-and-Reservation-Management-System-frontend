@@ -21,6 +21,7 @@ export const items = [
     text: 'الرئيسيّة',
     icon: <HomeOutlined />,
     path: '/main',
+    userType: 1,
   },
   {
     text: 'الأقسام',
@@ -59,19 +60,19 @@ export const items = [
       },
       {
         text: 'طلبات الإجازة',
-        path: '/employees/vacations/requests',
+        path: '/vacations/requests',
       },
       {
         text: 'إجازات الموظفين',
-        path: '/employees/vacations',
+        path: '/vacations',
       },
       {
         text: 'طلبات إزاحة الدوام',
-        path: '/employees/timeShiftRequests',
+        path: '/timeShiftRequests',
       },
       {
         text: 'غيابات الموظفين',
-        path: '/employees/absences',
+        path: '/absences',
       },
     ],
   },
@@ -96,11 +97,11 @@ export const items = [
   {
     text: 'التقارير',
     icon: <ContainerOutlined />,
+    access: [Permissions.EXPORT_REPORTS],
     items: [
       {
         text: 'تقارير الموظفين',
-        path: '/employees/reports',
-        access: [Permissions.EXPORT_REPORTS],
+        path: '/reports',
       },
     ],
   },
