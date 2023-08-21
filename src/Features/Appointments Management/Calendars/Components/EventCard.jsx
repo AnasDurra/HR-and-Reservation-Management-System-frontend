@@ -189,14 +189,13 @@ function EventCard({ event, editable }) {
             <EllipsisOutlined />
           </Dropdown>,
 
-          /* <Dropdown
+          <Dropdown
             key={'cancelAttendance'}
             menu={{ items: cancelAttendanceItems }}
             placement='bottomRight'
           >
             <EllipsisOutlined />
           </Dropdown>,
-          */
         ].filter((element, index) => {
           // console.log('elemets', element);
           switch (element.key) {
@@ -305,7 +304,10 @@ function EventCard({ event, editable }) {
                     className='user-tag'
                     icon={<UserOutlined />}
                     color='default'
-                    onClick={() => navigate(`/customers/view/${event?.customer_id}`)}
+                    onClick={() => {
+                      if (editable) navigate(`/customers/view/${event?.customer_id}`);
+                      else navigate(`/consultant/customers/view/${event?.customer_id}`);
+                    }}
                   >
                     {event?.customer_name}
                   </Tag>
