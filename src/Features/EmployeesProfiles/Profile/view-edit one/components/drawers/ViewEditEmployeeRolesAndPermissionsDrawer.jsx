@@ -5,6 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { getPermissions, getRoles } from '../../../../../../redux/roles/slice';
 import { validationRules } from '../editRolesAndPermissionsValidationRules';
+import {
+  getEmployee,
+  updateEmployeeRolesAndPermissions,
+} from '../../../../../../redux/Features/Employee Profile/Employee/slice';
 
 function ViewEditEmployeeRolesAndPermissionsDrawer({
   onClose,
@@ -31,7 +35,19 @@ function ViewEditEmployeeRolesAndPermissionsDrawer({
       dispatch(getRoles());
       dispatch(getPermissions());
       setSelectedRole(rolesSlice.roles.find((role) => role.job_title_id === current_job_title_id));
-      setOptions();
+      const excludedPermissions = permissions?.filter((p) => p.type == 'excluded').map((p) => p.perm_id);
+      const grantedPermissions = permissions?.filter((p) => p.type == 'granted').map((p) => p.perm_id);
+      const defaultPermissions = permissions?.filter((p) => p.type == 'default').map((p) => p.perm_id);
+
+      const currentPermissions = [
+        ...grantedPermissions,
+        ...defaultPermissions.filter((permissionId) => !excludedPermissions.includes(permissionId)),
+      ];
+
+      form.setFieldValue(['job_title_id'], current_job_title_id);
+      form.setFieldValue(['permissions'], currentPermissions);
+      /*    form.setFieldValue(['permissions'], [...selectedRole.permissions.map((perm) => perm.perm_id)]);
+      form.setFieldValue(['job_title_id'], current_job_title_id); */
     }
   }, [isOpen]);
 
@@ -40,8 +56,11 @@ function ViewEditEmployeeRolesAndPermissionsDrawer({
     const selectedJobTitle = rolesSlice.roles.find((role) => role.job_title_id === id);
     setSelectedRole(selectedJobTitle);
     form.resetFields();
-    form.setFieldValue(['permissions'], [...selectedJobTitle.permissions.map((perm) => perm.perm_id)]);
     form.setFieldValue(['job_title_id'], id);
+    form.setFieldValue(
+      ['permissions'],
+      selectedJobTitle?.permissions?.map((p) => p.perm_id)
+    );
   };
 
   /*   const createProfile = () =>
@@ -78,23 +97,30 @@ function ViewEditEmployeeRolesAndPermissionsDrawer({
         layout='vertical'
         onFinish={() => {
           //TODO dispatch the update action
-          /*  dispatch(
-            update({
-              data: {
-                ...form.getFieldsValue(),
-                start_date: moment(form.getFieldValue(['start_date'])).format('YYYY-MM-DD'),
-                additional_permissions: form
-                  .getFieldValue(['permissions'])
-                  .filter((permission) => !selectedRole?.permissions.map((perm) => perm.perm_id).includes(permission)),
+          const excludedPermissions = permissions?.filter((p) => p.type == 'excluded').map((p) => p.perm_id);
 
-                excluded_permissions: selectedRole?.permissions
+          dispatch(
+            updateEmployeeRolesAndPermissions({
+              data: {
+                additional_permissions_ids: form
+                  .getFieldValue(['permissions'])
+                  .filter(
+                    (permission) =>
+                      !selectedRole?.permissions.map((perm) => perm.perm_id).includes(permission) ||
+                      excludedPermissions?.includes(permission)
+                  ),
+
+                deleted_permissions_ids: selectedRole?.permissions
                   .filter((permission) => !form.getFieldValue(['permissions']).includes(permission.perm_id))
                   .map((perm) => perm.perm_id),
+                job_title_id: selectedRole?.job_title_id,
+                id: emp_id,
               },
+
               action: onClose,
+              reload: () => dispatch(getEmployee(emp_id)),
             })
-          ); 
-          */
+          );
         }}
       >
         <Form.Item

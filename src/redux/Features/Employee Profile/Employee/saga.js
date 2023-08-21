@@ -333,23 +333,27 @@ function* watchUpdateEmployeeCredentials() {
   yield takeEvery(updateEmployeeCredentials, updateEmployeeCredentialsSaga);
 }
 
-const updateRolesAndPermission = (payload) => {
-  console.log(payload);
-  return AxiosInstance().post(`employees/edit-credentials/${payload.id}`, {
-    username: payload.username,
-    password: payload.password,
+const updateRolesAndPermission = ({ id, job_title_id, deleted_permissions_ids, additional_permissions_ids }) => {
+  return AxiosInstance().post(`employees/edit-permissions/${id}`, {
+    job_title_id,
+    deleted_permissions_ids,
+    additional_permissions_ids,
   });
 };
 function* updateEmployeeRolesAndPermissionsSaga({ payload }) {
   try {
-    const response = yield call(updateRolesAndPermission, payload);
+    const response = yield call(updateRolesAndPermission, payload.data);
     yield put(
       updateEmployeeRolesAndPermissionsSuccess({
-        Credentials: response.data.data,
+        credentials: response.data.data,
       })
     );
+    payload.action();
+    payload.reload();
+    handleResponse('تم التعديل بنجاح');
   } catch (error) {
     console.log(error);
+    handleError('فشل التعديل');
     yield put(
       updateEmployeeRolesAndPermissionsFail({
         error: error,

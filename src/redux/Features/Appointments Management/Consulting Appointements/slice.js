@@ -48,7 +48,12 @@ export const consultingAppointmentsSlice = createSlice({
     },
     createCaseNoteSuccess: (state, action) => {
       state.loading = false;
-      state.caseNote = action.payload.caseNote;
+      const appointmentIndex = state.appointments.findIndex(
+        (appointment) => appointment.id === action.payload.caseNote?.app_id
+      );
+      if (appointmentIndex != -1) {
+        state.appointments[appointmentIndex]['case_note'] = action.payload.caseNote;
+      }
     },
     createCaseNoteFail: (state, action) => {
       state.loading = false;
@@ -132,7 +137,12 @@ export const consultingAppointmentsSlice = createSlice({
     },
     updateCaseNoteSuccess: (state, action) => {
       state.loading = false;
-      state.caseNote = action.payload.caseNote;
+      const appointmentIndex = state.appointments.findIndex(
+        (appointment) => appointment.id === action.payload.caseNote?.app_id
+      );
+      if (appointmentIndex != -1) {
+        state.appointments[appointmentIndex]['case_note'] = action.payload.caseNote;
+      }
     },
     updateCaseNoteFail: (state, action) => {
       state.loading = false;

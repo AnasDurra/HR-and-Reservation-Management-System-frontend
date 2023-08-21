@@ -35,6 +35,7 @@ import {
   cancelAppointmentFail,
 } from './slice';
 import AxiosInstance from '../../../utils/axiosInstance';
+import { handleError, handleResponse } from '../../../utils/helpers';
 
 const create = (payload) => {
   return AxiosInstance().post('add-work-day', payload);
@@ -88,9 +89,9 @@ function* watchCreatePhoneReservation() {
   yield takeEvery(createPhoneReservation, createPhoneReservationSaga);
 }
 
-const newCaseNote = ({ appointment_id, title, description }) => {
+const newCaseNote = ({ id, title, description }) => {
   return AxiosInstance().post(`case-note`, {
-    app_id: appointment_id,
+    app_id: id,
     title,
     description,
   });
@@ -98,14 +99,17 @@ const newCaseNote = ({ appointment_id, title, description }) => {
 
 function* createCaseNoteSaga({ payload }) {
   try {
-    const response = yield call(newCaseNote, payload);
+    const response = yield call(newCaseNote, payload.data);
     yield put(
       createCaseNoteSuccess({
         caseNote: response.data.data,
       })
     );
+    handleResponse('تم انشاء معاينة بنجاح');
+    payload.action();
   } catch (error) {
     console.log(error);
+    handleError('فشل انشاء معاينة');
     yield put(
       createCaseNoteFail({
         error: error,
@@ -143,7 +147,7 @@ function* watchUpdateAppointment() {
   yield takeEvery(updateAppointment, updateAppointmentSaga);
 }
 
-const updateOneCaseNote = ({ appointment_id, title, description }) => {
+const updateOneCaseNote = ({ id, title, description }) => {
   const params = {
     ...(title && { title }),
     ...(description && { description }),
@@ -152,22 +156,25 @@ const updateOneCaseNote = ({ appointment_id, title, description }) => {
     .map(([key, value]) => `${key}=${value}`)
     .join('&');
 
-  return AxiosInstance().put(`case-note/${appointment_id}${queryString ? `?${queryString}` : ''}`);
+  return AxiosInstance().put(`case-note/${id}${queryString ? `?${queryString}` : ''}`);
 };
 function* updateCaseNoteSaga({ payload }) {
   try {
-    const response = yield call(updateOneCaseNote, payload);
+    const response = yield call(updateOneCaseNote, payload.data);
     yield put(
       updateCaseNoteSuccess({
         caseNote: response.data.data,
       })
     );
+    handleResponse('تم التعديل بنجاح');
+    payload.action();
   } catch (error) {
     yield put(
       updateCaseNoteFail({
         error: error,
       })
     );
+    handleError('فشل عملية الحفظ');
   }
 }
 function* watchUpdateCaseNote() {

@@ -8,16 +8,13 @@ import {
   updateCaseNote,
 } from '../../../../redux/Features/Appointments Management/Consulting Appointements/slice';
 
-function CaseNoteModal({ appointment_id, isModalOpen, onClose }) {
+function CaseNoteModal({ caseNote, app_id, isModalOpen, onClose }) {
   const dispatch = useDispatch();
-  const caseNote = useSelector((state) => state.consultingAppointmentsSlice.caseNote);
   const [isFooterVisible, setIsFooterVisible] = useState(false);
   const [form] = useForm();
-
+  console.log('appid', app_id);
   useEffect(() => {
     if (isModalOpen) {
-      dispatch(getCaseNote({ appointment_id }));
-      console.log('casenote', caseNote);
       form.setFieldValue(['title'], caseNote?.title);
       form.setFieldValue(['description'], caseNote?.description);
     }
@@ -42,8 +39,21 @@ function CaseNoteModal({ appointment_id, isModalOpen, onClose }) {
       <Form
         form={form}
         onFinish={(values) => {
-          dispatch(updateCaseNote({ appointment_id, title: values?.title, description: values?.description }));
-          onClose();
+          if (caseNote == null) {
+            dispatch(
+              createCaseNote({
+                data: { id: app_id, title: values?.title, description: values?.description },
+                action: onClose,
+              })
+            );
+          } else {
+            dispatch(
+              updateCaseNote({
+                data: { id: caseNote?.id, title: values?.title, description: values?.description },
+                action: onClose,
+              })
+            );
+          }
         }}
         style={{ margin: '1rem' }}
         onFieldsChange={() => {
