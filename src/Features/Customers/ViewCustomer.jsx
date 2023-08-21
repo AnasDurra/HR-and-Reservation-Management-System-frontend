@@ -18,32 +18,52 @@ function ViewCustomer() {
     const navigate = useNavigate();
     const [customerFamilyState, setCustomerFamilyState] = useState(null);
 
+    const [statistics, setStatistics] = useState([]);
+
     useEffect(() => {
         if (custID) {
-            dispatch(getCustomerAppointmentsStatistics({id: custID}));
+            dispatch(getCustomerAppointmentsStatistics({ id: custID }));
             dispatch(getCustomer({ id: custID }));
         }
     }, []);
 
-    console.log(statis);
+    const data =
 
-    const data = [
-        {
-            name: 'العيادة النفسية',
-            ["المواعيد المكتملة"]: 20,
-            ["المواعيد الملغية"]: 20,
-        },
-        {
-            name: 'العيادة القانونية',
-            ["المواعيد المكتملة"]: 0,
-            ["المواعيد الملغية"]: 5,
-        },
-        {
-            name: 'العيادة الأسرية',
-            ["المواعيد المكتملة"]: 10,
-            ["المواعيد الملغية"]: 7,
-        },
-    ];
+        [
+            {
+                name: 'العيادة النفسية',
+                ["المواعيد المكتملة"]: 20,
+                ["المواعيد الملغية"]: 20,
+            },
+            {
+                name: 'العيادة القانونية',
+                ["المواعيد المكتملة"]: 0,
+                ["المواعيد الملغية"]: 5,
+            },
+            {
+                name: 'العيادة الأسرية',
+                ["المواعيد المكتملة"]: 10,
+                ["المواعيد الملغية"]: 7,
+            },
+        ];
+
+    useEffect(() => {
+        if (statis.length > 0) {
+            let d = [];
+
+            statis.map(s => {
+                d = d.concat({
+                    name: s.clinic_name,
+                    ["المواعيد المكتملة"]: s.completed_appointments,
+                    ["المواعيد الملغية"]: s.cancelled_appointments,
+                });
+            });
+
+            setStatistics(d);
+        }
+    }, [statis]);
+
+    console.log(statistics);
 
     const [show, setShow] = useState(false);
 
@@ -145,7 +165,8 @@ function ViewCustomer() {
                             <BarChart
                                 width={500}
                                 height={300}
-                                data={data}
+                                // data={data}
+                                data={statistics}
                                 margin={{
                                     top: 20,
                                     right: 30,

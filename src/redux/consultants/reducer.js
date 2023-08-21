@@ -6,7 +6,7 @@ export const consultantsReducer = createSlice({
         consultants: [],
         consultant: null,
         consultantYearAppointments: [],
-        consultantAllAppointments: [],
+        consultantAllAppointments: null,
         metaData: null,
         loading: false,
         error: null,

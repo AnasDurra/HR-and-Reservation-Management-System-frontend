@@ -22,25 +22,29 @@ function ViewConsultant() {
     const { consID } = useParams();
     const navigate = useNavigate();
 
+    const [fetchedYear, setFetchedYear] = useState([]);
+    const [fetchedAll, setFetchedAll] = useState([]);
+
     useEffect(() => {
         dispatch(getClinics());
         if (consID) {
-            dispatch(getConsultantAllAppointments({id: consID}));
-            dispatch(getConsultantYearAppointments({id: consID}));
+            dispatch(getConsultantAllAppointments({ id: consID }));
+            dispatch(getConsultantYearAppointments({ id: consID }));
             dispatch(getConsultant({ id: consID }));
         }
     }, []);
 
-    console.log(consultantYearAppointments);
     console.log(consultantAllAppointments);
 
     const [activeIndex, setActiveIndex] = useState(0);
 
-    const data = [
+    const data =
+     
+    [
         { name: 'المواعيد المكتملة', value: 500 },
         { name: 'المواعيد الملغية(الاستشاري)', value: 300 },
         { name: 'المواعيد الملغية(المستفيد)', value: 300 },
-        { name: 'المواعيد غير المحجوزة', value: 200 },
+        { name: 'المواعيد غير المعلومة', value: 200 },
     ];
 
     const renderActiveShape = (props) => {
@@ -154,6 +158,8 @@ function ViewConsultant() {
         },
     ];
 
+
+
     const settings = {
         dots: true,
         infinite: true,
@@ -161,6 +167,46 @@ function ViewConsultant() {
         slidesToShow: 1,
         slidesToScroll: 1
     };
+
+    useEffect(() => {
+        if (consultantYearAppointments.length > 0) {
+            let d = data2;
+            for (let i = 0; i < d.length; i++) {
+                d[i]['عدد المواعيد'] = consultantYearAppointments[i]['عدد المواعيد'];
+            }
+
+            setFetchedYear(d);
+        }
+    }, [consultantYearAppointments]);
+
+    useEffect(() => {
+        if (consultantAllAppointments) {
+            let d = [];
+
+            d = d.concat({
+                name: 'المواعيد المكتملة',
+                value: consultantAllAppointments?.completed_appointments
+            });
+
+            d = d.concat({ 
+                name: 'المواعيد الملغية(الاستشاري)', 
+                value: consultantAllAppointments?.cancelled_by_consultant_appointments 
+            });
+
+            d = d.concat({ 
+                name: 'المواعيد الملغية(المستفيد)', 
+                value: consultantAllAppointments?.cancelled_by_customers_appointments, 
+            });
+
+            d = d.concat({ 
+                name: 'المواعيد غير المعلومة', 
+                value: consultantAllAppointments?.unknown_appointments 
+            });
+
+            setFetchedAll(d);
+
+        }
+    }, [consultantYearAppointments]);
 
     return (
         <Spinner loading={loading}>
@@ -185,7 +231,8 @@ function ViewConsultant() {
                                         <Pie
                                             activeIndex={activeIndex}
                                             activeShape={renderActiveShape}
-                                            data={data}
+                                            // data={data}
+                                            data={fetchedAll}
                                             cx="50%"
                                             cy="50%"
                                             innerRadius={120}
@@ -202,7 +249,8 @@ function ViewConsultant() {
                                     <AreaChart
                                         width={500}
                                         height={400}
-                                        data={data2}
+                                        // data={data2}
+                                        data={fetchedYear}
                                         margin={{
                                             top: 10,
                                             right: 30,
