@@ -22,7 +22,78 @@ const getCssClass = (index) => {
   const classes = ['row-odd', 'row-even'];
   return classes[index % classes.length];
 };
-
+const fakeData = [
+  {
+    action: {
+      severity: 2,
+      name: ' حذف طلب ازاحة دوام',
+      descripion: 'ازالة طلبات ازاحة الدوام للموظفين المذكورين',
+    },
+    user: {
+      user_id: '1',
+      name: 'محمد هادي بركات',
+    },
+    affected_users: [
+      {
+        user_id: '2',
+        name: 'دوجا كات',
+      },
+      {
+        user_id: '3',
+        name: 'بريتني مانسون',
+      },
+      {
+        user_id: '11',
+        name: 'غاغا',
+      },
+      {
+        user_id: '12',
+        name: 'ليل اوزي فيرت',
+      },
+    ],
+    log_date: '2023-08-20',
+  },
+  {
+    action: {
+      severity: '3',
+      name: 'اصدار تقرير ',
+      descripion: 'اصدار تقارير غياب وحضور',
+    },
+    user: {
+      user_id: '4',
+      name: 'انس ريش',
+    },
+    affected_users: [
+      {
+        user_id: '5',
+        name: 'بينك',
+      },
+      {
+        user_id: '6',
+        name: 'اوليفر سايكس',
+      },
+    ],
+    log_date: '2023-08-19',
+  },
+  {
+    action: {
+      severity: '1',
+      name: 'تعديل صلاحيات',
+      descripion: 'تعديل صلاحيات الموظف (حذف)',
+    },
+    user: {
+      user_id: '7',
+      name: 'شام طعمة',
+    },
+    affected_users: [
+      {
+        user_id: '2',
+        name: 'لانا ديل ري',
+      },
+    ],
+    log_date: '2023-08-18',
+  },
+];
 const Log = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -52,7 +123,8 @@ const Log = () => {
           <div className='table-cell-container'>
             <Tag
               icon={<WarningOutlined />}
-              color={colorMapping[severity]}>
+              color={colorMapping[severity]}
+            >
               {statusMapping[severity]}
             </Tag>
           </div>
@@ -77,7 +149,8 @@ const Log = () => {
             <Tag
               icon={<ProfileOutlined />}
               className='user-tag'
-              onClick={() => navigate(`/employees/profile?id=${user.user_id}`)}>
+              onClick={() => navigate(`/employees/profile?id=${user.user_id}`)}
+            >
               <span>{`${user.name} (${user.user_id})`}</span>
             </Tag>
           </div>
@@ -99,9 +172,8 @@ const Log = () => {
               <Tag
                 icon={<ProfileOutlined />}
                 className='user-tag'
-                onClick={() =>
-                  navigate(`/employees/profile?id=${user.user_id}`)
-                }>
+                onClick={() => navigate(`/employees/profile?id=${user.user_id}`)}
+              >
                 <span>{`${user.name} (${user.user_id})`}</span>
               </Tag>
             ))}
@@ -110,7 +182,8 @@ const Log = () => {
               <>
                 <Button
                   type='link'
-                  onClick={() => handleShowMore()}>
+                  onClick={() => handleShowMore()}
+                >
                   عرض المزيد ({hiddenUsers.length})
                 </Button>
 
@@ -118,7 +191,8 @@ const Log = () => {
                   title='جميع المتأثرين'
                   open={showMoreUsersModal}
                   onCancel={() => setShowMoreUsersModal(false)}
-                  footer={null}>
+                  footer={null}
+                >
                   <List
                     itemLayout='horizontal'
                     dataSource={affected_users}
@@ -126,15 +200,10 @@ const Log = () => {
                     renderItem={(user, index) => (
                       <List.Item
                         className='list-item-hoverable'
-                        onClick={() =>
-                          navigate(`/employees/profile?id=${user.user_id}`)
-                        }>
+                        onClick={() => navigate(`/employees/profile?id=${user.user_id}`)}
+                      >
                         <List.Item.Meta
-                          avatar={
-                            <Avatar
-                              src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`}
-                            />
-                          }
+                          avatar={<Avatar src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`} />}
                           title={`${user.name} (${user.user_id})`}
                         />
                       </List.Item>
@@ -167,6 +236,7 @@ const Log = () => {
       <Table
         className='my-table'
         dataSource={logSlice?.logs}
+        //  dataSource={fakeData}
         size='middle'
         columns={columns}
         pagination={{

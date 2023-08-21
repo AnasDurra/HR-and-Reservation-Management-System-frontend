@@ -1,4 +1,4 @@
-import { all, fork, takeEvery, call, put } from "redux-saga/effects";
+import { all, fork, takeEvery, call, put } from 'redux-saga/effects';
 import {
   createJobApplication,
   createJobApplicationFail,
@@ -15,38 +15,38 @@ import {
   destroyJobApplications,
   destroyJobApplicationsSuccess,
   destroyJobApplicationsFail,
-} from "./slice";
-import AxiosInstance from "../../../utils/axiosInstance";
+} from './slice';
+import AxiosInstance from '../../../utils/axiosInstance';
 import {
   formatRequestAfterReceive,
   formatRequestBeforeSend,
-} from "../../../../Features/EmployeesProfiles/Job Application/utils/helpers";
+} from '../../../../Features/EmployeesProfiles/Job Application/utils/helpers';
+import { handleError, handleResponse } from '../../../utils/helpers';
 
 const create = (payload) => {
-  return AxiosInstance().post(
-    "job-applications",
-    formatRequestBeforeSend(payload),
-    {
-      headers: {
-        "Content-type": "multipart/form-data",
-      },
-    }
-  );
+  return AxiosInstance().post('job-applications', formatRequestBeforeSend(payload), {
+    headers: {
+      'Content-type': 'multipart/form-data',
+    },
+  });
 };
 function* createJobApplicationSaga({ payload }) {
   try {
-    const response = yield call(create, payload);
+    const response = yield call(create, payload.formData);
     yield put(
       createJobApplicationSuccess({
         jobApplication: response.data.data,
       })
     );
+    handleResponse('تم حفظ الطلب بنجاح');
+    payload.navigate()
   } catch (error) {
     yield put(
       createJobApplicationFail({
         error: error,
       })
     );
+    handleError('فشل العملية ، أعد المحاولة لاحقاَ');
   }
 }
 function* watchCreateJobApplication() {
@@ -56,19 +56,17 @@ function* watchCreateJobApplication() {
 const getAll = ({ page, status, vacancy, dep, name } = {}) => {
   const params = {
     ...(page && { page }),
-    ...(status && status.length > 0 && { status: status.join(",") }),
-    ...(vacancy && vacancy.length > 0 && { vacancy: vacancy.join(",") }),
-    ...(dep && dep.length > 0 && { dep: dep.join(",") }),
+    ...(status && status.length > 0 && { status: status.join(',') }),
+    ...(vacancy && vacancy.length > 0 && { vacancy: vacancy.join(',') }),
+    ...(dep && dep.length > 0 && { dep: dep.join(',') }),
     ...(name && { name }),
   };
   const queryString = Object.entries(params)
     .map(([key, value]) => `${key}=${value}`)
-    .join("&");
+    .join('&');
   console.log(queryString);
 
-  return AxiosInstance().get(
-    `job-applications${queryString ? `?${queryString}` : ""}`
-  );
+  return AxiosInstance().get(`job-applications${queryString ? `?${queryString}` : ''}`);
 };
 
 function* getJobApplicationsSaga({ payload }) {
@@ -120,15 +118,11 @@ function* watchGetJobApplication() {
 }
 
 const update = (payload) => {
-  return AxiosInstance().post(
-    `job-applications/update/${payload.id}`,
-    formatRequestBeforeSend(payload.form),
-    {
-      headers: {
-        "Content-type": "multipart/form-data",
-      },
-    }
-  );
+  return AxiosInstance().post(`job-applications/update/${payload.id}`, formatRequestBeforeSend(payload.form), {
+    headers: {
+      'Content-type': 'multipart/form-data',
+    },
+  });
 };
 
 function* updateJobApplicationSaga({ payload }) {

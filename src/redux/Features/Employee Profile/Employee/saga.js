@@ -36,6 +36,9 @@ import {
   updateEmployeeSchedule,
   updateEmployeeScheduleSuccess,
   updateEmployeeScheduleFail,
+  updateEmployeeRolesAndPermissions,
+  updateEmployeeRolesAndPermissionsSuccess,
+  updateEmployeeRolesAndPermissionsFail,
   updateEmployeeStatus,
   updateEmployeeStatusSuccess,
   updateEmployeeStatusFail,
@@ -46,9 +49,10 @@ import {
 import AxiosInstance from '../../../utils/axiosInstance';
 import { formatRequestAfterReceive } from '../../../../Features/EmployeesProfiles/Job Application/utils/helpers';
 import { message } from 'antd';
+import { handleError, handleResponse } from '../../../utils/helpers';
 
 const create = (payload) => {
-  console.log(payload)
+  console.log(payload);
   return AxiosInstance().post('employees', payload, {
     headers: {
       'Content-type': 'multipart/form-data',
@@ -57,22 +61,17 @@ const create = (payload) => {
 };
 function* createEmployeeSaga({ payload }) {
   try {
-    const response = yield call(create, payload);
+    const response = yield call(create, payload.data);
+
     yield put(
       createEmployeeSuccess({
         employee: response.data.data,
       })
     );
+    payload.action();
+    handleResponse('تم انشاء حساب بنجاح');
   } catch (error) {
-    message.error({
-      content: error?.response?.data?.errors
-        ? Object.values(error.response.data.errors)[0][0] ?? null
-        : null,
-      style: {
-        marginTop: '10vh',
-        fontFamily: 'cairo',
-      },
-    });
+    handleError(error?.response?.data?.errors ? Object.values(error.response.data.errors)[0][0] ?? null : null);
     yield put(
       createEmployeeFail({
         error: error.response ? error.response.data.errors : null,
@@ -101,9 +100,7 @@ const getAll = ({ page, status, dep, name, schedule, title } = {}) => {
     .join('&');
   console.log(queryString);
 
-  return AxiosInstance().get(
-    `employees${queryString ? `?${queryString}` : ''}`
-  );
+  return AxiosInstance().get(`employees${queryString ? `?${queryString}` : ''}`);
 };
 function* getEmployeesSaga({ payload }) {
   try {
@@ -137,9 +134,7 @@ const getAllIndexed = ({ page, name } = {}) => {
   const queryString = Object.entries(params)
     .map(([key, value]) => `${key}=${value}`)
     .join('&');
-  return AxiosInstance().get(
-    `employees/list${queryString ? `?${queryString}` : ''}`
-  );
+  return AxiosInstance().get(`employees/list${queryString ? `?${queryString}` : ''}`);
 };
 function* getIndexedEmployeesSaga({ payload }) {
   try {
@@ -171,9 +166,7 @@ const getOne = (payload) => {
 function* getEmployeeSaga({ payload }) {
   try {
     var response = yield call(getOne, payload);
-    response.data.data.job_application = formatRequestAfterReceive(
-      response?.data?.data?.job_application
-    );
+    response.data.data.job_application = formatRequestAfterReceive(response?.data?.data?.job_application);
     yield put(
       getEmployeeSuccess({
         employee: response.data.data,
@@ -211,10 +204,7 @@ function* getEmployeeDepartmentsHistorySaga({ payload }) {
   }
 }
 function* watchGetEmployeeDepartmentsHistory() {
-  yield takeEvery(
-    getEmployeeDepartmentsHistory,
-    getEmployeeDepartmentsHistorySaga
-  );
+  yield takeEvery(getEmployeeDepartmentsHistory, getEmployeeDepartmentsHistorySaga);
 }
 
 const getJobTitlesHistory = ({ emp_id }) => {
@@ -318,6 +308,7 @@ const updateCredentials = (payload) => {
   return AxiosInstance().post(`employees/edit-credentials/${payload.id}`, {
     username: payload.username,
     password: payload.password,
+    email: payload.email,
   });
 };
 function* updateEmployeeCredentialsSaga({ payload }) {
@@ -325,11 +316,12 @@ function* updateEmployeeCredentialsSaga({ payload }) {
     const response = yield call(updateCredentials, payload);
     yield put(
       updateEmployeeCredentialsSuccess({
-        Credentials: response.data.data,
+        credentials: response.data.data,
       })
     );
+    handleResponse('تم الحفظ');
   } catch (error) {
-    console.log(error);
+    handleError('فشل العملية');
     yield put(
       updateEmployeeCredentialsFail({
         error: error,
@@ -339,6 +331,34 @@ function* updateEmployeeCredentialsSaga({ payload }) {
 }
 function* watchUpdateEmployeeCredentials() {
   yield takeEvery(updateEmployeeCredentials, updateEmployeeCredentialsSaga);
+}
+
+const updateRolesAndPermission = (payload) => {
+  console.log(payload);
+  return AxiosInstance().post(`employees/edit-credentials/${payload.id}`, {
+    username: payload.username,
+    password: payload.password,
+  });
+};
+function* updateEmployeeRolesAndPermissionsSaga({ payload }) {
+  try {
+    const response = yield call(updateRolesAndPermission, payload);
+    yield put(
+      updateEmployeeRolesAndPermissionsSuccess({
+        Credentials: response.data.data,
+      })
+    );
+  } catch (error) {
+    console.log(error);
+    yield put(
+      updateEmployeeRolesAndPermissionsFail({
+        error: error,
+      })
+    );
+  }
+}
+function* watchUpdateEmployeeRolesAndPermissions() {
+  yield takeEvery(updateEmployeeRolesAndPermissions, updateEmployeeRolesAndPermissionsSaga);
 }
 
 const updateSchedule = ({ emp_id, schedule_id }) => {
@@ -377,8 +397,7 @@ function* updateEmployeeStatusSaga({ payload }) {
     const response = yield call(updateStatus, payload);
     yield put(
       updateEmployeeStatusSuccess({
-        current_employment_status:
-          response.data.employment_status?.emp_status_id,
+        current_employment_status: response.data.employment_status?.emp_status_id,
       })
     );
   } catch (error) {
@@ -431,6 +450,7 @@ function* employeesSaga() {
     fork(watchUpdateEmployeeDepartment),
     fork(watchUpdateEmployeeCredentials),
     fork(watchUpdateEmployeeSchedule),
+    fork(watchUpdateEmployeeRolesAndPermissions),
     fork(watchUpdateEmployeeStatus),
     /*     fork(watchUpdateEmployee), */
     fork(watchDestroyEmployees),

@@ -1,21 +1,19 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Steps, Button, message, Form, FloatButton } from "antd";
-import GeneralInfoForm from "./sub-forms/GeneralInfoForm";
-import EmploymentForm from "./sub-forms/EmploymentForm";
-import DrivingLicenseForm from "./sub-forms/DrivingLicenseForm";
-import EducationForm from "./sub-forms/EducationForm";
-import SkillsForm from "./sub-forms/SkillsForm";
-import AdditionalForm from "./sub-forms/AdditionalForm";
-import { formatRequestBeforeSend } from "../utils/helpers";
-import { useDispatch, useSelector } from "react-redux";
-import { createJobApplication } from "../../../../redux/Features/Employee Profile/Job application/slice";
-import { useNavigate } from "react-router-dom";
-import "./style.css";
+import React, { useState, useEffect, useRef } from 'react';
+import { Steps, Button, message, Form, FloatButton } from 'antd';
+import GeneralInfoForm from './sub-forms/GeneralInfoForm';
+import EmploymentForm from './sub-forms/EmploymentForm';
+import DrivingLicenseForm from './sub-forms/DrivingLicenseForm';
+import EducationForm from './sub-forms/EducationForm';
+import SkillsForm from './sub-forms/SkillsForm';
+import AdditionalForm from './sub-forms/AdditionalForm';
+import { formatRequestBeforeSend } from '../utils/helpers';
+import { useDispatch, useSelector } from 'react-redux';
+import { createJobApplication } from '../../../../redux/Features/Employee Profile/Job application/slice';
+import { useNavigate } from 'react-router-dom';
+import './style.css';
 
 const JobApplicationMultiStepForm = () => {
-  const jobApplicationsSlice = useSelector(
-    (state) => state.jobApplicationsSlice
-  );
+  const jobApplicationsSlice = useSelector((state) => state.jobApplicationsSlice);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isMountedRef = useRef(false);
@@ -29,18 +27,12 @@ const JobApplicationMultiStepForm = () => {
   const [skillsForm] = Form.useForm();
   const [additionalForm] = Form.useForm();
 
-  const [generalInfoFormValidateState, setGeneralFormValidateState] =
-    useState(undefined);
-  const [employmentFormValidateState, setEmploymentFormValidateState] =
-    useState(undefined);
-  const [drivingLicenseFormValidateState, setDrivingLicenseFormValidateState] =
-    useState(undefined);
-  const [educationFormValidateState, setEducationFormValidateState] =
-    useState(undefined);
-  const [skillsFormValidateState, setSkillsFormValidateState] =
-    useState(undefined);
-  const [additionalFormValidateState, setAdditionalFormValidateState] =
-    useState(undefined);
+  const [generalInfoFormValidateState, setGeneralFormValidateState] = useState(undefined);
+  const [employmentFormValidateState, setEmploymentFormValidateState] = useState(undefined);
+  const [drivingLicenseFormValidateState, setDrivingLicenseFormValidateState] = useState(undefined);
+  const [educationFormValidateState, setEducationFormValidateState] = useState(undefined);
+  const [skillsFormValidateState, setSkillsFormValidateState] = useState(undefined);
+  const [additionalFormValidateState, setAdditionalFormValidateState] = useState(undefined);
 
   const [isDependent, setIsDependent] = useState(undefined);
   const [isPassport, setIsPassport] = useState(undefined);
@@ -68,7 +60,7 @@ const JobApplicationMultiStepForm = () => {
       additionalForm.getFieldsValue()
     );
 
-    dispatch(createJobApplication(formData));
+    dispatch(createJobApplication({ formData, navigate: (employee_id) => navigate('/jobApplications') }));
   };
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -137,33 +129,13 @@ const JobApplicationMultiStepForm = () => {
     if (isMountedRef.current) {
       if (jobApplicationsSlice.loading) {
         message.open({
-          type: "loading",
-          content: "جار الحفظ  ",
+          type: 'loading',
+          content: 'جار الحفظ  ',
           style: {
-            marginTop: "5vh",
+            marginTop: '5vh',
           },
           duration: 0,
         });
-      } else {
-        message.destroy();
-        if (jobApplicationsSlice.error) {
-          message.open({
-            type: "error",
-            content: "فشل حفظ الطلب ، أعد المحاولة ",
-            style: {
-              marginTop: "5vh",
-            },
-          });
-        } else {
-          message.open({
-            type: "success",
-            content: "تم حفظ الطلب",
-            style: {
-              marginTop: "5vh",
-            },
-          });
-          navigate(-1);
-        }
       }
     } else {
       isMountedRef.current = true;
@@ -172,7 +144,7 @@ const JobApplicationMultiStepForm = () => {
 
   return (
     <>
-      <div className="container">
+      <div className='container'>
         <GeneralInfoForm
           show={currentStep === 0 ? true : false}
           onNext={handleNext}
@@ -235,64 +207,60 @@ const JobApplicationMultiStepForm = () => {
           isReference={isReference}
           setIsReference={setIsReference}
         />
-        <div className="left-float">
+        <div className='left-float'>
           <Steps
             current={currentStep}
             onChange={setCurrentStep}
-            direction="vertical"
+            direction='vertical'
             items={[
               {
-                title: "معلومات عامَة",
+                title: 'معلومات عامَة',
                 status:
                   generalInfoFormValidateState === false
-                    ? "error"
+                    ? 'error'
                     : generalInfoFormValidateState === true
-                    ? "finish"
+                    ? 'finish'
                     : undefined,
               },
               {
-                title: "الأعمال السابقة",
+                title: 'الأعمال السابقة',
                 status:
                   employmentFormValidateState === false
-                    ? "error"
+                    ? 'error'
                     : employmentFormValidateState === true
-                    ? "finish"
+                    ? 'finish'
                     : undefined,
               },
               {
-                title: "شهادة القيادة",
+                title: 'شهادة القيادة',
                 status:
                   drivingLicenseFormValidateState === false
-                    ? "error"
+                    ? 'error'
                     : drivingLicenseFormValidateState === true
-                    ? "finish"
+                    ? 'finish'
                     : undefined,
               },
               {
-                title: "التعليم",
+                title: 'التعليم',
                 status:
                   educationFormValidateState === false
-                    ? "error"
+                    ? 'error'
                     : educationFormValidateState === true
-                    ? "finish"
+                    ? 'finish'
                     : undefined,
               },
               {
-                title: "المهارات",
+                title: 'المهارات',
                 status:
-                  skillsFormValidateState === false
-                    ? "error"
-                    : skillsFormValidateState === true
-                    ? "finish"
-                    : undefined,
+                  skillsFormValidateState === false ? 'error' : skillsFormValidateState === true ? 'finish' : undefined,
               },
               {
-                title: "معلومات اضافية",
+                title: 'معلومات اضافية',
                 status:
                   additionalFormValidateState === false
-                    ? "error"
+                    ? 'error'
                     : additionalFormValidateState === true
-                    ? "finish"
+                    ? 'finish'
                     : undefined,
               },
             ]}
@@ -315,18 +283,15 @@ const JobApplicationMultiStepForm = () => {
                     handleSubmit();
                   } catch (error) {
                     // handle errors that occur in handleSubmit separately
-                    console.error(
-                      "An error occurred while submitting the form:",
-                      error
-                    );
+                    console.error('An error occurred while submitting the form:', error);
                   }
                 })
                 .catch((_) => {
                   setAdditionalFormValidateState(false);
                 });
             }}
-            style={{ width: "100%" }}
-            type="primary"
+            style={{ width: '100%' }}
+            type='primary'
           >
             حفظ
           </Button>

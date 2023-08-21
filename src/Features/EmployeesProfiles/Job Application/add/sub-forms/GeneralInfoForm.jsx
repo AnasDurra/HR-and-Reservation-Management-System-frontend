@@ -1,24 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { debounce } from "lodash";
-import {
-  Input,
-  DatePicker,
-  Radio,
-  Button,
-  Form,
-  Divider,
-  Row,
-  Col,
-  FloatButton,
-  Upload,
-  message,
-} from "antd";
-import {
-  FrownOutlined,
-  PlusOutlined,
-  MinusCircleOutlined,
-  UploadOutlined,
-} from "@ant-design/icons/lib/icons";
+import React, { useEffect, useState } from 'react';
+import { debounce } from 'lodash';
+import { Input, DatePicker, Radio, Button, Form, Divider, Row, Col, FloatButton, Upload, message, Select } from 'antd';
+import { FrownOutlined, PlusOutlined, MinusCircleOutlined, UploadOutlined } from '@ant-design/icons/lib/icons';
 import {
   addressRules,
   dependentsRules,
@@ -27,15 +10,40 @@ import {
   passportRules,
   personalCardRules,
   personalDataRules,
-} from "../../../validationRules";
-import { getFile } from "../../../utils/getFile";
-import moment from "moment";
-import dayjs from "dayjs";
-import "../style.css";
+} from '../../../validationRules';
+import { getFile } from '../../../utils/getFile';
+import moment from 'moment';
+import dayjs from 'dayjs';
+import '../style.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { getJobVacancies } from '../../../../../redux/jobVacancies/reducer';
 
 function GeneralInfoForm(props) {
+  const dispatch = useDispatch();
   const [errorFields, setErrorFields] = useState([]);
   const [fileList, setFileList] = useState([]);
+  const jobVacancies = useSelector((state) => state?.jobVacanciesReducer?.jobVacancies);
+
+  useEffect(() => {
+    dispatch(getJobVacancies());
+    console.log('jobVacancies', jobVacancies);
+  }, []);
+
+  useEffect(() => {
+    if (props.validateState === false) {
+      props.form
+        .validateFields()
+        .then((_) => {
+          props.setValidateState(true);
+        })
+        .catch((values) => {
+          props.setValidateState(false);
+          const errorFieldNames = values.errorFields.map((errorField) => errorField.name);
+
+          setErrorFields(errorFieldNames);
+        });
+    }
+  }, [props.validateState]);
 
   const validateForm = () => {
     if (props.validateState !== undefined) {
@@ -54,43 +62,43 @@ function GeneralInfoForm(props) {
 
   const debouncedValidateForm = debounce(validateForm, 1000);
 
-  useEffect(() => {
-    if (props.validateState === false) {
-      props.form
-        .validateFields()
-        .then((_) => {
-          props.setValidateState(true);
-        })
-        .catch((values) => {
-          props.setValidateState(false);
-          const errorFieldNames = values.errorFields.map(
-            (errorField) => errorField.name
-          );
-
-          setErrorFields(errorFieldNames);
-        });
-    }
-  }, [props.validateState]);
-
   return (
-    <div className={`form-container ${props.show ? "" : "hidden"}`}>
+    <div className={`form-container ${props.show ? '' : 'hidden'}`}>
       <Form
         form={props.form}
-        layout="horizontal"
+        layout='horizontal'
         onChange={debouncedValidateForm}
       >
-        <Divider className="divider"> معلومات عامَة</Divider>
+        <Divider className='divider'> معلومات عامَة</Divider>
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label="الصورة الشخصيَة"
-              name={["personal_data", "personal_photo"]}
+              name={['job_application', 'job_vacancy_id']}
+              rules={[{ required: true }]}
+            >
+              <Select
+                style={{ width: '50%' }}
+                placeholder='الشاغر الوظيفي'
+                options={jobVacancies
+                  ?.filter((jv) => jv.vacancy_status_id == 1)
+                  .map((jv) => ({
+                    label: `(${jv.id}) ${jv.name} `,
+                    value: jv.id,
+                  }))}
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={12}>
+            <Form.Item
+              label='الصورة الشخصيَة'
+              name={['personal_data', 'personal_photo']}
               rules={personalDataRules.personalPhoto}
               getValueFromEvent={getFile}
             >
               <Upload
-                accept=".jpeg,.png,.jpg,.gif,.svg"
-                listType="picture-circle"
+                accept='.jpeg,.png,.jpg,.gif,.svg'
+                listType='picture-circle'
                 maxCount={1}
                 customRequest={(file) => {
                   file.onSuccess(() => {});
@@ -100,28 +108,22 @@ function GeneralInfoForm(props) {
                   setFileList(newFileList);
                 }}
                 beforeUpload={(file) => {
-                  const allowedTypes = imageAllowedTypes.split(",");
+                  const allowedTypes = imageAllowedTypes.split(',');
                   const fileType = file.type;
-                  const isAllowed = allowedTypes.some((type) =>
-                    fileType.endsWith(type)
-                  );
+                  const isAllowed = allowedTypes.some((type) => fileType.endsWith(type));
                   if (!isAllowed) {
                     message.open({
-                      type: "error",
-                      content: `يجب اختيار ملف من النوع ${allowedTypes.join(
-                        ", "
-                      )} فقط`,
+                      type: 'error',
+                      content: `يجب اختيار ملف من النوع ${allowedTypes.join(', ')} فقط`,
                       style: {
-                        marginTop: "20vh",
+                        marginTop: '20vh',
                       },
                     });
                   }
                   return isAllowed || Upload.LIST_IGNORE;
                 }}
               >
-                {fileList.length === 0 && (
-                  <Button icon={<UploadOutlined />}>رفع الصورة</Button>
-                )}
+                {fileList.length === 0 && <Button icon={<UploadOutlined />}>رفع الصورة</Button>}
               </Upload>
             </Form.Item>
           </Col>
@@ -129,8 +131,8 @@ function GeneralInfoForm(props) {
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label="الاسم الأول"
-              name={["personal_data", "first_name"]}
+              label='الاسم الأول'
+              name={['personal_data', 'first_name']}
               rules={personalDataRules.firstName}
             >
               <Input />
@@ -138,8 +140,8 @@ function GeneralInfoForm(props) {
           </Col>
           <Col span={12}>
             <Form.Item
-              label="اسم العائلة"
-              name={["personal_data", "last_name"]}
+              label='اسم العائلة'
+              name={['personal_data', 'last_name']}
               rules={personalDataRules.lastName}
             >
               <Input />
@@ -149,8 +151,8 @@ function GeneralInfoForm(props) {
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label="اسم الأب"
-              name={["personal_data", "father_name"]}
+              label='اسم الأب'
+              name={['personal_data', 'father_name']}
               rules={personalDataRules.fatherName}
             >
               <Input />
@@ -158,8 +160,8 @@ function GeneralInfoForm(props) {
           </Col>
           <Col span={12}>
             <Form.Item
-              label="اسم الجَد"
-              name={["personal_data", "grand_father_name"]}
+              label='اسم الجَد'
+              name={['personal_data', 'grand_father_name']}
               rules={personalDataRules.grandFatherName}
             >
               <Input />
@@ -169,8 +171,8 @@ function GeneralInfoForm(props) {
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label="رقم البريد"
-              name={["address", "postal_code"]}
+              label='رقم البريد'
+              name={['address', 'postal_code']}
               rules={addressRules.postalCode}
             >
               <Input />
@@ -178,8 +180,8 @@ function GeneralInfoForm(props) {
           </Col>
           <Col span={12}>
             <Form.Item
-              label="مكان الولادة"
-              name={["personal_data", "birth_place"]}
+              label='مكان الولادة'
+              name={['personal_data', 'birth_place']}
               rules={personalDataRules.birthPlace}
             >
               <Input />
@@ -189,8 +191,8 @@ function GeneralInfoForm(props) {
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label="رقم الهاتف النَقال"
-              name={["address", "mobile_no"]}
+              label='رقم الهاتف النَقال'
+              name={['address', 'mobile_no']}
               rules={addressRules.mobileNo}
             >
               <Input />
@@ -198,8 +200,8 @@ function GeneralInfoForm(props) {
           </Col>
           <Col span={12}>
             <Form.Item
-              label="رقم الهاتف الأرضي"
-              name={["address", "home_phone_no"]}
+              label='رقم الهاتف الأرضي'
+              name={['address', 'home_phone_no']}
               rules={addressRules.homePhoneNo}
             >
               <Input />
@@ -209,8 +211,8 @@ function GeneralInfoForm(props) {
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label="البريد الالكتروني"
-              name={["address", "email"]}
+              label='البريد الالكتروني'
+              name={['address', 'email']}
               rules={addressRules.email}
             >
               <Input />
@@ -218,8 +220,8 @@ function GeneralInfoForm(props) {
           </Col>
           <Col span={12}>
             <Form.Item
-              label="رقم هاتف العمل"
-              name={["address", "work_phone_no"]}
+              label='رقم هاتف العمل'
+              name={['address', 'work_phone_no']}
               rules={addressRules.workPhoneNo}
             >
               <Input />
@@ -229,39 +231,37 @@ function GeneralInfoForm(props) {
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label="تاريخ الولادة"
-              name={["personal_data", "birth_date"]}
+              label='تاريخ الولادة'
+              name={['personal_data', 'birth_date']}
               rules={personalDataRules.birthDate}
             >
               <DatePicker
-                disabledDate={(current) =>
-                  current.isAfter(moment().subtract(15, "year"))
-                }
+                disabledDate={(current) => current.isAfter(moment().subtract(15, 'year'))}
                 onChange={debouncedValidateForm}
-                format="YYYY-MM-DD"
-                defaultValue={dayjs().subtract(18, "year")}
+                format='YYYY-MM-DD'
+                defaultValue={dayjs().subtract(18, 'year')}
               />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label="متى يمكنك البدء بالعمل ؟"
-              name={["job_data", "start_working_date"]}
+              label='متى يمكنك البدء بالعمل ؟'
+              name={['job_data', 'start_working_date']}
               rules={jobDataRules.startWorkingDate}
             >
               <DatePicker
-                format="YYYY-MM-DD"
+                format='YYYY-MM-DD'
                 disabledDate={(current) => current.isBefore(moment())}
               />
             </Form.Item>
           </Col>
         </Row>
-        <Divider className="divider"> عنوان الإقامة الحالي</Divider>
+        <Divider className='divider'> عنوان الإقامة الحالي</Divider>
         <Row gutter={8}>
           <Col span={8}>
             <Form.Item
-              label="المحافظة"
-              name={["address", "state"]}
+              label='المحافظة'
+              name={['address', 'state']}
               rules={addressRules.state}
             >
               <Input />
@@ -269,8 +269,8 @@ function GeneralInfoForm(props) {
           </Col>
           <Col span={8}>
             <Form.Item
-              label="المدينة"
-              name={["address", "city"]}
+              label='المدينة'
+              name={['address', 'city']}
               rules={addressRules.city}
             >
               <Input />
@@ -278,20 +278,20 @@ function GeneralInfoForm(props) {
           </Col>
           <Col span={8}>
             <Form.Item
-              label="الشارع"
-              name={["address", "street"]}
+              label='الشارع'
+              name={['address', 'street']}
               rules={addressRules.street}
             >
               <Input />
             </Form.Item>
           </Col>
         </Row>
-        <Divider className="divider">البطاقة الشخصيّة</Divider>
+        <Divider className='divider'>البطاقة الشخصيّة</Divider>
         <Row gutter={16}>
           <Col span={8}>
             <Form.Item
-              label="رقم البطاقة الشخصَية"
-              name={["personal_card", "card_number"]}
+              label='رقم البطاقة الشخصَية'
+              name={['personal_card', 'card_number']}
               rules={personalCardRules.cardNumber}
             >
               <Input />
@@ -299,8 +299,8 @@ function GeneralInfoForm(props) {
           </Col>
           <Col span={8}>
             <Form.Item
-              label="مكان الإصدار"
-              name={["personal_card", "card_place_of_issue"]}
+              label='مكان الإصدار'
+              name={['personal_card', 'card_place_of_issue']}
               rules={personalCardRules.cardPlaceOfIssue}
             >
               <Input />
@@ -308,12 +308,12 @@ function GeneralInfoForm(props) {
           </Col>
           <Col span={8}>
             <Form.Item
-              label="تاريخ الإصدار"
-              name={["personal_card", "card_date_of_issue"]}
+              label='تاريخ الإصدار'
+              name={['personal_card', 'card_date_of_issue']}
               rules={personalCardRules.cardDateOfIssue}
             >
               <DatePicker
-                format="YYYY-MM-DD"
+                format='YYYY-MM-DD'
                 disabledDate={(current) => current.isAfter(moment())}
               />
             </Form.Item>
@@ -323,20 +323,20 @@ function GeneralInfoForm(props) {
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label="الحالة الاجتماعية"
-              name={["personal_data", "marital_status"]}
+              label='الحالة الاجتماعية'
+              name={['personal_data', 'marital_status']}
               rules={personalDataRules.maritalStatus}
             >
               <Radio.Group>
-                <Radio value={2}>أعذب</Radio>
+                <Radio value={2}>عازب</Radio>
                 <Radio value={1}>متزوّج</Radio>
               </Radio.Group>
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label="هل أنت موظَف حالياَ"
-              name={["job_data", "is_employed"]}
+              label='هل أنت موظَف حالياَ'
+              name={['job_data', 'is_employed']}
               rules={jobDataRules.isEmployed}
             >
               <Radio.Group>
@@ -348,7 +348,10 @@ function GeneralInfoForm(props) {
         </Row>
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item label="هل تعيل أحد ؟" rules={[{ required: true }]}>
+            <Form.Item
+              label='هل تعيل أحد ؟'
+              rules={[{ required: true }]}
+            >
               <Radio.Group
                 value={props.isDependent}
                 onChange={(e) => {
@@ -362,7 +365,10 @@ function GeneralInfoForm(props) {
           </Col>
         </Row>
         {props.isDependent && (
-          <Form.List name="dependents" initialValue={""}>
+          <Form.List
+            name='dependents'
+            initialValue={''}
+          >
             {(fields, { add, remove }) => {
               if (fields.length === 0) {
                 add();
@@ -371,21 +377,14 @@ function GeneralInfoForm(props) {
                 <>
                   {fields.map(({ key, name, ...restField }) => (
                     <div key={key}>
-                      <Divider className="divider">
-                        {" "}
-                        {`المعال رقم ${name + 1}`}
-                      </Divider>
+                      <Divider className='divider'> {`المعال رقم ${name + 1}`}</Divider>
                       <Row gutter={16}>
-                        <Col span={2}>
-                          {name >= 1 && (
-                            <MinusCircleOutlined onClick={() => remove(name)} />
-                          )}
-                        </Col>
+                        <Col span={2}>{name >= 1 && <MinusCircleOutlined onClick={() => remove(name)} />}</Col>
                         <Col span={7}>
                           <Form.Item
                             {...restField}
-                            label="الاسم"
-                            name={[name, "name"]}
+                            label='الاسم'
+                            name={[name, 'name']}
                             rules={dependentsRules.name}
                           >
                             <Input />
@@ -394,8 +393,8 @@ function GeneralInfoForm(props) {
                         <Col span={7}>
                           <Form.Item
                             {...restField}
-                            label="القرابة"
-                            name={[name, "relationship"]}
+                            label='القرابة'
+                            name={[name, 'relationship']}
                             rules={dependentsRules.relationship}
                           >
                             <Input />
@@ -404,8 +403,8 @@ function GeneralInfoForm(props) {
                         <Col span={7}>
                           <Form.Item
                             {...restField}
-                            label="العمر"
-                            name={[name, "age"]}
+                            label='العمر'
+                            name={[name, 'age']}
                             rules={dependentsRules.age}
                           >
                             <Input />
@@ -413,11 +412,14 @@ function GeneralInfoForm(props) {
                         </Col>
                       </Row>
                       <Row>
-                        <Col span={14} offset={2}>
+                        <Col
+                          span={14}
+                          offset={2}
+                        >
                           <Form.Item
                             {...restField}
-                            label="العنوان"
-                            name={[name, "address"]}
+                            label='العنوان'
+                            name={[name, 'address']}
                             rules={dependentsRules.address}
                           >
                             <Input />
@@ -428,9 +430,9 @@ function GeneralInfoForm(props) {
                   ))}
                   <Row>
                     <Col>
-                      <Form.Item label="إضافة معال">
+                      <Form.Item label='إضافة معال'>
                         <Button
-                          type="dashed"
+                          type='dashed'
                           onClick={() => add()}
                           icon={<PlusOutlined />}
                         >
@@ -449,8 +451,8 @@ function GeneralInfoForm(props) {
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                label="هل تملك جواز سفر ؟"
-                rules={[{ required: true, message: "يجب ملئ الحقل بالأعلى " }]}
+                label='هل تملك جواز سفر ؟'
+                rules={[{ required: true, message: 'يجب ملئ الحقل بالأعلى ' }]}
               >
                 <Radio.Group
                   value={props.isPassport}
@@ -466,12 +468,12 @@ function GeneralInfoForm(props) {
           </Row>
           {props.isPassport && (
             <>
-              <Divider className="divider">جواز السفر</Divider>
+              <Divider className='divider'>جواز السفر</Divider>
               <Row gutter={16}>
                 <Col span={12}>
                   <Form.Item
-                    label="رقم الجواز"
-                    name={["passport", "passport_number"]}
+                    label='رقم الجواز'
+                    name={['passport', 'passport_number']}
                     rules={passportRules.passportNumber}
                   >
                     <Input />
@@ -479,8 +481,8 @@ function GeneralInfoForm(props) {
                 </Col>
                 <Col span={12}>
                   <Form.Item
-                    label="مكان الإصدار"
-                    name={["passport", "passport_place_of_issue"]}
+                    label='مكان الإصدار'
+                    name={['passport', 'passport_place_of_issue']}
                     rules={passportRules.passportPlaceOfIssue}
                   >
                     <Input />
@@ -490,13 +492,11 @@ function GeneralInfoForm(props) {
               <Row>
                 <Col span={12}>
                   <Form.Item
-                    label="تاريخ الإصدار"
-                    name={["passport", "passport_date_of_issue"]}
+                    label='تاريخ الإصدار'
+                    name={['passport', 'passport_date_of_issue']}
                     rules={passportRules.passportDateOfIssue}
                   >
-                    <DatePicker
-                      disabledDate={(current) => current.isAfter(moment())}
-                    />
+                    <DatePicker disabledDate={(current) => current.isAfter(moment())} />
                   </Form.Item>
                 </Col>
               </Row>
@@ -505,7 +505,7 @@ function GeneralInfoForm(props) {
         </>
       </Form>
       <Button
-        type="primary"
+        type='primary'
         onClick={() => {
           props.onNext();
         }}
@@ -516,7 +516,7 @@ function GeneralInfoForm(props) {
       {props.validateState === false && (
         <FloatButton
           badge={{ dot: errorFields }}
-          icon={<FrownOutlined style={{ color: "red" }} />}
+          icon={<FrownOutlined style={{ color: 'red' }} />}
           onClick={() => {
             props.form.getFieldInstance(errorFields[0]).focus();
           }}
