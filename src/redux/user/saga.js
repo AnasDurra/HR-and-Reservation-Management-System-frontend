@@ -24,7 +24,11 @@ function* userLogInSaga({ payload }) {
         const userJsonToString = JSON.stringify(response.data);
         Cookies.set('user', utils.encrypt(userJsonToString), { expires: 12 });
         const from = payload.location.state?.from?.pathname || "/";
-        payload.navigate(from, { replace: true });
+        if(Number(response?.data?.user_type) === 1) {
+            payload.navigate("/main", { replace: true });
+        } else {
+            payload.navigate("/consultant/calendar", { replace: true });
+        }
 
         yield put(loginSuccess(response.data));
     }

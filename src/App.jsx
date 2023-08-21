@@ -44,6 +44,8 @@ import ViewEvents from './Features/CenterEvents/ViewEvents';
 import MaintainEvent from './Features/CenterEvents/MaintainEvent';
 import DetectCustomer from './Features/Customers/DetectCustomer';
 import ViewHomePage from './Components/Home page/ViewHomePage';
+import ConsultantCustomers from './Features/Consultants/ConsultantCustomers';
+import ConsultantCustomer from './Features/Consultants/ConsultantCustomer';
 
 function App() {
   const dispatch = useDispatch();
@@ -306,6 +308,14 @@ function App() {
                 <Route
                   path='calendar'
                   element={<ConsultantCalendar />}
+                />
+                <Route
+                  path='customers'
+                  element={<ConsultantCustomers />}
+                />
+                <Route
+                  path='customers/view/:custID'
+                  element={<ConsultantCustomer />}
                 />
               </Route>
             </Route>

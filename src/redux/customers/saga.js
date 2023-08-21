@@ -1,6 +1,6 @@
 import { all, fork, takeEvery, call, put } from "redux-saga/effects";
 import AxiosInstance from "../utils/axiosInstance";
-import { getCustomersSuccess, getCustomersFailed, getEducationalLevelsSuccess, getEducationalLevelsFailed, verifyAccountSuccess, verifyAccountFailed } from "./reducer";
+import { getCustomersSuccess, getCustomersFailed, getEducationalLevelsSuccess, getEducationalLevelsFailed, verifyAccountSuccess, verifyAccountFailed, getConsultantCustomersSuccess, getConsultantCustomersFailed } from "./reducer";
 import { addCustomerSuccess, addCustomerFailed } from "./reducer";
 import { deleteCustomerSuccess, deleteCustomerFailed } from "./reducer";
 import { updateCustomerSuccess, updateCustomerFailed } from "./reducer";
@@ -69,6 +69,22 @@ const verifyAccount = (payload) => {
 
 const getCustomerAppointmentsStatistics = (payload) => {
     return AxiosInstance().get(`customer/statistics/${payload.id}`);
+}
+
+const getConsultantCustomers = (payload) => {
+    let url = "consultant-customers";
+
+    const params = new URLSearchParams();
+
+    if (payload?.name) {
+        params.append('name', payload.name);
+    }
+
+    if (payload?.page) {
+        params.append('page', payload.page);
+    }
+
+    return AxiosInstance().get(`${url}?${params.toString()}`);
 }
 
 function* getCustomersSaga({ payload }) {
@@ -171,6 +187,17 @@ function* getDetectResultSaga({ payload }) {
     }
 }
 
+function* getConsultantCustomersSaga({ payload }) {
+    try {
+        const response = yield call(getConsultantCustomers, payload);
+        console.log(response);
+        yield put(getConsultantCustomersSuccess(response.data.consultantCustomers));
+    }
+    catch (error) {
+        yield put(getConsultantCustomersFailed(error));
+    }
+}
+
 function* verifyAccountSaga({ payload }) {
     try {
         const response = yield call(verifyAccount, payload);
@@ -239,6 +266,10 @@ function* watchGetCustomerAppointmentsStatistics() {
     yield takeEvery('customersReducer/getCustomerAppointmentsStatistics', getCustomerAppointmentsStatisticsSaga);
 }
 
+function* watchGetConsultantCustomers() {
+    yield takeEvery('customersReducer/getConsultantCustomers', getConsultantCustomersSaga);
+}
+
 function* CustomersSaga() {
     yield all([
         fork(watchGetCustomers),
@@ -251,6 +282,7 @@ function* CustomersSaga() {
         fork(watchGetDetectResult),
         fork(watchVerifyAccount),
         fork(watchGetCustomerAppointmentsStatistics),
+        fork(watchGetConsultantCustomers),
     ]);
 }
 
