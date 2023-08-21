@@ -225,7 +225,7 @@ function EventCard({ event, editable }) {
               //TODO add the appointment status condition ( it should be completed) & employee cant edit casenote
               return !editable && event?.status?.name == 'مكتمل';
             case 'cancelAttendance':
-              return event?.status?.name == 'مكتمل' || event?.status?.id == 7 || event?.status?.id == 8;
+              return (editable && event?.status?.name == 'مكتمل') || event?.status?.id == 7 || event?.status?.id == 8;
             default:
               return false;
           }
