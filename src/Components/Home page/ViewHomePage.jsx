@@ -132,7 +132,7 @@ function ViewHomePage() {
   return (
     <>
       <Row gutter={16}>
-        <Col span={12}>
+        <Col span={14}>
           <GlobalStatistics
             employees={statistics?.employees}
             activeEmployees={statistics?.workingEmployees}
@@ -144,7 +144,7 @@ function ViewHomePage() {
         </Col>
 
         <Col
-          offset={2}
+          offset={1}
           span={8}
         >
           <EventsCarousel events={statistics?.last_3_events} />
