@@ -1,1 +1,1 @@
-export const IMAGE_URL = "http://127.0.0.1:8000/storage/";
+export const IMAGE_URL = "http://127.0.0.1:8000";

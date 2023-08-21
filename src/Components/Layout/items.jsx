@@ -11,6 +11,7 @@ import {
   TeamOutlined,
   BellOutlined,
   HomeOutlined,
+  CalendarOutlined,
 } from '@ant-design/icons';
 
 import Permissions from '../AccessRoute/Permissions';
@@ -20,6 +21,7 @@ export const items = [
     text: 'الرئيسيّة',
     icon: <HomeOutlined />,
     path: '/main',
+    userType: 1,
   },
   {
     text: 'الأقسام',
@@ -58,19 +60,19 @@ export const items = [
       },
       {
         text: 'طلبات الإجازة',
-        path: '/employees/vacations/requests',
+        path: '/vacations/requests',
       },
       {
         text: 'إجازات الموظفين',
-        path: '/employees/vacations',
+        path: '/vacations',
       },
       {
         text: 'طلبات إزاحة الدوام',
-        path: '/employees/timeShiftRequests',
+        path: '/timeShiftRequests',
       },
       {
         text: 'غيابات الموظفين',
-        path: '/employees/absences',
+        path: '/absences',
       },
     ],
   },
@@ -95,30 +97,22 @@ export const items = [
   {
     text: 'التقارير',
     icon: <ContainerOutlined />,
+    access: [Permissions.EXPORT_REPORTS],
     items: [
       {
         text: 'تقارير الموظفين',
-        path: '/employees/reports',
-        access: [Permissions.EXPORT_REPORTS],
+        path: '/reports',
       },
     ],
   },
   {
     text: 'إدارة المواعيد',
     icon: <ContainerOutlined />,
-
+    access: [Permissions.MANAGE_APPOINTMENTS],
     items: [
-      {
-        text: 'جداول الدوام',
-        path: '/consultant/timeSchedules',
-      },
       {
         text: 'جدول المواعيد',
         path: '/appointments/calendar',
-      },
-      {
-        text: 'جدول مواعيد المستشار',
-        path: '/consultant/calendar',
       },
       {
         text: 'المواعيد الملغاة',
@@ -127,15 +121,27 @@ export const items = [
     ],
   },
   {
+    text: 'جدول مواعيد',
+    icon: <CalendarOutlined />,
+    path: '/consultant/calendar',
+    userType: 2,
+  },
+  {
+    text: 'جداول الدوام',
+    icon: <CalendarOutlined />,
+    path: '/consultant/timeSchedules',
+    userType: 2,
+  },
+  {
     text: 'الاستشاريين',
     icon: <OneToOneOutlined />,
     path: '/consultants',
-    // access: [  ],
+    access: [Permissions.MANAGE_CONSULTANTS],
   },
   {
     text: 'المستفيدين',
     icon: <TeamOutlined />,
-    // access: [  ],
+    access: [Permissions.MANAGE_CUSTOMERS],
     items: [
       {
         text: 'جميع المستفيدين',
@@ -151,6 +157,6 @@ export const items = [
     text: 'الفعاليّات',
     icon: <BellOutlined />,
     path: '/events',
-    // access: [  ],
+    access: [Permissions.MANAGE_EVENTS],
   },
 ];

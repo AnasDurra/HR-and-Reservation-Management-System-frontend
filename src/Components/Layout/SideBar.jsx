@@ -4,13 +4,18 @@ import SideBarItem from './SideBarItem';
 import { items } from './items';
 import Cookies from 'js-cookie';
 import { useSelector } from 'react-redux';
+import getUser from '../../redux/utils/cookiesUtils';
 
 function SideBar() {
     const permissionsReducer = useSelector(state => state.userReducer.permissions);
     const stringified = Cookies.get('perms');
     const permissions = stringified ? JSON.parse(stringified) : permissionsReducer;
+    const user = getUser();
 
-    const isAllowed = (access) => {
+    const isAllowed = (access, userType) => {
+        if (userType) {
+            return Number(user?.user_type) === Number(userType);
+        }
         if (access) {
             return permissions.some(role => access.includes(role));
         }
@@ -25,7 +30,7 @@ function SideBar() {
             <ul className='SideBarList'>
                 {items.map((item, key) => {
                     return (
-                        (isAllowed(item?.access) ?
+                        (isAllowed(item?.access, item?.userType) ?
                             <SideBarItem key={key} item={item} />
                             : null)
                     );

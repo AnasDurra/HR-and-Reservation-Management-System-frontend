@@ -13,8 +13,8 @@ const AccessRoute = ({ allowedRoutes, userType }) => {
 
     const location = useLocation();
 
-    if (Number(user?.user_type) !== Number(userType)) {
-        <Navigate to="/unauthorized" state={{ from: location }} replace />
+    if (userType && Number(user?.user_type) !== Number(userType)) {
+        return <Navigate to="/unauthorized" state={{ from: location }} replace />
     }
     if (location.pathname === '/login') {
         return user ? <Navigate to="/" replace /> : <Outlet />;
@@ -27,7 +27,7 @@ const AccessRoute = ({ allowedRoutes, userType }) => {
     }
 
     const hasAllowedRole = permissions.some(role => allowedRoutes.includes(role));
-    
+
     return (
         hasAllowedRole
             ? <Outlet />

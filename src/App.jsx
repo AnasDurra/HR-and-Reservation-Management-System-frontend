@@ -127,15 +127,15 @@ function App() {
               />
             </Route>
 
-            <Route path='employees'>
-              <Route
-                element={
-                  <AccessRoute
-                    allowedRoutes={[Permissions.MANAGE_EMPLOYEES]}
-                    userType={1}
-                  />
-                }
-              >
+            <Route
+              element={
+                <AccessRoute
+                  allowedRoutes={[Permissions.MANAGE_EMPLOYEES]}
+                  userType={1}
+                />
+              }
+            >
+              <Route path='employees'>
                 <Route
                   index
                   element={<ViewEmployeesProfiles />}
@@ -145,48 +145,50 @@ function App() {
                   element={<ViewEmployeeProfile />}
                 />
               </Route>
+            </Route>
 
-              <Route
-                element={
-                  <AccessRoute
-                    allowedRoutes={[Permissions.MANAGE_ATTENDANCE]}
-                    userType={1}
-                  />
-                }
-              >
-                <Route path='vacations'>
-                  <Route
-                    index
-                    element={<EmployeesVacations />}
-                  />
-                  <Route
-                    path='requests'
-                    element={<ViewVacationRequests />}
-                  />
-                </Route>
+            <Route
+              element={
+                <AccessRoute
+                  allowedRoutes={[Permissions.MANAGE_ATTENDANCE]}
+                  userType={1}
+                />
+              }
+            >
+              <Route path='vacations'>
                 <Route
-                  path='timeShiftRequests'
-                  element={<ViewTimeShiftRequests />}
+                  index
+                  element={<EmployeesVacations />}
                 />
                 <Route
-                  path='absences'
-                  element={<EmployeesAbsences />}
+                  path='requests'
+                  element={<ViewVacationRequests />}
                 />
               </Route>
 
               <Route
-                element={
-                  <AccessRoute
-                    allowedRoutes={[Permissions.EXPORT_REPORTS]}
-                    userType={1}
-                  />
-                }
-              >
-                <Route
-                  path='reports'
-                  element={<EmployeesReports />}
+                path='timeShiftRequests'
+                element={<ViewTimeShiftRequests />}
+              />
+
+              <Route
+                path='absences'
+                element={<EmployeesAbsences />}
+              />
+            </Route>
+
+            <Route
+              element={
+                <AccessRoute
+                  allowedRoutes={[Permissions.EXPORT_REPORTS]}
+                  userType={1}
                 />
-              </Route>
+              }
+            >
+              <Route
+                path='reports'
+                element={<EmployeesReports />}
+              />
             </Route>
 
             <Route
@@ -229,44 +231,52 @@ function App() {
                   element={<Log />}
                 />
               </Route>
-              {/* </Route> */}
+            </Route>
 
+            <Route
+              element={
+                <AccessRoute
+                  allowedRoutes={[Permissions.MANAGE_ROLES]}
+                  userType={1}
+                />
+              }
+            >
               <Route
-                element={
-                  <AccessRoute
-                    allowedRoutes={[Permissions.MANAGE_ROLES]}
-                    userType={1}
-                  />
-                }
-              >
-                <Route
-                  path='/roles'
-                  element={<ViewRoles />}
-                />
-              </Route>
+                path='/roles'
+                element={<ViewRoles />}
+              />
+            </Route>
 
+            <Route
+              element={
+                <AccessRoute
+                  allowedRoutes={[Permissions.MANAGE_ATTENDANCE]}
+                  userType={1}
+                />
+              }
+            >
               <Route
-                element={
-                  <AccessRoute
-                    allowedRoutes={[Permissions.MANAGE_ATTENDANCE]}
-                    userType={1}
-                  />
-                }
-              >
-                <Route
-                  path='/shifts'
-                  element={<ViewShifts />}
-                />
-                <Route
-                  path='/biometricDevices'
-                  element={<ViewBiometricDevices />}
-                />
-                <Route
-                  path='/timeSheetLog'
-                  element={<ViewTimeSheetLog />}
-                />
-              </Route>
+                path='/shifts'
+                element={<ViewShifts />}
+              />
+              <Route
+                path='/biometricDevices'
+                element={<ViewBiometricDevices />}
+              />
+              <Route
+                path='/timeSheetLog'
+                element={<ViewTimeSheetLog />}
+              />
+            </Route>
 
+            <Route
+              element={
+                <AccessRoute
+                  allowedRoutes={[Permissions.MANAGE_APPOINTMENTS]}
+                  userType={1}
+                />
+              }
+            >
               <Route path='appointments'>
                 <Route
                   index
@@ -279,7 +289,15 @@ function App() {
                   element={<CancelledAppointments />}
                 />
               </Route>
+            </Route>
 
+            <Route
+              element={
+                <AccessRoute
+                  userType={2}
+                />
+              }
+            >
               <Route path='consultant'>
                 <Route
                   path='timeSchedules'
@@ -290,13 +308,16 @@ function App() {
                   element={<ConsultantCalendar />}
                 />
               </Route>
+            </Route>
 
+            <Route element={<AccessRoute userType={1} />}>
               <Route
                 path='main'
                 element={<ViewHomePage />}
               />
+            </Route>
 
-              {/* <Route element={<AccessRoute allowedRoutes={[]} />}> */}
+            <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_CONSULTANTS]} userType={1} />}>
               <Route path='consultants'>
                 <Route
                   index
@@ -315,9 +336,9 @@ function App() {
                   element={<ViewConsultant />}
                 />
               </Route>
-              {/* </Route> */}
+            </Route>
 
-              {/* <Route element={<AccessRoute allowedRoutes={[]} />}> */}
+            <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_CUSTOMERS]} userType={1} />}>
               <Route path='customers'>
                 <Route
                   index
@@ -340,9 +361,9 @@ function App() {
                   element={<DetectCustomer />}
                 />
               </Route>
-              {/* </Route> */}
+            </Route>
 
-              {/* <Route element={<AccessRoute allowedRoutes={[]} />}> */}
+            <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_EVENTS]} userType={1} />}>
               <Route path='events'>
                 <Route
                   index
@@ -357,17 +378,16 @@ function App() {
                   element={<MaintainEvent />}
                 />
               </Route>
-              {/* </Route> */}
-
-              <Route
-                path='*'
-                element={<Navigate to='/' />}
-              />
             </Route>
+
+            <Route
+              path='*'
+              element={<Navigate to='/' />}
+            />
           </Routes>
         </Layout>
       </ConfigProvider>
-    </div>
+    </div >
   );
 }
 

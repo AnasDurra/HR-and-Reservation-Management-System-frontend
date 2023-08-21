@@ -10,6 +10,7 @@ const Permissions = {
     'MANAGE_CONSULTANTS': 9,
     'MANAGE_CUSTOMERS': 10,
     'MANAGE_EVENTS': 11,
+    'MANAGE_APPOINTMENTS': 12
 };
 
 export default Permissions;
