@@ -13,6 +13,7 @@ const AccessRoute = ({ allowedRoutes, userType }) => {
 
     const location = useLocation();
 
+    console.log(userType);
     if (Number(user?.user_type) !== Number(userType)) {
         <Navigate to="/unauthorized" state={{ from: location }} replace />
     }

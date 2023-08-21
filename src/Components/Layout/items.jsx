@@ -11,6 +11,7 @@ import {
   TeamOutlined,
   BellOutlined,
   HomeOutlined,
+  CalendarOutlined,
 } from '@ant-design/icons';
 
 import Permissions from '../AccessRoute/Permissions';
@@ -106,19 +107,11 @@ export const items = [
   {
     text: 'إدارة المواعيد',
     icon: <ContainerOutlined />,
-
+    access: [Permissions.MANAGE_APPOINTMENTS],
     items: [
-      {
-        text: 'جداول الدوام',
-        path: '/consultant/timeSchedules',
-      },
       {
         text: 'جدول المواعيد',
         path: '/appointments/calendar',
-      },
-      {
-        text: 'جدول مواعيد المستشار',
-        path: '/consultant/calendar',
       },
       {
         text: 'المواعيد الملغاة',
@@ -127,15 +120,27 @@ export const items = [
     ],
   },
   {
+    text: 'جدول مواعيد',
+    icon: <CalendarOutlined />,
+    path: '/consultant/calendar',
+    userType: 2,
+  },
+  {
+    text: 'جداول الدوام',
+    icon: <CalendarOutlined />,
+    path: '/consultant/timeSchedules',
+    userType: 2,
+  },
+  {
     text: 'الاستشاريين',
     icon: <OneToOneOutlined />,
     path: '/consultants',
-    // access: [  ],
+    access: [Permissions.MANAGE_CONSULTANTS],
   },
   {
     text: 'المستفيدين',
     icon: <TeamOutlined />,
-    // access: [  ],
+    access: [Permissions.MANAGE_CUSTOMERS],
     items: [
       {
         text: 'جميع المستفيدين',
@@ -151,6 +156,6 @@ export const items = [
     text: 'الفعاليّات',
     icon: <BellOutlined />,
     path: '/events',
-    // access: [  ],
+    access: [Permissions.MANAGE_EVENTS],
   },
 ];

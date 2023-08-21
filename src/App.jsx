@@ -267,28 +267,45 @@ function App() {
                 />
               </Route>
 
-              <Route path='appointments'>
-                <Route
-                  index
-                  path='calendar'
-                  element={<AppointmentsCalendar />}
-                />
+              <Route
+                element={
+                  <AccessRoute
+                    allowedRoutes={[Permissions.MANAGE_APPOINTMENTS]}
+                    userType={1}
+                  />
+                }
+              >
+                <Route path='appointments'>
+                  <Route
+                    index
+                    path='calendar'
+                    element={<AppointmentsCalendar />}
+                  />
 
-                <Route
-                  path='cancelled'
-                  element={<CancelledAppointments />}
-                />
+                  <Route
+                    path='cancelled'
+                    element={<CancelledAppointments />}
+                  />
+                </Route>
               </Route>
 
-              <Route path='consultant'>
-                <Route
-                  path='timeSchedules'
-                  element={<TimeSchedules />}
-                />
-                <Route
-                  path='calendar'
-                  element={<ConsultantCalendar />}
-                />
+              <Route
+                element={
+                  <AccessRoute
+                    userType={2}
+                  />
+                }
+              >
+                <Route path='consultant'>
+                  <Route
+                    path='timeSchedules'
+                    element={<TimeSchedules />}
+                  />
+                  <Route
+                    path='calendar'
+                    element={<ConsultantCalendar />}
+                  />
+                </Route>
               </Route>
 
               <Route
