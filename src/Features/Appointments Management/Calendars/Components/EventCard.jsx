@@ -189,13 +189,14 @@ function EventCard({ event, editable }) {
             <EllipsisOutlined />
           </Dropdown>,
 
-          <Dropdown
+          /* <Dropdown
             key={'cancelAttendance'}
             menu={{ items: cancelAttendanceItems }}
             placement='bottomRight'
           >
             <EllipsisOutlined />
           </Dropdown>,
+          */
         ].filter((element, index) => {
           // console.log('elemets', element);
           switch (element.key) {
@@ -220,7 +221,7 @@ function EventCard({ event, editable }) {
                 ? true
                 : false;
             case 'cancelAppointment':
-              return !isEventInPast && event?.status?.name == 'متاح';
+              return !isEventInPast && (event?.status?.name == 'متاح' || event?.status?.name == 'هاتف');
             case 'caseNote':
               //TODO add the appointment status condition ( it should be completed) & employee cant edit casenote
               return !editable && event?.status?.name == 'مكتمل';
@@ -363,7 +364,8 @@ function EventCard({ event, editable }) {
       />
 
       <CaseNoteModal
-        appointment_id={event?.id}
+        caseNote={event?.case_note}
+        app_id={event?.id}
         isModalOpen={isCaseNoteModalOpen}
         onClose={() => setIsCaseNoteModalOpen(false)}
       />
