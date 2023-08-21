@@ -354,12 +354,12 @@ const AdditionalForm = (props) => {
             </Form.Item>
           </Col>
         </Row>
-        <Form.Item
+       {/*  <Form.Item
           name={['job_application', 'job_vacancy_id']}
           initialValue={1}
           noStyle>
           <Input type='hidden' />
-        </Form.Item>
+        </Form.Item> */}
       </Form>
       {props.validateState === false && (
         <FloatButton

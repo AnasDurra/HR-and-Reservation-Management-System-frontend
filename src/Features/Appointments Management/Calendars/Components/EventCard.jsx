@@ -7,13 +7,14 @@ import {
   EllipsisOutlined,
   ExclamationCircleFilled,
   FormOutlined,
+  IdcardOutlined,
   PhoneOutlined,
   SmileOutlined,
   UserAddOutlined,
   UserDeleteOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Card, Col, Dropdown, Modal, Row, Space, Tag } from 'antd';
+import { Card, Col, Divider, Dropdown, Modal, Row, Space, Tag } from 'antd';
 import Meta from 'antd/es/card/Meta';
 import SelectCustomerModal from './SelectCustomerModal';
 import { useState } from 'react';
@@ -28,12 +29,27 @@ import CaseNoteModal from './CaseNoteModal';
 import PhoneReservationModal from './PhoneReservationModal';
 import { now } from 'moment/moment';
 
+const statusColorsMap = new Map([
+  [1, '#ffccc7'],
+  [2, '#ffccc7'],
+  [3, '#ffccc7'],
+  [4, '#d9f7be'],
+  [5, '#ffffb8'],
+  [6, '#bae0ff'],
+  [7, '#ffd8bf'],
+  [8, '#ffd8bf'],
+  [9, ' #ffffb8 '],
+  [10, ' #b5f5ec '],
+  [11, ' #efdbff'],
+]);
+
 //TODO color title based on status & reorder actions
 function EventCard({ event, editable }) {
   const dispatch = useDispatch();
   const [isSelectCustomerModalOpen, setIsSelectCustomerModalOpen] = useState(false);
   const [isCaseNoteModalOpen, setIsCaseNoteModalOpen] = useState(false);
   const [isPhoneReservationModalOpen, setIsPhoneReservationModalOpen] = useState(false);
+  const isEventInPast = new Date().getTime() > new Date(event?.date).getTime();
 
   const showCancelAppointmentConfirm = () => {
     Modal.confirm({
@@ -109,25 +125,18 @@ function EventCard({ event, editable }) {
   const cancelAttendanceItems = [
     {
       key: '5',
-      disabled: new Date().getTime() > new Date(event?.date).getTime(),
-      label: (
-        <a
-          onClick={() => {
-            dispatch(updateAppointment({ appointment_id: event?.id, updateReservation: true, reservationType: 6 }));
-          }}
-        >
-          تعديل الموعد إلى متاح
-        </a>
-      ),
-    },
-    {
-      key: '6',
-      disabled: new Date().getTime() <= new Date(event?.date).getTime(),
+      disabled: event?.status?.name != 'مكتمل' && event?.status?.id != 7 && event?.status?.id != 8,
       label: (
         <a
           onClick={() => {
             //TODO لم يتم تسجيل الحضور
-            dispatch(updateAppointment({ appointment_id: event?.id, updateReservation: true, reservationType: 11 }));
+            dispatch(
+              updateAppointment({
+                appointment_id: event?.id,
+                updateReservation: true,
+                reservationType: isEventInPast ? 11 : 5,
+              })
+            );
           }}
         >
           إزالة معلومات الحضور
@@ -186,8 +195,6 @@ function EventCard({ event, editable }) {
             <EllipsisOutlined />
           </Dropdown>,
         ].filter((element, index) => {
-          const isEventInPast = new Date().getTime() > new Date(event?.date).getTime();
-
           // console.log('elemets', element);
           switch (element.key) {
             case 'attendance':
@@ -216,7 +223,7 @@ function EventCard({ event, editable }) {
               //TODO add the appointment status condition ( it should be completed) & employee cant edit casenote
               return !editable && event?.status?.name == 'مكتمل';
             case 'cancelAttendance':
-              return event?.status?.name == 'مكتمل';
+              return event?.status?.name == 'مكتمل' || event?.status?.id == 7 || event?.status?.id == 8;
             default:
               return false;
           }
@@ -253,44 +260,66 @@ function EventCard({ event, editable }) {
           </>
         }
         style={{ width: '100%', margin: '1rem 0.1rem' }}
-        headStyle={{ backgroundColor: '#d9f7be' }}
+        headStyle={{ backgroundColor: statusColorsMap.get(event?.status?.id) }}
       >
         <Meta
           description={
-            <div style={{}}>
-              {event?.customer_id && (
-                <Tag
-                  className='user-tag'
-                  icon={<UserOutlined />}
-                  color='default'
-                  onClick={() => {}}
-                >
-                  {event?.customer_name}
-                </Tag>
-              )}
+            <>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                {event?.clinic_name}
+              </div>
 
-              {event?.status?.status_id == 9 && (
-                <>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                {`م.${event?.consultant_name}`}
+              </div>
+              <Divider />
+              <div style={{}}>
+                {event?.customer_id && (
                   <Tag
                     className='user-tag'
                     icon={<UserOutlined />}
                     color='default'
                     onClick={() => {}}
                   >
-                    {event?.status?.customer_name}
+                    {event?.customer_name}
                   </Tag>
-                  <br />
-                  <Tag
-                    className='user-tag'
-                    icon={<PhoneOutlined />}
-                    color='default'
-                    onClick={() => {}}
-                  >
-                    {event?.status?.phone_number}
-                  </Tag>
-                </>
-              )}
-            </div>
+                )}
+
+                {event?.status?.customer_name && (
+                  <>
+                    <Tag
+                      className='user-tag'
+                      icon={<UserOutlined />}
+                      color='default'
+                      onClick={() => {}}
+                    >
+                      {event?.status?.customer_name}
+                    </Tag>
+                    <br />
+                    <Tag
+                      className='user-tag'
+                      icon={<PhoneOutlined />}
+                      color='default'
+                      onClick={() => {}}
+                    >
+                      {event?.status?.phone_number}
+                    </Tag>
+                  </>
+                )}
+              </div>
+            </>
           }
         />
       </Card>

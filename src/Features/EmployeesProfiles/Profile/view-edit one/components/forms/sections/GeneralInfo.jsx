@@ -224,7 +224,7 @@ const GeneralInfo = (props) => {
             rules={personalDataRules.maritalStatus}
           >
             <Select>
-              <Select.Option value={2}>أعذب</Select.Option>
+              <Select.Option value={2}>عازب</Select.Option>
               <Select.Option value={1}>متزوج</Select.Option>
             </Select>
           </Form.Item>

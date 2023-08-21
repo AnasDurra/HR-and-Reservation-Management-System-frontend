@@ -179,6 +179,20 @@ export const employeesSlice = createSlice({
       state.error = action.payload.error;
     },
 
+    updateEmployeeRolesAndPermissions: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    updateEmployeeRolesAndPermissionsSuccess: (state, action) => {
+      state.loading = false;
+      //TODO update status
+     // state.employee.schedule = action.payload.schedule;
+    },
+    updateEmployeeRolesAndPermissionsFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+
     updateEmployeeStatus: (state) => {
       state.loading = true;
       state.error = null;
@@ -257,6 +271,10 @@ export const {
   updateEmployeeSchedule,
   updateEmployeeScheduleSuccess,
   updateEmployeeScheduleFail,
+
+  updateEmployeeRolesAndPermissions,
+  updateEmployeeRolesAndPermissionsSuccess,
+  updateEmployeeRolesAndPermissionsFail,
 
   updateEmployeeStatus,
   updateEmployeeStatusSuccess,

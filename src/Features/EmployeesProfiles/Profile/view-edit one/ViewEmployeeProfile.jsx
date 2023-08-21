@@ -18,6 +18,7 @@ import EmployeeJobTitlesHistoryModal from './components/modals/EmployeeJobTitles
 import EmployeeAbsencesModal from './components/modals/EmployeeAbsencesModal';
 import './ViewEmployeeProfile.css';
 import './style.css';
+import ViewEditEmployeeRolesAndPermissionsDrawer from './components/drawers/ViewEditEmployeeRolesAndPermissionsDrawer';
 
 const colorMapping = {
   1: '#FF0000',
@@ -206,7 +207,6 @@ const ViewEmployeeProfile = (props) => {
             width: '90%',
           }}
         >
-          
           <Dropdown
             menu={{ items }}
             trigger={['click']}
@@ -217,7 +217,7 @@ const ViewEmployeeProfile = (props) => {
               </Button>
             </Space>
           </Dropdown>
-          
+
           <div
             style={{
               width: '100%',
@@ -420,10 +420,20 @@ const ViewEmployeeProfile = (props) => {
       <ViewEditEmployeeAccountDrawer
         employeeName={employee?.employee_data?.personal_data?.full_name}
         emp_id={employee?.emp_id}
-        username={'lol'}
-        password={'duh'}
+        username={employee?.username}
+        email={employee?.email}
+        //  password={'duh'}
         isOpen={isAccountDrawerOpen}
         onClose={closeAccountDrawer}
+      />
+
+      <ViewEditEmployeeRolesAndPermissionsDrawer
+        emp_id={employee?.emp_id}
+        employeeName={employee?.job_application?.employee_data?.personal_data?.full_name}
+        current_job_title_id={employee?.current_job_title?.job_title_id}
+        permissions={employee?.permissions}
+        onClose={closeRoleDrawer}
+        isOpen={isRoleDrawerOpen}
       />
 
       <EditEmployeeDepartmentDrawer
