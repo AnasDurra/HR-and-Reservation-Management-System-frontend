@@ -34,7 +34,6 @@ function ViewConsultant() {
         }
     }, []);
 
-    console.log(consultantYearAppointments);
     console.log(consultantAllAppointments);
 
     const [activeIndex, setActiveIndex] = useState(0);
@@ -180,6 +179,35 @@ function ViewConsultant() {
         }
     }, [consultantYearAppointments]);
 
+    useEffect(() => {
+        if (consultantAllAppointments) {
+            let d = [];
+
+            d = d.concat({
+                name: 'المواعيد المكتملة',
+                value: consultantAllAppointments?.completed_appointments
+            });
+
+            d = d.concat({ 
+                name: 'المواعيد الملغية(الاستشاري)', 
+                value: consultantAllAppointments?.cancelled_by_consultant_appointments 
+            });
+
+            d = d.concat({ 
+                name: 'المواعيد الملغية(المستفيد)', 
+                value: consultantAllAppointments?.cancelled_by_customers_appointments, 
+            });
+
+            d = d.concat({ 
+                name: 'المواعيد غير المعلومة', 
+                value: consultantAllAppointments?.unknown_appointments 
+            });
+
+            setFetchedAll(d);
+
+        }
+    }, [consultantYearAppointments]);
+
     return (
         <Spinner loading={loading}>
             <div>
@@ -203,7 +231,8 @@ function ViewConsultant() {
                                         <Pie
                                             activeIndex={activeIndex}
                                             activeShape={renderActiveShape}
-                                            data={data}
+                                            // data={data}
+                                            data={fetchedAll}
                                             cx="50%"
                                             cy="50%"
                                             innerRadius={120}
