@@ -102,17 +102,31 @@ function ViewEditEmployeeRolesAndPermissionsDrawer({
           dispatch(
             updateEmployeeRolesAndPermissions({
               data: {
-                additional_permissions_ids: form
-                  .getFieldValue(['permissions'])
-                  .filter(
-                    (permission) =>
-                      !selectedRole?.permissions.map((perm) => perm.perm_id).includes(permission) ||
-                      excludedPermissions?.includes(permission)
-                  ),
+                additional_permissions_ids:
+                  form
+                    .getFieldValue(['permissions'])
+                    .filter(
+                      (permission) =>
+                        !selectedRole?.permissions.map((perm) => perm.perm_id).includes(permission) ||
+                        excludedPermissions?.includes(permission)
+                    ).length > 0
+                    ? form
+                        .getFieldValue(['permissions'])
+                        .filter(
+                          (permission) =>
+                            !selectedRole?.permissions.map((perm) => perm.perm_id).includes(permission) ||
+                            excludedPermissions?.includes(permission)
+                        )
+                    : undefined,
 
-                deleted_permissions_ids: selectedRole?.permissions
-                  .filter((permission) => !form.getFieldValue(['permissions']).includes(permission.perm_id))
-                  .map((perm) => perm.perm_id),
+                deleted_permissions_ids:
+                  selectedRole?.permissions
+                    .filter((permission) => !form.getFieldValue(['permissions']).includes(permission.perm_id))
+                    .map((perm) => perm.perm_id).length > 0
+                    ? selectedRole?.permissions
+                        .filter((permission) => !form.getFieldValue(['permissions']).includes(permission.perm_id))
+                        .map((perm) => perm.perm_id)
+                    : undefined,
                 job_title_id: selectedRole?.job_title_id,
                 id: emp_id,
               },
