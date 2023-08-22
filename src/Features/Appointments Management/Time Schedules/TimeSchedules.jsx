@@ -35,6 +35,7 @@ import {
   getTimeSchedule,
   getTimeSchedules,
 } from '../../../redux/Features/Appointments Management/Consultant Time Schedules/slice';
+import Spinner from '../../../Components/Spinner/Spinner';
 
 const dataSource = [
   {
@@ -67,6 +68,7 @@ const dataSource = [
 function TimeSchedules() {
   const dispatch = useDispatch();
   const timeSchedules = useSelector((state) => state?.consultantTimeScheduleSlice?.timeSchedules);
+  const loading = useSelector((state) => state?.consultantTimeScheduleSlice?.loading);
   const [isAddScheduleDrawerOpen, setIsAddScheduleDrawerOpen] = useState(false);
 
   const openAddScheduleDrawer = () => setIsAddScheduleDrawerOpen(true);
@@ -113,22 +115,24 @@ function TimeSchedules() {
   ];
 
   return (
-    <>
-      <Space style={{ marginBottom: 16 }}>
-        <Button onClick={openAddScheduleDrawer}>إضافة برنامج دوام</Button>{' '}
-        <AddPeriodsScheduleDrawer
-          isOpen={isAddScheduleDrawerOpen}
-          close={closeAddScheduleDrawer}
-          open={openAddScheduleDrawer}
-        ></AddPeriodsScheduleDrawer>
-      </Space>
+    <Spinner loading={loading}>
+      <>
+        <Space style={{ marginBottom: 16 }}>
+          <Button onClick={openAddScheduleDrawer}>إضافة برنامج دوام</Button>{' '}
+          <AddPeriodsScheduleDrawer
+            isOpen={isAddScheduleDrawerOpen}
+            close={closeAddScheduleDrawer}
+            open={openAddScheduleDrawer}
+          ></AddPeriodsScheduleDrawer>
+        </Space>
 
-      <Table
-        dataSource={timeSchedules}
-        columns={columns}
-        size='small'
-      />
-    </>
+        <Table
+          dataSource={timeSchedules}
+          columns={columns}
+          size='small'
+        />
+      </>
+    </Spinner>
   );
 }
 

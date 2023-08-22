@@ -286,7 +286,7 @@ function EventCard({ event, editable }) {
               >
                 <span
                   style={{ color: 'black', fontWeight: 'bold', cursor: 'pointer' }}
-                  onClick={() => navigate(`/consultants/view/${event?.consultant_id}`)}
+                  // onClick={() => navigate(`/consultants/view/${event?.consultant_id}`)}
                 >{`م.${event?.consultant_name}`}</span>
               </div>
 

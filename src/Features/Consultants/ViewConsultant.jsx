@@ -190,17 +190,20 @@ function ViewConsultant() {
 
             d = d.concat({ 
                 name: 'المواعيد الملغية(الاستشاري)', 
-                value: consultantAllAppointments?.cancelled_by_consultant_appointments 
+                value: 5
+                // value: consultantAllAppointments?.cancelled_by_consultant_appointments 
             });
 
             d = d.concat({ 
-                name: 'المواعيد الملغية(المستفيد)', 
-                value: consultantAllAppointments?.cancelled_by_customers_appointments, 
+                name: 'المواعيد الملغية(المستفيد)',
+                value: 2 
+                // value: consultantAllAppointments?.cancelled_by_customers_appointments, 
             });
 
             d = d.concat({ 
-                name: 'المواعيد غير المعلومة', 
-                value: consultantAllAppointments?.unknown_appointments 
+                name: 'المواعيد غير المعلومة',
+                value: 3 
+                // value: consultantAllAppointments?.unknown_appointments 
             });
 
             setFetchedAll(d);
@@ -249,8 +252,8 @@ function ViewConsultant() {
                                     <AreaChart
                                         width={500}
                                         height={400}
-                                        // data={data2}
-                                        data={fetchedYear}
+                                        data={data2}
+                                        // data={fetchedYear}
                                         margin={{
                                             top: 10,
                                             right: 30,
