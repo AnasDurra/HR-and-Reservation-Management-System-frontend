@@ -1,51 +1,54 @@
-import { ConfigProvider } from 'antd';
-import './App.css';
-import arEG from 'antd/lib/locale/ar_EG';
-import { useDispatch, useSelector } from 'react-redux';
-import Layout from './Components/Layout/Layout';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import LogInPage from './Features/Login/Login';
-import Unauthorized from './Components/Unauthorized/Unauthorized';
-import AccessRoute from './Components/AccessRoute/AccessRoute';
-import Permissions from './Components/AccessRoute/Permissions';
-import ViewDepartments from './Features/EmployeesProfiles/Departments/ViewDepartments';
-import JobApplicationMultiStepForm from './Features/EmployeesProfiles/Job Application/add/JobApplicationMultiStepForm';
-import ViewJobVacancies from './Features/EmployeesProfiles/JobVacancies/ViewJobVacancies';
-import ViewJobApplications from './Features/EmployeesProfiles/Job Application/view all/ViewJobApplications';
-import ViewRoles from './Features/Roles/ViewRoles';
-import ViewShifts from './Features/Attendance/Shifts/ViewShifts';
-import ViewBiometricDevices from './Features/Attendance/BiometricDevices/ViewBiometricDevices';
-import ViewTimeSheetLog from './Features/Attendance/TimeSheetLog/ViewTimeSheetLog';
-import ViewEmployeesProfiles from './Features/EmployeesProfiles/Profile/view all/ViewEmployeesProfiles';
-import ViewEmployeeProfile from './Features/EmployeesProfiles/Profile/view-edit one/ViewEmployeeProfile';
-import ViewJobApplication from './Features/EmployeesProfiles/Job Application/view one/ViewJobApplication';
-import Log from './Features/Log/Log';
-import EmployeesVacations from './Features/Attendance/Vacations/EmployeesVacations';
-import EmployeesAbsences from './Features/Attendance/Absences/EmployeesAbsences';
-import ViewVacationRequests from './Features/Attendance/Vacations/ViewVacationRequests';
-import ViewTimeShiftRequests from './Features/Attendance/TimeShift/ViewTimeShiftRequests';
-import EmployeesReports from './Features/EmployeesReports/EmployeesReports';
-import { useEffect } from 'react';
-import { getEmployeePermissions } from './redux/user/reducer';
-import getUser from './redux/utils/cookiesUtils';
-import PERMISSIONS from './Components/AccessRoute/Permissions';
-import Cookies from 'js-cookie';
-import TimeSchedules from './Features/Appointments Management/Time Schedules/TimeSchedules';
-import ConsultantCalendar from './Features/Appointments Management/Calendars/Consultant Appointments Calendar/ConsultantCalendar';
-import AppointmentsCalendar from './Features/Appointments Management/Calendars/Global Appointments Calendar/AppointmentsCalendar';
-import CancelledAppointments from './Features/Appointments Management/Cancelled Appointments/CancelledAppointments';
-import ViewConsultants from './Features/Consultants/ViewConsultants';
-import MaintainConsultant from './Features/Consultants/MaintainConsultant';
-import ViewConsultant from './Features/Consultants/ViewConsultant';
-import ViewCustomers from './Features/Customers/ViewCustomers';
-import MaintainCustomer from './Features/Customers/MaintainCustomer';
-import ViewCustomer from './Features/Customers/ViewCustomer';
-import ViewEvents from './Features/CenterEvents/ViewEvents';
-import MaintainEvent from './Features/CenterEvents/MaintainEvent';
-import DetectCustomer from './Features/Customers/DetectCustomer';
-import ViewHomePage from './Components/Home page/ViewHomePage';
-import ConsultantCustomers from './Features/Consultants/ConsultantCustomers';
-import ConsultantCustomer from './Features/Consultants/ConsultantCustomer';
+import { ConfigProvider } from "antd";
+import arEG from "antd/lib/locale/ar_EG";
+import Cookies from "js-cookie";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import "./App.css";
+import AccessRoute from "./Components/AccessRoute/AccessRoute";
+import {
+  default as Permissions,
+  default as PERMISSIONS,
+} from "./Components/AccessRoute/Permissions";
+import ViewHomePage from "./Components/Home page/ViewHomePage";
+import Layout from "./Components/Layout/Layout";
+import Unauthorized from "./Components/Unauthorized/Unauthorized";
+import ConsultantCalendar from "./Features/Appointments Management/Calendars/Consultant Appointments Calendar/ConsultantCalendar";
+import AppointmentsCalendar from "./Features/Appointments Management/Calendars/Global Appointments Calendar/AppointmentsCalendar";
+import CancelledAppointments from "./Features/Appointments Management/Cancelled Appointments/CancelledAppointments";
+import TimeSchedules from "./Features/Appointments Management/Time Schedules/TimeSchedules";
+import EmployeesAbsences from "./Features/Attendance/Absences/EmployeesAbsences";
+import ViewBiometricDevices from "./Features/Attendance/BiometricDevices/ViewBiometricDevices";
+import ViewShifts from "./Features/Attendance/Shifts/ViewShifts";
+import ViewTimeSheetLog from "./Features/Attendance/TimeSheetLog/ViewTimeSheetLog";
+import ViewTimeShiftRequests from "./Features/Attendance/TimeShift/ViewTimeShiftRequests";
+import EmployeesVacations from "./Features/Attendance/Vacations/EmployeesVacations";
+import ViewVacationRequests from "./Features/Attendance/Vacations/ViewVacationRequests";
+import MaintainEvent from "./Features/CenterEvents/MaintainEvent";
+import ViewEvents from "./Features/CenterEvents/ViewEvents";
+import ConsultantCustomer from "./Features/Consultants/ConsultantCustomer";
+import ConsultantCustomers from "./Features/Consultants/ConsultantCustomers";
+import MaintainConsultant from "./Features/Consultants/MaintainConsultant";
+import ViewConsultant from "./Features/Consultants/ViewConsultant";
+import ViewConsultants from "./Features/Consultants/ViewConsultants";
+import DetectCustomer from "./Features/Customers/DetectCustomer";
+import MaintainCustomer from "./Features/Customers/MaintainCustomer";
+import ViewCustomer from "./Features/Customers/ViewCustomer";
+import ViewCustomers from "./Features/Customers/ViewCustomers";
+import ViewDepartments from "./Features/EmployeesProfiles/Departments/ViewDepartments";
+import JobApplicationMultiStepForm from "./Features/EmployeesProfiles/Job Application/add/JobApplicationMultiStepForm";
+import ViewJobApplications from "./Features/EmployeesProfiles/Job Application/view all/ViewJobApplications";
+import ViewJobApplication from "./Features/EmployeesProfiles/Job Application/view one/ViewJobApplication";
+import ViewJobVacancies from "./Features/EmployeesProfiles/JobVacancies/ViewJobVacancies";
+import ViewEmployeesProfiles from "./Features/EmployeesProfiles/Profile/view all/ViewEmployeesProfiles";
+import ViewEmployeeProfile from "./Features/EmployeesProfiles/Profile/view-edit one/ViewEmployeeProfile";
+import EmployeesReports from "./Features/EmployeesReports/EmployeesReports";
+import Log from "./Features/Log/Log";
+import LogInPage from "./Features/Login/Login";
+import ViewRoles from "./Features/Roles/ViewRoles";
+import { getEmployeePermissions } from "./redux/user/reducer";
+import getUser from "./redux/utils/cookiesUtils";
+import RootRoute from "./Components/RootRoute/RootRoute";
 
 function App() {
   const dispatch = useDispatch();
@@ -62,44 +65,34 @@ function App() {
 
   useEffect(() => {
     if (permissions.length > 0) {
-      Cookies.set('perms', JSON.stringify(permissions));
+      Cookies.set("perms", JSON.stringify(permissions));
     }
   }, [permissions]);
 
   return (
     <div>
       <ConfigProvider
-        direction='rtl'
+        direction="rtl"
         locale={arEG}
         theme={{
           token: {
-            fontFamily: 'cairo',
-            colorPrimary: '#0c3ded',
+            fontFamily: "cairo",
+            colorPrimary: "#0c3ded",
           },
           components: {
             Button: {
-              borderRadius: '12px',
+              borderRadius: "12px",
             },
           },
         }}
       >
         <Layout>
           <Routes>
-            {/*public Routes*/}
-            <Route
-              path='/'
-              element={<div>Root</div>}
-            />
+            <Route path="/" element={<RootRoute />} />
             <Route element={<AccessRoute />}>
-              <Route
-                path='/login'
-                element={<LogInPage />}
-              />
+              <Route path="/login" element={<LogInPage />} />
             </Route>
-            <Route
-              path='/unauthorized'
-              element={<Unauthorized />}
-            />
+            <Route path="/unauthorized" element={<Unauthorized />} />
 
             <Route
               element={
@@ -109,10 +102,7 @@ function App() {
                 />
               }
             >
-              <Route
-                path='/departments'
-                element={<ViewDepartments />}
-              />
+              <Route path="/departments" element={<ViewDepartments />} />
             </Route>
 
             <Route
@@ -123,10 +113,7 @@ function App() {
                 />
               }
             >
-              <Route
-                path='/jobVacancies'
-                element={<ViewJobVacancies />}
-              />
+              <Route path="/jobVacancies" element={<ViewJobVacancies />} />
             </Route>
 
             <Route
@@ -137,15 +124,9 @@ function App() {
                 />
               }
             >
-              <Route path='employees'>
-                <Route
-                  index
-                  element={<ViewEmployeesProfiles />}
-                />
-                <Route
-                  path='profile'
-                  element={<ViewEmployeeProfile />}
-                />
+              <Route path="employees">
+                <Route index element={<ViewEmployeesProfiles />} />
+                <Route path="profile" element={<ViewEmployeeProfile />} />
               </Route>
             </Route>
 
@@ -157,26 +138,17 @@ function App() {
                 />
               }
             >
-              <Route path='vacations'>
-                <Route
-                  index
-                  element={<EmployeesVacations />}
-                />
-                <Route
-                  path='requests'
-                  element={<ViewVacationRequests />}
-                />
+              <Route path="vacations">
+                <Route index element={<EmployeesVacations />} />
+                <Route path="requests" element={<ViewVacationRequests />} />
               </Route>
 
               <Route
-                path='timeShiftRequests'
+                path="timeShiftRequests"
                 element={<ViewTimeShiftRequests />}
               />
 
-              <Route
-                path='absences'
-                element={<EmployeesAbsences />}
-              />
+              <Route path="absences" element={<EmployeesAbsences />} />
             </Route>
 
             <Route
@@ -187,10 +159,7 @@ function App() {
                 />
               }
             >
-              <Route
-                path='reports'
-                element={<EmployeesReports />}
-              />
+              <Route path="reports" element={<EmployeesReports />} />
             </Route>
 
             <Route
@@ -201,19 +170,10 @@ function App() {
                 />
               }
             >
-              <Route path='jobApplications'>
-                <Route
-                  index
-                  element={<ViewJobApplications />}
-                />
-                <Route
-                  path='add'
-                  element={<JobApplicationMultiStepForm />}
-                />
-                <Route
-                  path='jobApplication'
-                  element={<ViewJobApplication />}
-                />
+              <Route path="jobApplications">
+                <Route index element={<ViewJobApplications />} />
+                <Route path="add" element={<JobApplicationMultiStepForm />} />
+                <Route path="jobApplication" element={<ViewJobApplication />} />
               </Route>
             </Route>
 
@@ -227,11 +187,8 @@ function App() {
                 />
               }
             >
-              <Route path='log'>
-                <Route
-                  index
-                  element={<Log />}
-                />
+              <Route path="log">
+                <Route index element={<Log />} />
               </Route>
             </Route>
 
@@ -243,10 +200,7 @@ function App() {
                 />
               }
             >
-              <Route
-                path='/roles'
-                element={<ViewRoles />}
-              />
+              <Route path="/roles" element={<ViewRoles />} />
             </Route>
 
             <Route
@@ -257,18 +211,12 @@ function App() {
                 />
               }
             >
+              <Route path="/shifts" element={<ViewShifts />} />
               <Route
-                path='/shifts'
-                element={<ViewShifts />}
-              />
-              <Route
-                path='/biometricDevices'
+                path="/biometricDevices"
                 element={<ViewBiometricDevices />}
               />
-              <Route
-                path='/timeSheetLog'
-                element={<ViewTimeSheetLog />}
-              />
+              <Route path="/timeSheetLog" element={<ViewTimeSheetLog />} />
             </Route>
 
             <Route
@@ -279,125 +227,86 @@ function App() {
                 />
               }
             >
-              <Route path='appointments'>
+              <Route path="appointments">
                 <Route
                   index
-                  path='calendar'
+                  path="calendar"
                   element={<AppointmentsCalendar />}
                 />
 
-                <Route
-                  path='cancelled'
-                  element={<CancelledAppointments />}
-                />
+                <Route path="cancelled" element={<CancelledAppointments />} />
               </Route>
             </Route>
 
-            <Route
-              element={
-                <AccessRoute
-                  userType={2}
-                />
-              }
-            >
-              <Route path='consultant'>
+            <Route element={<AccessRoute userType={2} />}>
+              <Route path="consultant">
+                <Route path="timeSchedules" element={<TimeSchedules />} />
+                <Route path="calendar" element={<ConsultantCalendar />} />
+                <Route path="customers" element={<ConsultantCustomers />} />
                 <Route
-                  path='timeSchedules'
-                  element={<TimeSchedules />}
-                />
-                <Route
-                  path='calendar'
-                  element={<ConsultantCalendar />}
-                />
-                <Route
-                  path='customers'
-                  element={<ConsultantCustomers />}
-                />
-                <Route
-                  path='customers/view/:custID'
+                  path="customers/view/:custID"
                   element={<ConsultantCustomer />}
                 />
               </Route>
             </Route>
 
             <Route element={<AccessRoute userType={1} />}>
-              <Route
-                path='main'
-                element={<ViewHomePage />}
-              />
+              <Route path="main" element={<ViewHomePage />} />
             </Route>
 
-            <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_CONSULTANTS]} userType={1} />}>
-              <Route path='consultants'>
-                <Route
-                  index
-                  element={<ViewConsultants />}
+            <Route
+              element={
+                <AccessRoute
+                  allowedRoutes={[Permissions.MANAGE_CONSULTANTS]}
+                  userType={1}
                 />
-                <Route
-                  path='add'
-                  element={<MaintainConsultant />}
-                />
-                <Route
-                  path='update/:consID'
-                  element={<MaintainConsultant />}
-                />
-                <Route
-                  path='view/:consID'
-                  element={<ViewConsultant />}
-                />
-              </Route>
-            </Route>
-
-            <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_CUSTOMERS]} userType={1} />}>
-              <Route path='customers'>
-                <Route
-                  index
-                  element={<ViewCustomers />}
-                />
-                <Route
-                  path='add'
-                  element={<MaintainCustomer />}
-                />
-                <Route
-                  path='update/:custID'
-                  element={<MaintainCustomer />}
-                />
-                <Route
-                  path='view/:custID'
-                  element={<ViewCustomer />}
-                />
-                <Route
-                  path='detect'
-                  element={<DetectCustomer />}
-                />
-              </Route>
-            </Route>
-
-            <Route element={<AccessRoute allowedRoutes={[Permissions.MANAGE_EVENTS]} userType={1} />}>
-              <Route path='events'>
-                <Route
-                  index
-                  element={<ViewEvents />}
-                />
-                <Route
-                  path='add'
-                  element={<MaintainEvent />}
-                />
-                <Route
-                  path='update/:eventID'
-                  element={<MaintainEvent />}
-                />
+              }
+            >
+              <Route path="consultants">
+                <Route index element={<ViewConsultants />} />
+                <Route path="add" element={<MaintainConsultant />} />
+                <Route path="update/:consID" element={<MaintainConsultant />} />
+                <Route path="view/:consID" element={<ViewConsultant />} />
               </Route>
             </Route>
 
             <Route
-              path='*'
-              element={<Navigate to='/' />}
-            />
+              element={
+                <AccessRoute
+                  allowedRoutes={[Permissions.MANAGE_CUSTOMERS]}
+                  userType={1}
+                />
+              }
+            >
+              <Route path="customers">
+                <Route index element={<ViewCustomers />} />
+                <Route path="add" element={<MaintainCustomer />} />
+                <Route path="update/:custID" element={<MaintainCustomer />} />
+                <Route path="view/:custID" element={<ViewCustomer />} />
+                <Route path="detect" element={<DetectCustomer />} />
+              </Route>
+            </Route>
+
+            <Route
+              element={
+                <AccessRoute
+                  allowedRoutes={[Permissions.MANAGE_EVENTS]}
+                  userType={1}
+                />
+              }
+            >
+              <Route path="events">
+                <Route index element={<ViewEvents />} />
+                <Route path="add" element={<MaintainEvent />} />
+                <Route path="update/:eventID" element={<MaintainEvent />} />
+              </Route>
+            </Route>
+
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Layout>
       </ConfigProvider>
-    </div >
+    </div>
   );
 }
 

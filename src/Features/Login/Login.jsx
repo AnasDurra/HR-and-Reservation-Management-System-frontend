@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import "./Login.css";
 import LoginForm from "./LoginForm";
@@ -5,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { login } from "../../redux/user/reducer";
 import CredentialsModal from "./components/CredentialsModal";
-import { Button, Tooltip } from "antd";
+import { Button, Tooltip, Card } from "antd";
 import { CloseOutlined, UserOutlined } from "@ant-design/icons";
 
 function LogInPage() {
@@ -27,7 +29,7 @@ function LogInPage() {
 
   const [visible, setVisible] = useState(true);
   const handleTooltipClose = () => {
-    setVisible(false); // Close the tooltip when clicked
+    setVisible(false);
   };
 
   return (
@@ -37,8 +39,19 @@ function LogInPage() {
         onClose={() => setIsModalVisible(false)}
       />
       <div className="loginContainer">
-        <img className="image" src="./undraw_sign_in_re_o58h.svg" />
-        <LoginForm loading={loading} onFinish={onFinish} />
+        <div className="illustration-section">
+          <img
+            className="image"
+            src="./undraw_sign_in_re_o58h.svg"
+            alt="Login illustration"
+          />
+        </div>
+
+        <div className="form-section">
+          <Card className="login-card" bordered={false}>
+            <LoginForm loading={loading} onFinish={onFinish} />
+          </Card>
+        </div>
       </div>
 
       <Tooltip
