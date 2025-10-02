@@ -29,7 +29,7 @@ function LoginForm({ onFinish, loading }) {
       >
         <Form.Item
           className="formItem"
-          label={<span style={{ fontWeight: 500 }}>اسم المستخدم</span>}
+          // label={<span style={{ fontWeight: 500 }}>اسم المستخدم</span>}
           name="username"
           rules={[
             {
@@ -47,7 +47,7 @@ function LoginForm({ onFinish, loading }) {
 
         <Form.Item
           className="formItem"
-          label={<span style={{ fontWeight: 500 }}>كلمة المرور</span>}
+          // label={<span style={{ fontWeight: 500 }}>كلمة المرور</span>}
           name="password"
           rules={[
             {

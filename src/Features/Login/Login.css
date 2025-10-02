@@ -7,7 +7,7 @@
   height: 100vh;
   background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
   /* padding: 20px; */
-  gap: 140px;
+  gap: 150px;
 }
 
 .illustration-section {
@@ -72,7 +72,7 @@
 }
 
 .formItem {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .elegant-input {
