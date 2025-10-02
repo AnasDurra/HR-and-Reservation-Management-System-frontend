@@ -1,47 +1,60 @@
 .loginContainer {
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content:space-evenly;
-    width: 100vw;
-    height: 100vh;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100vw;
+  height: 100vh;
 }
 
 .image {
-    width: 30%;
-    height: 50%;
-    flex: 0%;
+  width: 30%;
+  height: 50%;
+  flex: 0%;
 }
 
 .form {
-    display: flex;
-    flex-direction: column;
-    flex: 30%;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex: 30%;
+  align-items: center;
 }
 
 .formItems {
-    display: flex;
-    flex-direction: column;
-    width: 40%;
+  display: flex;
+  flex-direction: column;
+  width: 40%;
 }
 
 .formItem {
-    display: block;
-    width: 100%;
+  display: block;
+  width: 100%;
 }
 
 .submitButton {
-    display: block;
-    width: 100%;
-    margin-top: 10px;
+  display: block;
+  width: 100%;
+  margin-top: 10px;
 }
 
 @media screen and (max-width: 1000px) {
-    .image {
-        display: none;
-    }
-    .formItems{
-        width: 60%;
-    }
+  .image {
+    display: none;
+  }
+  .formItems {
+    width: 60%;
+  }
+}
+
+.fab-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.fab-button:hover {
+  transform: scale(1.1);
 }
